@@ -6,7 +6,7 @@
  */
 
 /** 
- * Démarre ou poursuit une session.                     
+ * Demarre ou poursuit une session.                     
  *
  * @return void
  */
@@ -15,10 +15,10 @@ function initSession() {
 }
 
 /** 
- * Fournit l'id du visiteur connecté.                     
+ * Fournit l'id du visiteur connecte.                     
  *
- * Retourne l'id du visiteur connecté, une chaîne vide si pas de visiteur connecté.
- * @return string id du visiteur connecté
+ * Retourne l'id du visiteur connecte, une chaîne vide si pas de visiteur connecte.
+ * @return string id du visiteur connecte
  */
 function obtenirIdUserConnecte() {
     $ident="";
@@ -29,9 +29,9 @@ function obtenirIdUserConnecte() {
 }
 
 /**
- * Conserve en variables session les informations du visiteur connecté
+ * Conserve en variables session les informations du visiteur connecte
  * 
- * Conserve en variables session l'id $id et le login $login du visiteur connecté
+ * Conserve en variables session l'id $id et le login $login du visiteur connecte
  * @param string id du visiteur
  * @param string login du visiteur
  * @return void    
@@ -42,7 +42,7 @@ function affecterInfosConnecte($id, $login) {
 }
 
 /** 
- * Déconnecte le visiteur qui s'est identifié sur le site.                     
+ * Deconnecte le visiteur qui s'est identifie sur le site.                     
  *
  * @return void
  */
@@ -52,10 +52,10 @@ function deconnecterVisiteur() {
 }
 
 /** 
- * Vérifie si un visiteur s'est connecté sur le site.                     
+ * Verifie si un visiteur s'est connecte sur le site.                     
  *
- * Retourne true si un visiteur s'est identifié sur le site, false sinon. 
- * @return boolean échec ou succès
+ * Retourne true si un visiteur s'est identifie sur le site, false sinon. 
+ * @return boolean echec ou succes
  */
 function estVisiteurConnecte() {
     // actuellement il n'y a que les visiteurs qui se connectent

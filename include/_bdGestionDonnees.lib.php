@@ -1,17 +1,17 @@
 <?php
 /** 
- * Regroupe les fonctions d'acc�s aux donn�es.
+ * Regroupe les fonctions d'acces aux donnees.
  * @package default
  * @author Arthur Martin
- * @todo Fonctions retournant plusieurs lignes sont � r��crire.
+ * @todo Fonctions retournant plusieurs lignes sont e reecrire.
  */
 
 /** 
- * Se connecte au serveur de donn�es MySql.                      
- * Se connecte au serveur de donn�es MySql � partir de valeurs
- * pr�d�finies de connexion (h�te, compte utilisateur et mot de passe). 
- * Retourne l'identifiant de connexion si succ�s obtenu, le bool�en false 
- * si probl�me de connexion.
+ * Se connecte au serveur de donnees MySql.                      
+ * Se connecte au serveur de donnees MySql e partir de valeurs
+ * predefinies de connexion (hete, compte utilisateur et mot de passe). 
+ * Retourne l'identifiant de connexion si succes obtenu, le booleen false 
+ * si probleme de connexion.
  * @return resource identifiant de connexion
  */
 function connecterServeurBD() {
@@ -22,24 +22,24 @@ function connecterServeurBD() {
 }
 
 /**
- * S�lectionne (rend active) la base de donn�es.
- * S�lectionne (rend active) la BD pr�d�finie gsb_frais sur la connexion
- * identifi�e par $idCnx. Retourne true si succ�s, false sinon.
+ * Selectionne (rend active) la base de donnees.
+ * Selectionne (rend active) la BD predefinie gsb_frais sur la connexion
+ * identifiee par $idCnx. Retourne true si succes, false sinon.
  * @param resource $idCnx identifiant de connexion
- * @return boolean succ�s ou �chec de s�lection BD 
+ * @return boolean succes ou echec de selection BD 
  */
 function activerBD($idCnx) {
     $bd = "gsb_valide";
     $query = "SET CHARACTER SET utf8";
-    // Modification du jeu de caract�res de la connexion
+    // Modification du jeu de caracteres de la connexion
     $res = mysql_query($query, $idCnx); 
     $ok = mysql_select_db($bd, $idCnx);
     return $ok;
 }
 
 /** 
- * Ferme la connexion au serveur de donn�es.
- * Ferme la connexion au serveur de donn�es identifi�e par l'identifiant de 
+ * Ferme la connexion au serveur de donnees.
+ * Ferme la connexion au serveur de donnees identifiee par l'identifiant de 
  * connexion $idCnx.
  * @param resource $idCnx identifiant de connexion
  * @return void  
@@ -49,26 +49,26 @@ function deconnecterServeurBD($idCnx) {
 }
 
 /**
- * Echappe les caract�res sp�ciaux d'une cha�ne.
- * Envoie la cha�ne $str �chapp�e, c�d avec les caract�res consid�r�s sp�ciaux
- * par MySql (tq la quote simple) pr�c�d�s d'un \, ce qui annule leur effet sp�cial
- * @param string $str cha�ne � �chapper
- * @return string cha�ne �chapp�e 
+ * Echappe les caracteres speciaux d'une chaene.
+ * Envoie la chaene $str echappee, ced avec les caracteres consideres speciaux
+ * par MySql (tq la quote simple) precedes d'un \, ce qui annule leur effet special
+ * @param string $str chaene e echapper
+ * @return string chaene echappee 
  */    
 function filtrerChainePourBD($str) {
     if ( ! get_magic_quotes_gpc() ) { 
-        // si la directive de configuration magic_quotes_gpc est activ�e dans php.ini,
-        // toute cha�ne re�ue par get, post ou cookie est d�j� �chapp�e 
-        // par cons�quent, il ne faut pas �chapper la cha�ne une seconde fois                              
+        // si la directive de configuration magic_quotes_gpc est activee dans php.ini,
+        // toute chaene reeue par get, post ou cookie est deje echappee 
+        // par consequent, il ne faut pas echapper la chaene une seconde fois                              
         $str = mysql_real_escape_string($str);
     }
     return $str;
 }
 
 /** 
- * Fournit les informations sur un visiteur demand�. 
+ * Fournit les informations sur un visiteur demande. 
  * Retourne les informations du visiteur d'id $unId sous la forme d'un tableau
- * associatif dont les cl�s sont les noms des colonnes(id, nom, prenom).
+ * associatif dont les cles sont les noms des colonnes(id, nom, prenom).
  * @param resource $idCnx identifiant de connexion
  * @param string $unId id de l'utilisateur
  * @return array  tableau associatif du visiteur
@@ -88,10 +88,10 @@ function obtenirDetailVisiteur($idCnx, $unId) {
 /** 
  * Fournit les informations d'une fiche de frais. 
  * Retourne les informations de la fiche de frais du mois de $unMois (MMAAAA)
- * sous la forme d'un tableau associatif dont les cl�s sont les noms des colonnes
+ * sous la forme d'un tableau associatif dont les cles sont les noms des colonnes
  * (nbJustitificatifs, idEtat, libelleEtat, dateModif, montantValide).
  * @param resource $idCnx identifiant de connexion
- * @param string $unMois mois demand� (MMAAAA)
+ * @param string $unMois mois demande (MMAAAA)
  * @param string $unIdVisiteur id visiteur  
  * @return array tableau associatif de la fiche de frais
  */
@@ -111,13 +111,13 @@ function obtenirDetailFicheFrais($idCnx, $unMois, $unIdVisiteur) {
 }
               
 /** 
- * V�rifie si une fiche de frais existe ou non. 
+ * Verifie si une fiche de frais existe ou non. 
  * Retourne true si la fiche de frais du mois de $unMois (MMAAAA) du visiteur 
  * $idVisiteur existe, false sinon. 
  * @param resource $idCnx identifiant de connexion
- * @param string $unMois mois demand� (MMAAAA)
+ * @param string $unMois mois demande (MMAAAA)
  * @param string $unIdVisiteur id visiteur  
- * @return bool�en existence ou non de la fiche de frais
+ * @return booleen existence ou non de la fiche de frais
  */
 function existeFicheFrais($idCnx, $unMois, $unIdVisiteur) {
     $unMois = filtrerChainePourBD($unMois);
@@ -135,8 +135,8 @@ function existeFicheFrais($idCnx, $unMois, $unIdVisiteur) {
 }
 
 /** 
- * Fournit le mois de la derni�re fiche de frais d'un visiteur.
- * Retourne le mois de la derni�re fiche de frais du visiteur d'id $unIdVisiteur.
+ * Fournit le mois de la derniere fiche de frais d'un visiteur.
+ * Retourne le mois de la derniere fiche de frais du visiteur d'id $unIdVisiteur.
  * @param resource $idCnx identifiant de connexion
  * @param string $unIdVisiteur id visiteur  
  * @return string dernier mois sous la forme AAAAMM
@@ -155,31 +155,31 @@ function obtenirDernierMoisSaisi($idCnx, $unIdVisiteur) {
 }
 
 /** 
- * Ajoute une nouvelle fiche de frais et les �l�ments forfaitis�s associ�s, 
+ * Ajoute une nouvelle fiche de frais et les elements forfaitises associes, 
  * Ajoute la fiche de frais du mois de $unMois (MMAAAA) du visiteur 
- * $idVisiteur, avec les �l�ments forfaitis�s associ�s dont la quantit� initiale
- * est affect�e � 0. Cl�t �ventuellement la fiche de frais pr�c�dente du visiteur. 
+ * $idVisiteur, avec les elements forfaitises associes dont la quantite initiale
+ * est affectee e 0. Clet eventuellement la fiche de frais precedente du visiteur. 
  * @param resource $idCnx identifiant de connexion
- * @param string $unMois mois demand� (MMAAAA)
+ * @param string $unMois mois demande (MMAAAA)
  * @param string $unIdVisiteur id visiteur  
  * @return void
  */
 function ajouterFicheFrais($idCnx, $unMois, $unIdVisiteur) {
     $unMois = filtrerChainePourBD($unMois);
-    // modification de la derni�re fiche de frais du visiteur
+    // modification de la derniere fiche de frais du visiteur
     $dernierMois = obtenirDernierMoisSaisi($idCnx, $unIdVisiteur);
 	$laDerniereFiche = obtenirDetailFicheFrais($idCnx, $dernierMois, $unIdVisiteur);
 	if ( is_array($laDerniereFiche) && $laDerniereFiche['idEtat']=='CR'){
 		modifierEtatFicheFrais($idCnx, $dernierMois, $unIdVisiteur, 'CL');
 	}
     
-    // ajout de la fiche de frais � l'�tat Cr��
+    // ajout de la fiche de frais e l'etat Cree
     $requete = "insert into FicheFrais (idVisiteur, mois, nbJustificatifs, montantValide, idEtat, dateModif) values ('" 
               . $unIdVisiteur 
               . "','" . $unMois . "',0,NULL, 'CR', '" . date("Y-m-d") . "')";
     mysql_query($requete, $idCnx);
     
-    // ajout des �l�ments forfaitis�s
+    // ajout des elements forfaitises
     $requete = "select id from FraisForfait";
     $idJeuRes = mysql_query($requete, $idCnx);
     if ( $idJeuRes ) {
@@ -198,13 +198,13 @@ function ajouterFicheFrais($idCnx, $unMois, $unIdVisiteur) {
 }
 
 /**
- * Retourne le texte de la requ�te select concernant les mois pour lesquels un 
+ * Retourne le texte de la requete select concernant les mois pour lesquels un 
  * visiteur a une fiche de frais. 
  * 
- * La requ�te de s�lection fournie permettra d'obtenir les mois (AAAAMM) pour 
+ * La requete de selection fournie permettra d'obtenir les mois (AAAAMM) pour 
  * lesquels le visiteur $unIdVisiteur a une fiche de frais. 
  * @param string $unIdVisiteur id visiteur  
- * @return string texte de la requ�te select
+ * @return string texte de la requete select
  */                                                 
 function obtenirReqMoisFicheFrais($unIdVisiteur) {
     $req = "select fichefrais.mois as mois from  fichefrais where fichefrais.idvisiteur ='"
@@ -213,15 +213,15 @@ function obtenirReqMoisFicheFrais($unIdVisiteur) {
 }  
                   
 /**
- * Retourne le texte de la requ�te select concernant les �l�ments forfaitis�s 
- * d'un visiteur pour un mois donn�s. 
+ * Retourne le texte de la requete select concernant les elements forfaitises 
+ * d'un visiteur pour un mois donnes. 
  * 
- * La requ�te de s�lection fournie permettra d'obtenir l'id, le libell� et la
- * quantit� des �l�ments forfaitis�s de la fiche de frais du visiteur
+ * La requete de selection fournie permettra d'obtenir l'id, le libelle et la
+ * quantite des elements forfaitises de la fiche de frais du visiteur
  * d'id $idVisiteur pour le mois $mois    
- * @param string $unMois mois demand� (MMAAAA)
+ * @param string $unMois mois demande (MMAAAA)
  * @param string $unIdVisiteur id visiteur  
- * @return string texte de la requ�te select
+ * @return string texte de la requete select
  */                                                 
 function obtenirReqEltsForfaitFicheFrais($unMois, $unIdVisiteur) {
     $unMois = filtrerChainePourBD($unMois);
@@ -232,15 +232,15 @@ function obtenirReqEltsForfaitFicheFrais($unMois, $unIdVisiteur) {
 }
 
 /**
- * Retourne le texte de la requ�te select concernant les �l�ments hors forfait 
- * d'un visiteur pour un mois donn�s. 
+ * Retourne le texte de la requete select concernant les elements hors forfait 
+ * d'un visiteur pour un mois donnes. 
  * 
- * La requ�te de s�lection fournie permettra d'obtenir l'id, la date, le libell� 
- * et le montant des �l�ments hors forfait de la fiche de frais du visiteur
+ * La requete de selection fournie permettra d'obtenir l'id, la date, le libelle 
+ * et le montant des elements hors forfait de la fiche de frais du visiteur
  * d'id $idVisiteur pour le mois $mois    
- * @param string $unMois mois demand� (MMAAAA)
+ * @param string $unMois mois demande (MMAAAA)
  * @param string $unIdVisiteur id visiteur  
- * @return string texte de la requ�te select
+ * @return string texte de la requete select
  */                                                 
 function obtenirReqEltsHorsForfaitFicheFrais($unMois, $unIdVisiteur) {
     $unMois = filtrerChainePourBD($unMois);
@@ -264,14 +264,14 @@ function supprimerLigneHF($idCnx, $unIdLigneHF) {
 
 /**
  * Ajoute une nouvelle ligne hors forfait.
- * Ins�re dans la BD la ligne hors forfait de libell� $unLibelleHF du montant 
- * $unMontantHF ayant eu lieu � la date $uneDateHF pour la fiche de frais du mois
+ * Insere dans la BD la ligne hors forfait de libelle $unLibelleHF du montant 
+ * $unMontantHF ayant eu lieu e la date $uneDateHF pour la fiche de frais du mois
  * $unMois du visiteur d'id $unIdVisiteur
  * @param resource $idCnx identifiant de connexion
- * @param string $unMois mois demand� (AAMMMM)
+ * @param string $unMois mois demande (AAMMMM)
  * @param string $unIdVisiteur id du visiteur
  * @param string $uneDateHF date du frais hors forfait
- * @param string $unLibelleHF libell� du frais hors forfait 
+ * @param string $unLibelleHF libelle du frais hors forfait 
  * @param double $unMontantHF montant du frais hors forfait
  * @return void
  */
@@ -285,17 +285,17 @@ function ajouterLigneHF($idCnx, $unMois, $unIdVisiteur, $uneDateHF, $unLibelleHF
 }
 
 /**
- * Modifie les quantit�s des �l�ments forfaitis�s d'une fiche de frais. 
- * Met � jour les �l�ments forfaitis�s contenus  
+ * Modifie les quantites des elements forfaitises d'une fiche de frais. 
+ * Met e jour les elements forfaitises contenus  
  * dans $desEltsForfaits pour le visiteur $unIdVisiteur et
- * le mois $unMois dans la table LigneFraisForfait, apr�s avoir filtr� 
- * (annul� l'effet de certains caract�res consid�r�s comme sp�ciaux par 
- *  MySql) chaque donn�e   
+ * le mois $unMois dans la table LigneFraisForfait, apres avoir filtre 
+ * (annule l'effet de certains caracteres consideres comme speciaux par 
+ *  MySql) chaque donnee   
  * @param resource $idCnx identifiant de connexion
- * @param string $unMois mois demand� (MMAAAA) 
+ * @param string $unMois mois demande (MMAAAA) 
  * @param string $unIdVisiteur  id visiteur
- * @param array $desEltsForfait tableau des quantit�s des �l�ments hors forfait
- * avec pour cl�s les identifiants des frais forfaitis�s 
+ * @param array $desEltsForfait tableau des quantites des elements hors forfait
+ * avec pour cles les identifiants des frais forfaitises 
  * @return void  
  */
 function modifierEltsForfait($idCnx, $unMois, $unIdVisiteur, $desEltsForfait) {
@@ -310,20 +310,20 @@ function modifierEltsForfait($idCnx, $unMois, $unIdVisiteur, $desEltsForfait) {
 }
 
 /**
- * Contr�le les informations de connexionn d'un utilisateur.
- * V�rifie si les informations de connexion $unLogin, $unMdp sont ou non valides.
+ * Contrele les informations de connexionn d'un utilisateur.
+ * Verifie si les informations de connexion $unLogin, $unMdp sont ou non valides.
  * Retourne les informations de l'utilisateur sous forme de tableau associatif 
- * dont les cl�s sont les noms des colonnes (id, nom, prenom, login, mdp)
- * si login et mot de passe existent, le bool�en false sinon. 
+ * dont les cles sont les noms des colonnes (id, nom, prenom, login, mdp)
+ * si login et mot de passe existent, le booleen false sinon. 
  * @param resource $idCnx identifiant de connexion
  * @param string $unLogin login 
  * @param string $unMdp mot de passe 
- * @return array tableau associatif ou bool�en false 
+ * @return array tableau associatif ou booleen false 
  */
 function verifierInfosConnexion($idCnx, $unLogin, $unMdp) {
     $unLogin = filtrerChainePourBD($unLogin);
     $unMdp = filtrerChainePourBD($unMdp);
-    // le mot de passe est crypt� dans la base avec la fonction de hachage md5
+    // le mot de passe est crypte dans la base avec la fonction de hachage md5
     $req = "select id, nom, prenom, login, mdp from Visiteur where login='".$unLogin."' and mdp='" . $unMdp . "'";
     $idJeuRes = mysql_query($req, $idCnx);
     $ligne = false;
@@ -335,10 +335,10 @@ function verifierInfosConnexion($idCnx, $unLogin, $unMdp) {
 }
 
 /**
- * Modifie l'�tat et la date de modification d'une fiche de frais
+ * Modifie l'etat et la date de modification d'une fiche de frais
  
- * Met � jour l'�tat de la fiche de frais du visiteur $unIdVisiteur pour
- * le mois $unMois � la nouvelle valeur $unEtat et passe la date de modif � 
+ * Met e jour l'etat de la fiche de frais du visiteur $unIdVisiteur pour
+ * le mois $unMois e la nouvelle valeur $unEtat et passe la date de modif e 
  * la date d'aujourd'hui
  * @param resource $idCnx identifiant de connexion
  * @param string $unIdVisiteur 

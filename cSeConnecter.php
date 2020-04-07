@@ -10,12 +10,12 @@
   // est-on au 1er appel du programme ou non ?
   $etape=(count($_POST)!=0)?'validerConnexion' : 'demanderConnexion';
   
-  if ($etape=='validerConnexion') { // un client demande à s'authentifier
-      // acquisition des données envoyées, ici login et mot de passe
+  if ($etape=='validerConnexion') { // un client demande a s'authentifier
+      // acquisition des donnees envoyees, ici login et mot de passe
       $login = lireDonneePost("txtLogin");
       $mdp = lireDonneePost("txtMdp");   
       $lgUser = verifierInfosConnexion($idConnexion, $login, $mdp) ;
-      // si l'id utilisateur a été trouvé, donc informations fournies sous forme de tableau
+      // si l'id utilisateur a ete trouve, donc informations fournies sous forme de tableau
       if ( is_array($lgUser) ) { 
           affecterInfosConnecte($lgUser["id"], $lgUser["login"]);
       }

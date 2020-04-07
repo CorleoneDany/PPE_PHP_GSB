@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>GSB</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+        <script type="text/javascript">
+        function loadExternalCodeSnippets() {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+                var src = pre.getAttribute('data-src');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist or is empty';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        $(document).ready(function(){
+            loadExternalCodeSnippets();
+        });
+        $('#source-view').on('shown', function () {
+            loadExternalCodeSnippets();
+        })
+    </script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">GSB</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">37</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-957495304" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content file">
+                    <nav>
+                                                                    </nav>
+
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    <h1><small></small>_bdGestionDonnees.lib.php</h1>
+                    <p><em>Regroupe les fonctions d&#039;acces aux donnees.</em></p>
+                    
+
+                    
+                    
+                                    </div>
+
+                <aside class="span4 detailsbar">
+                    <dl>
+                                                    <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\default</div></dd>
+                        
+                        
+                    </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                                    <tr>
+                                <th>
+                                    author
+                                </th>
+                                <td>
+                                                                            <p>Arthur Martin</p>
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <th>
+                                    todo
+                                </th>
+                                <td>
+                                                                            <p>Fonctions retournant plusieurs lignes sont e reecrire.</p>
+                                                                    </td>
+                            </tr>
+                                            </table>
+
+                </aside>
+            </div>
+
+            
+                        <div class="row-fluid">
+                <section class="span8 content file">
+                    <h2>Functions</h2>
+                </section>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_connecterServeurBD" name="method_connecterServeurBD" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">connecterServeurBD()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">connecterServeurBD() : resource</pre>
+                <p><em>Se connecte au serveur de donnees MySql.</em></p>
+                <p>Se connecte au serveur de donnees MySql e partir de valeurs
+predefinies de connexion (hete, compte utilisateur et mot de passe).
+Retourne l'identifiant de connexion si succes obtenu, le booleen false
+si probleme de connexion.</p>
+
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    resource
+                                            &mdash; <p>identifiant de connexion</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_activerBD" name="method_activerBD" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">activerBD()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">activerBD(resource  <span class="argument">$idCnx</span>) : boolean</pre>
+                <p><em>Selectionne (rend active) la base de donnees.</em></p>
+                <p>Selectionne (rend active) la BD predefinie gsb_frais sur la connexion
+identifiee par $idCnx. Retourne true si succes, false sinon.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>succes ou echec de selection BD</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_deconnecterServeurBD" name="method_deconnecterServeurBD" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">deconnecterServeurBD()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">deconnecterServeurBD(resource  <span class="argument">$idCnx</span>) : void</pre>
+                <p><em>Ferme la connexion au serveur de donnees.</em></p>
+                <p>Ferme la connexion au serveur de donnees identifiee par l'identifiant de
+connexion $idCnx.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_filtrerChainePourBD" name="method_filtrerChainePourBD" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">filtrerChainePourBD()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">filtrerChainePourBD(string  <span class="argument">$str</span>) : string</pre>
+                <p><em>Echappe les caracteres speciaux d&#039;une chaene.</em></p>
+                <p>Envoie la chaene $str echappee, ced avec les caracteres consideres speciaux
+par MySql (tq la quote simple) precedes d'un \, ce qui annule leur effet special</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$str </td>
+                                <td><p>chaene e echapper</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>chaene echappee</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_obtenirDetailVisiteur" name="method_obtenirDetailVisiteur" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">obtenirDetailVisiteur()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">obtenirDetailVisiteur(resource  <span class="argument">$idCnx</span>, string  <span class="argument">$unId</span>) : array</pre>
+                <p><em>Fournit les informations sur un visiteur demande.</em></p>
+                <p>Retourne les informations du visiteur d'id $unId sous la forme d'un tableau
+associatif dont les cles sont les noms des colonnes(id, nom, prenom).</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unId </td>
+                                <td><p>id de l'utilisateur</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>tableau associatif du visiteur</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_obtenirDetailFicheFrais" name="method_obtenirDetailFicheFrais" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">obtenirDetailFicheFrais()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">obtenirDetailFicheFrais(resource  <span class="argument">$idCnx</span>, string  <span class="argument">$unMois</span>, string  <span class="argument">$unIdVisiteur</span>) : array</pre>
+                <p><em>Fournit les informations d&#039;une fiche de frais.</em></p>
+                <p>Retourne les informations de la fiche de frais du mois de $unMois (MMAAAA)
+sous la forme d'un tableau associatif dont les cles sont les noms des colonnes
+(nbJustitificatifs, idEtat, libelleEtat, dateModif, montantValide).</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unMois </td>
+                                <td><p>mois demande (MMAAAA)</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unIdVisiteur </td>
+                                <td><p>id visiteur</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>tableau associatif de la fiche de frais</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_existeFicheFrais" name="method_existeFicheFrais" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">existeFicheFrais()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">existeFicheFrais(resource  <span class="argument">$idCnx</span>, string  <span class="argument">$unMois</span>, string  <span class="argument">$unIdVisiteur</span>) : \booleen</pre>
+                <p><em>Verifie si une fiche de frais existe ou non.</em></p>
+                <p>Retourne true si la fiche de frais du mois de $unMois (MMAAAA) du visiteur
+$idVisiteur existe, false sinon.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unMois </td>
+                                <td><p>mois demande (MMAAAA)</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unIdVisiteur </td>
+                                <td><p>id visiteur</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    \booleen
+                                            &mdash; <p>existence ou non de la fiche de frais</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_obtenirDernierMoisSaisi" name="method_obtenirDernierMoisSaisi" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">obtenirDernierMoisSaisi()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">obtenirDernierMoisSaisi(resource  <span class="argument">$idCnx</span>, string  <span class="argument">$unIdVisiteur</span>) : string</pre>
+                <p><em>Fournit le mois de la derniere fiche de frais d&#039;un visiteur.</em></p>
+                <p>Retourne le mois de la derniere fiche de frais du visiteur d'id $unIdVisiteur.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unIdVisiteur </td>
+                                <td><p>id visiteur</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>dernier mois sous la forme AAAAMM</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_ajouterFicheFrais" name="method_ajouterFicheFrais" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">ajouterFicheFrais()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">ajouterFicheFrais(resource  <span class="argument">$idCnx</span>, string  <span class="argument">$unMois</span>, string  <span class="argument">$unIdVisiteur</span>) : void</pre>
+                <p><em>Ajoute une nouvelle fiche de frais et les elements forfaitises associes,
+Ajoute la fiche de frais du mois de $unMois (MMAAAA) du visiteur
+$idVisiteur, avec les elements forfaitises associes dont la quantite initiale
+est affectee e 0. Clet eventuellement la fiche de frais precedente du visiteur.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unMois </td>
+                                <td><p>mois demande (MMAAAA)</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unIdVisiteur </td>
+                                <td><p>id visiteur</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_obtenirReqMoisFicheFrais" name="method_obtenirReqMoisFicheFrais" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">obtenirReqMoisFicheFrais()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">obtenirReqMoisFicheFrais(string  <span class="argument">$unIdVisiteur</span>) : string</pre>
+                <p><em>Retourne le texte de la requete select concernant les mois pour lesquels un
+visiteur a une fiche de frais.</em></p>
+                <p>La requete de selection fournie permettra d'obtenir les mois (AAAAMM) pour
+lesquels le visiteur $unIdVisiteur a une fiche de frais.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unIdVisiteur </td>
+                                <td><p>id visiteur</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>texte de la requete select</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_obtenirReqEltsForfaitFicheFrais" name="method_obtenirReqEltsForfaitFicheFrais" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">obtenirReqEltsForfaitFicheFrais()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">obtenirReqEltsForfaitFicheFrais(string  <span class="argument">$unMois</span>, string  <span class="argument">$unIdVisiteur</span>) : string</pre>
+                <p><em>Retourne le texte de la requete select concernant les elements forfaitises
+d&#039;un visiteur pour un mois donnes.</em></p>
+                <p>La requete de selection fournie permettra d'obtenir l'id, le libelle et la
+quantite des elements forfaitises de la fiche de frais du visiteur
+d'id $idVisiteur pour le mois $mois</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unMois </td>
+                                <td><p>mois demande (MMAAAA)</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unIdVisiteur </td>
+                                <td><p>id visiteur</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>texte de la requete select</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_obtenirReqEltsHorsForfaitFicheFrais" name="method_obtenirReqEltsHorsForfaitFicheFrais" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">obtenirReqEltsHorsForfaitFicheFrais()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">obtenirReqEltsHorsForfaitFicheFrais(string  <span class="argument">$unMois</span>, string  <span class="argument">$unIdVisiteur</span>) : string</pre>
+                <p><em>Retourne le texte de la requete select concernant les elements hors forfait
+d&#039;un visiteur pour un mois donnes.</em></p>
+                <p>La requete de selection fournie permettra d'obtenir l'id, la date, le libelle
+et le montant des elements hors forfait de la fiche de frais du visiteur
+d'id $idVisiteur pour le mois $mois</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unMois </td>
+                                <td><p>mois demande (MMAAAA)</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unIdVisiteur </td>
+                                <td><p>id visiteur</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>texte de la requete select</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_supprimerLigneHF" name="method_supprimerLigneHF" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">supprimerLigneHF()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">supprimerLigneHF(resource  <span class="argument">$idCnx</span>,   <span class="argument">$unIdLigneHF</span>) : void</pre>
+                <p><em>Supprime une ligne hors forfait.</em></p>
+                <p>Supprime dans la BD la ligne hors forfait d'id $unIdLigneHF</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$unIdLigneHF </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_ajouterLigneHF" name="method_ajouterLigneHF" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">ajouterLigneHF()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">ajouterLigneHF(resource  <span class="argument">$idCnx</span>, string  <span class="argument">$unMois</span>, string  <span class="argument">$unIdVisiteur</span>, string  <span class="argument">$uneDateHF</span>, string  <span class="argument">$unLibelleHF</span>, double  <span class="argument">$unMontantHF</span>) : void</pre>
+                <p><em>Ajoute une nouvelle ligne hors forfait.</em></p>
+                <p>Insere dans la BD la ligne hors forfait de libelle $unLibelleHF du montant
+$unMontantHF ayant eu lieu e la date $uneDateHF pour la fiche de frais du mois
+$unMois du visiteur d'id $unIdVisiteur</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unMois </td>
+                                <td><p>mois demande (AAMMMM)</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unIdVisiteur </td>
+                                <td><p>id du visiteur</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$uneDateHF </td>
+                                <td><p>date du frais hors forfait</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unLibelleHF </td>
+                                <td><p>libelle du frais hors forfait</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>double</td>
+                                <td>$unMontantHF </td>
+                                <td><p>montant du frais hors forfait</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_modifierEltsForfait" name="method_modifierEltsForfait" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">modifierEltsForfait()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">modifierEltsForfait(resource  <span class="argument">$idCnx</span>, string  <span class="argument">$unMois</span>, string  <span class="argument">$unIdVisiteur</span>, array  <span class="argument">$desEltsForfait</span>) : void</pre>
+                <p><em>Modifie les quantites des elements forfaitises d&#039;une fiche de frais.</em></p>
+                <p>Met e jour les elements forfaitises contenus
+dans $desEltsForfaits pour le visiteur $unIdVisiteur et
+le mois $unMois dans la table LigneFraisForfait, apres avoir filtre
+(annule l'effet de certains caracteres consideres comme speciaux par
+MySql) chaque donnee</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unMois </td>
+                                <td><p>mois demande (MMAAAA)</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unIdVisiteur </td>
+                                <td><p>id visiteur</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$desEltsForfait </td>
+                                <td><p>tableau des quantites des elements hors forfait
+avec pour cles les identifiants des frais forfaitises</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_verifierInfosConnexion" name="method_verifierInfosConnexion" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">verifierInfosConnexion()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">verifierInfosConnexion(resource  <span class="argument">$idCnx</span>, string  <span class="argument">$unLogin</span>, string  <span class="argument">$unMdp</span>) : array</pre>
+                <p><em>Contrele les informations de connexionn d&#039;un utilisateur.</em></p>
+                <p>Verifie si les informations de connexion $unLogin, $unMdp sont ou non valides.
+Retourne les informations de l'utilisateur sous forme de tableau associatif
+dont les cles sont les noms des colonnes (id, nom, prenom, login, mdp)
+si login et mot de passe existent, le booleen false sinon.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unLogin </td>
+                                <td><p>login</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unMdp </td>
+                                <td><p>mot de passe</p></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>tableau associatif ou booleen false</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_modifierEtatFicheFrais" name="method_modifierEtatFicheFrais" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">modifierEtatFicheFrais()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">modifierEtatFicheFrais(resource  <span class="argument">$idCnx</span>, string  <span class="argument">$unMois</span>, string  <span class="argument">$unIdVisiteur</span>,   <span class="argument">$unEtat</span>) : void</pre>
+                <p><em>Modifie l&#039;etat et la date de modification d&#039;une fiche de frais</em></p>
+                <p>Met e jour l'etat de la fiche de frais du visiteur $unIdVisiteur pour
+le mois $unMois e la nouvelle valeur $unEtat et passe la date de modif e
+la date d'aujourd'hui</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>resource</td>
+                                <td>$idCnx </td>
+                                <td><p>identifiant de connexion</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unMois </td>
+                                <td><p>mois sous la forme aaaamm</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$unIdVisiteur </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$unEtat </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://C:/wamp64/www/GSB/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1293
+
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">include\_bdGestionDonnees.lib.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+        </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label"></h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/include\_bdGestionDonnees.lib.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on April 7th, 2020 at 11:43.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

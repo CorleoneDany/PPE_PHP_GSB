@@ -7,31 +7,31 @@
   $repInclude = './include/';
   require($repInclude . "_init.inc.php");
 
-  // page inaccessible si visiteur non connecté
+  // page inaccessible si visiteur non connecte
   if ( ! estVisiteurConnecte() ) {
       header("Location: cSeConnecter.php");  
   }
   require($repInclude . "_entete.inc.html");
   require($repInclude . "_sommaire.inc.php");
   
-  // acquisition des données entrées, ici le numéro de mois et l'étape du traitement
+  // acquisition des donnees entrees, ici le numero de mois et l'etape du traitement
   $moisSaisi=lireDonneePost("lstMois", "");
   $etape=lireDonneePost("etape",""); 
 
   if ($etape != "demanderConsult" && $etape != "validerConsult") {
-      // si autre valeur, on considère que c'est le début du traitement
+      // si autre valeur, on considere que c'est le debut du traitement
       $etape = "demanderConsult";        
   } 
-  if ($etape == "validerConsult") { // l'utilisateur valide ses nouvelles données
+  if ($etape == "validerConsult") { // l'utilisateur valide ses nouvelles donnees
                 
-      // vérification de l'existence de la fiche de frais pour le mois demandé
+      // verification de l'existence de la fiche de frais pour le mois demande
       $existeFicheFrais = existeFicheFrais($idConnexion, $moisSaisi, obtenirIdUserConnecte());
-      // si elle n'existe pas, on la crée avec les élets frais forfaitisés à 0
+      // si elle n'existe pas, on la cree avec les elets frais forfaitises a 0
       if ( !$existeFicheFrais ) {
-          ajouterErreur($tabErreurs, "Le mois demandé est invalide");
+          ajouterErreur($tabErreurs, "Le mois demande est invalide");
       }
       else {
-          // récupération des données sur la fiche de frais demandée
+          // recuperation des donnees sur la fiche de frais demandee
           $tabFicheFrais = obtenirDetailFicheFrais($idConnexion, $moisSaisi, obtenirIdUserConnecte());
       }
   }                                  
@@ -39,13 +39,13 @@
   <!-- Division principale -->
   <div id="contenu">
       <h2>Mes fiches de frais</h2>
-      <h3>Mois à sélectionner : </h3>
+      <h3>Mois a selectionner : </h3>
       <form action="" method="post">
       <div class="corpsForm">
           <input type="hidden" name="etape" value="validerConsult" />
       <p>
         <label for="lstMois">Mois : </label>
-        <select id="lstMois" name="lstMois" title="Sélectionnez le mois souhaité pour la fiche de frais">
+        <select id="lstMois" name="lstMois" title="Selectionnez le mois souhaite pour la fiche de frais">
             <?php
                 // on propose tous les mois pour lesquels le visiteur a une fiche de frais
                 $req = obtenirReqMoisFicheFrais(obtenirIdUserConnecte());
@@ -68,7 +68,7 @@
       <div class="piedForm">
       <p>
         <input id="ok" type="submit" value="Valider" size="20"
-               title="Demandez à consulter cette fiche de frais" />
+               title="Demandez a consulter cette fiche de frais" />
         <input id="annuler" type="reset" value="Effacer" size="20" />
       </p> 
       </div>
@@ -76,8 +76,8 @@
       </form>
 <?php      
 
-// demande et affichage des différents éléments (forfaitisés et non forfaitisés)
-// de la fiche de frais demandée, uniquement si pas d'erreur détecté au contrôle
+// demande et affichage des differents elements (forfaitises et non forfaitises)
+// de la fiche de frais demandee, uniquement si pas d'erreur detecte au contrôle
     if ( $etape == "validerConsult" ) {
         if ( nbErreurs($tabErreurs) > 0 ) {
             echo toStringErreurs($tabErreurs) ;
@@ -88,20 +88,20 @@
     <em><?php echo $tabFicheFrais["libelleEtat"]; ?> </em>
     depuis le <em><?php echo $tabFicheFrais["dateModif"]; ?></em></h3>
     <div class="encadre">
-    <p>Montant validé : <?php echo $tabFicheFrais["montantValide"] ;
+    <p>Montant valide : <?php echo $tabFicheFrais["montantValide"] ;
         ?>              
     </p>
 <?php          
-            // demande de la requête pour obtenir la liste des éléments 
-            // forfaitisés du visiteur connecté pour le mois demandé
+            // demande de la requete pour obtenir la liste des elements 
+            // forfaitises du visiteur connecte pour le mois demande
             $req = obtenirReqEltsForfaitFicheFrais($moisSaisi, obtenirIdUserConnecte());
             $idJeuEltsFraisForfait = mysql_query($req, $idConnexion);
             echo mysql_error($idConnexion);
             $lgEltForfait = mysql_fetch_assoc($idJeuEltsFraisForfait);
-            // parcours des frais forfaitisés du visiteur connecté
-            // le stockage intermédiaire dans un tableau est nécessaire
-            // car chacune des lignes du jeu d'enregistrements doit être doit être
-            // affichée au sein d'une colonne du tableau HTML
+            // parcours des frais forfaitises du visiteur connecte
+            // le stockage intermediaire dans un tableau est necessaire
+            // car chacune des lignes du jeu d'enregistrements doit etre doit etre
+            // affichee au sein d'une colonne du tableau HTML
             $tabEltsFraisForfait = array();
             while ( is_array($lgEltForfait) ) {
                 $tabEltsFraisForfait[$lgEltForfait["libelle"]] = $lgEltForfait["quantite"];
@@ -110,11 +110,11 @@
             mysql_free_result($idJeuEltsFraisForfait);
             ?>
   	<table class="listeLegere">
-  	   <caption>Quantités des éléments forfaitisés</caption>
+  	   <caption>Quantites des elements forfaitises</caption>
         <tr>
             <?php
-            // premier parcours du tableau des frais forfaitisés du visiteur connecté
-            // pour afficher la ligne des libellés des frais forfaitisés
+            // premier parcours du tableau des frais forfaitises du visiteur connecte
+            // pour afficher la ligne des libelles des frais forfaitises
             foreach ( $tabEltsFraisForfait as $unLibelle => $uneQuantite ) {
             ?>
                 <th><?php echo $unLibelle ; ?></th>
@@ -124,8 +124,8 @@
         </tr>
         <tr>
             <?php
-            // second parcours du tableau des frais forfaitisés du visiteur connecté
-            // pour afficher la ligne des quantités des frais forfaitisés
+            // second parcours du tableau des frais forfaitises du visiteur connecte
+            // pour afficher la ligne des quantites des frais forfaitises
             foreach ( $tabEltsFraisForfait as $unLibelle => $uneQuantite ) {
             ?>
                 <td class="qteForfait"><?php echo $uneQuantite ; ?></td>
@@ -135,21 +135,21 @@
         </tr>
     </table>
   	<table class="listeLegere">
-  	   <caption>Descriptif des éléments hors forfait - <?php echo $tabFicheFrais["nbJustificatifs"]; ?> justificatifs reçus -
+  	   <caption>Descriptif des elements hors forfait - <?php echo $tabFicheFrais["nbJustificatifs"]; ?> justificatifs reçus -
        </caption>
              <tr>
                 <th class="date">Date</th>
-                <th class="libelle">Libellé</th>
+                <th class="libelle">Libelle</th>
                 <th class="montant">Montant</th>                
              </tr>
 <?php          
-            // demande de la requête pour obtenir la liste des éléments hors
-            // forfait du visiteur connecté pour le mois demandé
+            // demande de la requete pour obtenir la liste des elements hors
+            // forfait du visiteur connecte pour le mois demande
             $req = obtenirReqEltsHorsForfaitFicheFrais($moisSaisi, obtenirIdUserConnecte());
             $idJeuEltsHorsForfait = mysql_query($req, $idConnexion);
             $lgEltHorsForfait = mysql_fetch_assoc($idJeuEltsHorsForfait);
             
-            // parcours des éléments hors forfait 
+            // parcours des elements hors forfait 
             while ( is_array($lgEltHorsForfait) ) {
             ?>
                 <tr>

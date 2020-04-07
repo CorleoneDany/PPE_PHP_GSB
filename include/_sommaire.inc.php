@@ -1,6 +1,6 @@
 <?php
 /** 
- * Contient la division pour le sommaire, sujet à des variations suivant la 
+ * Contient la division pour le sommaire, sujet a des variations suivant la 
  * connexion ou non d'un utilisateur, et dans l'avenir, suivant le type de cet utilisateur 
  * @todo  RAS
  */
@@ -21,7 +21,7 @@
             echo $nom . " " . $prenom ;
     ?>
         </h2>
-        <h3>Visiteur médical</h3>        
+        <h3>Visiteur medical</h3>        
     <?php
        }
     ?>  
@@ -34,7 +34,7 @@
               <a href="cAccueil.php" title="Page d'accueil">Accueil</a>
            </li>
            <li class="smenu">
-              <a href="cSeDeconnecter.php" title="Se déconnecter">Se déconnecter</a>
+              <a href="cSeDeconnecter.php" title="Se deconnecter">Se deconnecter</a>
            </li>
            <li class="smenu">
               <a href="cSaisieFicheFrais.php" title="Saisie fiche de frais du mois courant">Saisie fiche de frais</a>
@@ -44,7 +44,7 @@
            </li>
          </ul>
         <?php
-          // affichage des éventuelles erreurs déjà détectées
+          // affichage des eventuelles erreurs deja detectees
           if ( nbErreurs($tabErreurs) > 0 ) {
               echo toStringErreurs($tabErreurs) ;
           }

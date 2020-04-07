@@ -135,7 +135,7 @@ function getDesFraisHorsForfait()
 					  "min" => 30,
 					  "max" => 50 ),
 				2 => array(
-				      "lib" => "achat de matériel de papèterie",
+				      "lib" => "achat de materiel de papeterie",
 					  "min" => 10,
 					  "max" => 50 ),
 				3	=> array(
@@ -147,7 +147,7 @@ function getDesFraisHorsForfait()
 					  "min" => 20,
 					  "max" => 150 ),
 				5 => array(
-				      "lib" => "location salle conférence",
+				      "lib" => "location salle conference",
 					  "min" => 120,
 					  "max" => 650 ),
 				6 => array(
@@ -159,19 +159,19 @@ function getDesFraisHorsForfait()
 					  "min" => 25,
 					  "max" => 450 ),
 				8 => array(
-					  "lib" => "rémunération intervenant/spécialiste",
+					  "lib" => "remuneration intervenant/specialiste",
 					  "min" => 250,
 					  "max" => 1200 ),
 				9 => array(
-					  "lib" => "location équipement vidéo/sonore",
+					  "lib" => "location equipement video/sonore",
 					  "min" => 100,
 					  "max" => 850 ),
 				10 => array(
-					  "lib" => "location véhicule",
+					  "lib" => "location vehicule",
 					  "min" => 25,
 					  "max" => 450 ),
 				11 => array(
-					  "lib" => "frais vestimentaire/représentation",
+					  "lib" => "frais vestimentaire/representation",
 					  "min" => 25,
 					  "max" => 450 ) 
 		);

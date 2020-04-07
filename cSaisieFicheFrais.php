@@ -7,7 +7,7 @@
   $repInclude = './include/';
   require($repInclude . "_init.inc.php");
 
-  // page inaccessible si visiteur non connecté
+  // page inaccessible si visiteur non connecte
   if (!estVisiteurConnecte()) {
       header("Location: cSeConnecter.php");  
   }
@@ -15,32 +15,32 @@
   require($repInclude . "_sommaire.inc.php");
   // affectation du mois courant pour la saisie des fiches de frais
   $mois = sprintf("%04d%02d", date("Y"), date("m"));
-  // vérification de l'existence de la fiche de frais pour ce mois courant
+  // verification de l'existence de la fiche de frais pour ce mois courant
   $existeFicheFrais = existeFicheFrais($idConnexion, $mois, obtenirIdUserConnecte());
-  // si elle n'existe pas, on la crée avec les élets frais forfaitisés à 0
+  // si elle n'existe pas, on la cree avec les elets frais forfaitises a 0
   if ( !$existeFicheFrais ) {
       ajouterFicheFrais($idConnexion, $mois, obtenirIdUserConnecte());
   }
-  // acquisition des données entrées
-  // acquisition de l'étape du traitement 
+  // acquisition des donnees entrees
+  // acquisition de l'etape du traitement 
   $etape=lireDonnee("etape","demanderSaisie");
-  // acquisition des quantités des éléments forfaitisés 
+  // acquisition des quantites des elements forfaitises 
   $tabQteEltsForfait=lireDonneePost("txtEltsForfait", "");
-  // acquisition des données d'une nouvelle ligne hors forfait
+  // acquisition des donnees d'une nouvelle ligne hors forfait
   $idLigneHF = lireDonnee("idLigneHF", "");
   $dateHF = lireDonnee("txtDateHF", "");
   $libelleHF = lireDonnee("txtLibelleHF", "");
   $montantHF = lireDonnee("txtMontantHF", "");
  
-  // structure de décision sur les différentes étapes du cas d'utilisation
+  // structure de decision sur les differentes etapes du cas d'utilisation
   if ($etape == "validerSaisie") { 
-      // l'utilisateur valide les éléments forfaitisés         
-      // vérification des quantités des éléments forfaitisés
+      // l'utilisateur valide les elements forfaitises         
+      // verification des quantites des elements forfaitises
       $ok = verifierEntiersPositifs($tabQteEltsForfait);      
       if (!$ok) {
-          ajouterErreur($tabErreurs, "Chaque quantité doit être renseignée et numérique positive.");
+          ajouterErreur($tabErreurs, "Chaque quantite doit etre renseignee et numerique positive.");
       }
-      else { // mise à jour des quantités des éléments forfaitisés
+      else { // mise a jour des quantites des elements forfaitises
           modifierEltsForfait($idConnexion, $mois, obtenirIdUserConnecte(),$tabQteEltsForfait);
       }
   }                                                       
@@ -50,11 +50,11 @@
   elseif ($etape == "validerAjoutLigneHF") {
       verifierLigneFraisHF($dateHF, $libelleHF, $montantHF, $tabErreurs);
       if ( nbErreurs($tabErreurs) == 0 ) {
-          // la nouvelle ligne ligne doit être ajoutée dans la base de données
+          // la nouvelle ligne ligne doit etre ajoutee dans la base de donnees
           ajouterLigneHF($idConnexion, $mois, obtenirIdUserConnecte(), $dateHF, $libelleHF, $montantHF);
       }
   }
-  else { // on ne fait rien, étape non prévue 
+  else { // on ne fait rien, etape non prevue 
   
   }                                  
 ?>
@@ -68,7 +68,7 @@
       } 
       else {
 ?>
-      <p class="info">Les modifications de la fiche de frais ont bien été enregistrées</p>        
+      <p class="info">Les modifications de la fiche de frais ont bien ete enregistrees</p>        
 <?php
       }   
   }
@@ -77,11 +77,11 @@
       <div class="corpsForm">
           <input type="hidden" name="etape" value="validerSaisie" />
           <fieldset>
-            <legend>Eléments forfaitisés
+            <legend>Elements forfaitises
             </legend>
       <?php          
-            // demande de la requête pour obtenir la liste des éléments 
-            // forfaitisés du visiteur connecté pour le mois demandé
+            // demande de la requete pour obtenir la liste des elements 
+            // forfaitises du visiteur connecte pour le mois demande
             $req = obtenirReqEltsForfaitFicheFrais($mois, obtenirIdUserConnecte());
             $idJeuEltsFraisForfait = mysql_query($req, $idConnexion);
             echo mysql_error($idConnexion);
@@ -96,7 +96,7 @@
               <input type="text" id="<?php echo $idFraisForfait ?>" 
                     name="txtEltsForfait[<?php echo $idFraisForfait ?>]" 
                     size="10" maxlength="5"
-                    title="Entrez la quantité de l'élément forfaitisé" 
+                    title="Entrez la quantite de l'element forfaitise" 
                     value="<?php echo $quantite; ?>" />
             </p>
             <?php        
@@ -109,29 +109,29 @@
       <div class="piedForm">
       <p>
         <input id="ok" type="submit" value="Valider" size="20" 
-               title="Enregistrer les nouvelles valeurs des éléments forfaitisés" />
+               title="Enregistrer les nouvelles valeurs des elements forfaitises" />
         <input id="annuler" type="reset" value="Effacer" size="20" />
       </p> 
       </div>
         
       </form>
   	<table class="listeLegere">
-  	   <caption>Descriptif des éléments hors forfait
+  	   <caption>Descriptif des elements hors forfait
        </caption>
              <tr>
                 <th class="date">Date</th>
-                <th class="libelle">Libellé</th>
+                <th class="libelle">Libelle</th>
                 <th class="montant">Montant</th>  
                 <th class="action">&nbsp;</th>              
              </tr>
 <?php          
-          // demande de la requête pour obtenir la liste des éléments hors
-          // forfait du visiteur connecté pour le mois demandé
+          // demande de la requete pour obtenir la liste des elements hors
+          // forfait du visiteur connecte pour le mois demande
           $req = obtenirReqEltsHorsForfaitFicheFrais($mois, obtenirIdUserConnecte());
           $idJeuEltsHorsForfait = mysql_query($req, $idConnexion);
           $lgEltHorsForfait = mysql_fetch_assoc($idJeuEltsHorsForfait);
           
-          // parcours des frais hors forfait du visiteur connecté
+          // parcours des frais hors forfait du visiteur connecte
           while ( is_array($lgEltHorsForfait) ) {
           ?>
               <tr>
@@ -152,7 +152,7 @@
       <div class="corpsForm">
           <input type="hidden" name="etape" value="validerAjoutLigneHF" />
           <fieldset>
-            <legend>Nouvel élément hors forfait
+            <legend>Nouvel element hors forfait
             </legend>
             <p>
               <label for="txtDateHF">* Date : </label>
@@ -161,7 +161,7 @@
                      value="<?php echo $dateHF; ?>" />
             </p>
             <p>
-              <label for="txtLibelleHF">* Libellé : </label>
+              <label for="txtLibelleHF">* Libelle : </label>
               <input type="text" id="txtLibelleHF" name="txtLibelleHF" size="70" maxlength="100" 
                     title="Entrez un bref descriptif des frais" 
                     value="<?php echo filtrerChainePourNavig($libelleHF); ?>" />
@@ -169,7 +169,7 @@
             <p>
               <label for="txtMontantHF">* Montant : </label>
               <input type="text" id="txtMontantHF" name="txtMontantHF" size="12" maxlength="10" 
-                     title="Entrez le montant des frais (le point est le séparateur décimal)" value="<?php echo $montantHF; ?>" />
+                     title="Entrez le montant des frais (le point est le separateur decimal)" value="<?php echo $montantHF; ?>" />
             </p>
           </fieldset>
       </div>

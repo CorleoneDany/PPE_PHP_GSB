@@ -2,21 +2,21 @@
 /** 
  * Regroupe les fonctions utilitaires et de gestion des erreurs.
  * @package default
- * @todo  fonction estMoisValide à définir complètement ou à supprimer
+ * @todo  fonction estMoisValide a definir completement ou a supprimer
  */
 
 /** 
- * Fournit le libellé en français correspondant à un numéro de mois.                     
+ * Fournit le libelle en français correspondant a un numero de mois.                     
  *
- * Fournit le libellé français du mois de numéro $unNoMois.
- * Retourne une chaîne vide si le numéro n'est pas compris dans l'intervalle [1,12].
- * @param int numéro de mois
+ * Fournit le libelle français du mois de numero $unNoMois.
+ * Retourne une chaîne vide si le numero n'est pas compris dans l'intervalle [1,12].
+ * @param int numero de mois
  * @return string identifiant de connexion
  */
 function obtenirLibelleMois($unNoMois) {
     $tabLibelles = array(1=>"Janvier", 
-                            "Février", "Mars", "Avril", "Mai", "Juin", "Juillet",
-                            "Août", "Septembre", "Octobre", "Novembre", "Décembre");
+                            "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet",
+                            "Août", "Septembre", "Octobre", "Novembre", "Decembre");
     $libelle="";
     if ( $unNoMois >=1 && $unNoMois <= 12 ) {
         $libelle = $tabLibelles[$unNoMois];
@@ -25,11 +25,11 @@ function obtenirLibelleMois($unNoMois) {
 }
 
 /** 
- * Vérifie si une chaîne fournie est bien une date valide, au format JJ/MM/AAAA.                     
+ * Verifie si une chaîne fournie est bien une date valide, au format JJ/MM/AAAA.                     
  * 
  * Retrourne true si la chaîne $date est une date valide, au format JJ/MM/AAAA, false sinon.
- * @param string date à vérifier
- * @return boolean succès ou échec
+ * @param string date a verifier
+ * @return boolean succes ou echec
  */ 
 function estDate($date) {
 	$tabDate = explode('/',$date);
@@ -70,12 +70,12 @@ function convertirDateAnglaisVersFrancais($date){
 }
 
 /**
- * Indique si une date est incluse ou non dans l'année écoulée.
+ * Indique si une date est incluse ou non dans l'annee ecoulee.
  * 
  * Retourne true si la date $date est comprise entre la date du jour moins un an et la 
  * la date du jour. False sinon.   
  * @param $date date au format jj/mm/aaaa
- * @return boolean succès ou échec
+ * @return boolean succes ou echec
 */
 function estDansAnneeEcoulee($date) {
 	$dateAnglais = convertirDateFrancaisVersAnglais($date);
@@ -85,24 +85,24 @@ function estDansAnneeEcoulee($date) {
 }
 
 /** 
- * Vérifie si une chaîne fournie est bien numérique entière positive.                     
+ * Verifie si une chaîne fournie est bien numerique entiere positive.                     
  * 
  * Retrourne true si la valeur transmise $valeur ne contient pas d'autres 
- * caractères que des chiffres, false sinon.
- * @param string chaîne à vérifier
- * @return boolean succès ou échec
+ * caracteres que des chiffres, false sinon.
+ * @param string chaîne a verifier
+ * @return boolean succes ou echec
  */ 
 function estEntierPositif($valeur) {
     return preg_match("/[^0-9]/", $valeur) == 0;
 }
 
 /** 
- * Vérifie que chaque valeur est bien renseignée et numérique entière positive.
+ * Verifie que chaque valeur est bien renseignee et numerique entiere positive.
  *  
- * Renvoie la valeur booléenne true si toutes les valeurs sont bien renseignées et
- * numériques entières positives. False si l'une d'elles ne l'est pas.
+ * Renvoie la valeur booleenne true si toutes les valeurs sont bien renseignees et
+ * numeriques entieres positives. False si l'une d'elles ne l'est pas.
  * @param array $lesValeurs tableau des valeurs
- * @return booléen succès ou échec
+ * @return booleen succes ou echec
  */ 
 function verifierEntiersPositifs($lesValeurs){
     $ok = true;     
@@ -115,13 +115,13 @@ function verifierEntiersPositifs($lesValeurs){
 }
 
 /** 
- * Fournit la valeur d'une donnée transmise par la méthode get (url).                    
+ * Fournit la valeur d'une donnee transmise par la methode get (url).                    
  * 
- * Retourne la valeur de la donnée portant le nom $nomDonnee reçue dans l'url, 
- * $valDefaut si aucune donnée de nom $nomDonnee dans l'url 
- * @param string nom de la donnée
- * @param string valeur par défaut 
- * @return string valeur de la donnée
+ * Retourne la valeur de la donnee portant le nom $nomDonnee reçue dans l'url, 
+ * $valDefaut si aucune donnee de nom $nomDonnee dans l'url 
+ * @param string nom de la donnee
+ * @param string valeur par defaut 
+ * @return string valeur de la donnee
  */ 
 function lireDonneeUrl($nomDonnee, $valDefaut="") {
     if ( isset($_GET[$nomDonnee]) ) {
@@ -134,14 +134,14 @@ function lireDonneeUrl($nomDonnee, $valDefaut="") {
 }
 
 /** 
- * Fournit la valeur d'une donnée transmise par la méthode post 
- *  (corps de la requête HTTP).                    
+ * Fournit la valeur d'une donnee transmise par la methode post 
+ *  (corps de la requete HTTP).                    
  * 
- * Retourne la valeur de la donnée portant le nom $nomDonnee reçue dans le corps de la requête http, 
- * $valDefaut si aucune donnée de nom $nomDonnee dans le corps de requête
- * @param string nom de la donnée
- * @param string valeur par défaut 
- * @return string valeur de la donnée
+ * Retourne la valeur de la donnee portant le nom $nomDonnee reçue dans le corps de la requete http, 
+ * $valDefaut si aucune donnee de nom $nomDonnee dans le corps de requete
+ * @param string nom de la donnee
+ * @param string valeur par defaut 
+ * @return string valeur de la donnee
  */ 
 function lireDonneePost($nomDonnee, $valDefaut="") {
     if ( isset($_POST[$nomDonnee]) ) {
@@ -154,17 +154,17 @@ function lireDonneePost($nomDonnee, $valDefaut="") {
 }
 
 /** 
- * Fournit la valeur d'une donnée transmise par la méthode get (url) ou post 
- *  (corps de la requête HTTP).                    
+ * Fournit la valeur d'une donnee transmise par la methode get (url) ou post 
+ *  (corps de la requete HTTP).                    
  * 
- * Retourne la valeur de la donnée portant le nom $nomDonnee
- * reçue dans l'url ou corps de requête, 
- * $valDefaut si aucune donnée de nom $nomDonnee ni dans l'url, ni dans corps.
- * Si le même nom a été transmis à la fois dans l'url et le corps de la requête,
- * c'est la valeur transmise par l'url qui est retournée.  
- * @param string nom de la donnée
- * @param string valeur par défaut 
- * @return string valeur de la donnée
+ * Retourne la valeur de la donnee portant le nom $nomDonnee
+ * reçue dans l'url ou corps de requete, 
+ * $valDefaut si aucune donnee de nom $nomDonnee ni dans l'url, ni dans corps.
+ * Si le meme nom a ete transmis a la fois dans l'url et le corps de la requete,
+ * c'est la valeur transmise par l'url qui est retournee.  
+ * @param string nom de la donnee
+ * @param string valeur par defaut 
+ * @return string valeur de la donnee
  */ 
 function lireDonnee($nomDonnee, $valDefaut="") {
     if ( isset($_GET[$nomDonnee]) ) {
@@ -182,8 +182,8 @@ function lireDonnee($nomDonnee, $valDefaut="") {
 /** 
  * Ajoute un message dans le tableau des messages d'erreurs.                    
  * 
- * Ajoute le message $msg en fin de tableau $tabErr. Ce tableau est passé par 
- * référence afin que les modifications sur ce tableau soient visibles de l'appelant.  
+ * Ajoute le message $msg en fin de tableau $tabErr. Ce tableau est passe par 
+ * reference afin que les modifications sur ce tableau soient visibles de l'appelant.  
  * @param array $tabErr  
  * @param string message
  * @return void
@@ -193,9 +193,9 @@ function ajouterErreur(&$tabErr,$msg) {
 }
 
 /** 
- * Retourne le nombre de messages d'erreurs enregistrés.                    
+ * Retourne le nombre de messages d'erreurs enregistres.                    
  * 
- * Retourne le nombre de messages d'erreurs enregistrés dans le tableau $tabErr. 
+ * Retourne le nombre de messages d'erreurs enregistres dans le tableau $tabErr. 
  * @param array $tabErr tableau des messages d'erreurs  
  * @return int nombre de messages d'erreurs
  */ 
@@ -204,9 +204,9 @@ function nbErreurs($tabErr) {
 }
  
 /** 
- * Fournit les messages d'erreurs sous forme d'une liste à puces HTML.                    
+ * Fournit les messages d'erreurs sous forme d'une liste a puces HTML.                    
  * 
- * Retourne le source HTML, division contenant une liste à puces, d'après les
+ * Retourne le source HTML, division contenant une liste a puces, d'apres les
  * messages d'erreurs contenus dans le tableau des messages d'erreurs $tabErr. 
  * @param array $tabErr tableau des messages d'erreurs  
  * @return string source html
@@ -223,52 +223,52 @@ function toStringErreurs($tabErr) {
 } 
 
 /** 
- * Echappe les caractères considérés spéciaux en HTML par les entités HTML correspondantes.
+ * Echappe les caracteres consideres speciaux en HTML par les entites HTML correspondantes.
  *  
- * Renvoie une copie de la chaîne $str à laquelle les caractères considérés spéciaux
- * en HTML (tq la quote simple, le guillemet double, les chevrons), auront été
- * remplacés par les entités HTML correspondantes. 
- * @param string $str chaîne à échapper
- * @return string chaîne échappée 
+ * Renvoie une copie de la chaîne $str a laquelle les caracteres consideres speciaux
+ * en HTML (tq la quote simple, le guillemet double, les chevrons), auront ete
+ * remplaces par les entites HTML correspondantes. 
+ * @param string $str chaîne a echapper
+ * @return string chaîne echappee 
  */ 
 function filtrerChainePourNavig($str) {
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
 }
 
 /** 
- * Vérifie la validité des données d'une ligne de frais hors forfait.
+ * Verifie la validite des donnees d'une ligne de frais hors forfait.
  *  
- * Renseigne le tableau des messages d'erreurs d'après les erreurs rencontrées
- * sur chaque donnée d'une ligne de frais hors forfait : vérifie que chaque 
- * donnée est bien renseignée, le montant est numérique positif, la date valide
- * et dans l'année écoulée.  
+ * Renseigne le tableau des messages d'erreurs d'apres les erreurs rencontrees
+ * sur chaque donnee d'une ligne de frais hors forfait : verifie que chaque 
+ * donnee est bien renseignee, le montant est numerique positif, la date valide
+ * et dans l'annee ecoulee.  
  * @param array $date date d'engagement de la ligne de frais HF
- * @param array $libelle libellé de la ligne de frais HF
+ * @param array $libelle libelle de la ligne de frais HF
  * @param array $montant montant de la ligne de frais HF
- * @param array $tabErrs tableau des messages d'erreurs passé par référence
+ * @param array $tabErrs tableau des messages d'erreurs passe par reference
  * @return void
  */ 
 function verifierLigneFraisHF($date, $libelle, $montant, &$tabErrs) {
-    // vérification du libellé 
+    // verification du libelle 
     if ($libelle == "") {
-		ajouterErreur($tabErrs, "Le libellé doit être renseigné.");
+		ajouterErreur($tabErrs, "Le libelle doit etre renseigne.");
 	}
-	// vérification du montant
+	// verification du montant
 	if ($montant == "") {
-		ajouterErreur($tabErrs, "Le montant doit être renseigné.");
+		ajouterErreur($tabErrs, "Le montant doit etre renseigne.");
 	}
 	elseif ( !is_numeric($montant) || $montant < 0 ) {
-        ajouterErreur($tabErrs, "Le montant doit être numérique positif.");
+        ajouterErreur($tabErrs, "Le montant doit etre numerique positif.");
     }
-    // vérification de la date d'engagement
+    // verification de la date d'engagement
 	if ($date == "") {
-		ajouterErreur($tabErrs, "La date d'engagement doit être renseignée.");
+		ajouterErreur($tabErrs, "La date d'engagement doit etre renseignee.");
 	}
 	elseif (!estDate($date)) {
-		ajouterErreur($tabErrs, "La date d'engagement doit être valide au format JJ/MM/AAAA");
+		ajouterErreur($tabErrs, "La date d'engagement doit etre valide au format JJ/MM/AAAA");
 	}	
 	elseif (!estDansAnneeEcoulee($date)) {
-	    ajouterErreur($tabErrs,"La date d'engagement doit se situer dans l'année écoulée");
+	    ajouterErreur($tabErrs,"La date d'engagement doit se situer dans l'annee ecoulee");
     }
 }
 ?>
