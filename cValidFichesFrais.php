@@ -86,5 +86,78 @@
     } elseif ($etape == "validerFiche") {
         // Validation de la fiche de frais par l'utilisateur
         modifierEtatFicheFrais($idConnexion, $moisChoisi, $visiteurChoisi, 'VA');
-    } 
-?>    
+    }    
+?>   
+<!-- Affichage utilisateur validation fiche de frais -->
+
+<div id="contenu">
+    <h1>Validation des frais par visiteur </h1>
+    <?php
+    // Gestion des messages d'informations
+    if ($etape == "actualiserFraisForfait") {
+        if (nbErreurs($tabErreurs) > 0) {
+            echo toStringErreurs($tabErreurs);
+        } else {
+            ?>
+            <p class="info">L'actualisation des quantités au forfait a bien été enregistrée</p>        
+            <?php
+        }
+    }
+    if ($etape == "actualiserFraisHorsForfait") {
+        if (nbErreurs($tabErreurs) > 0) {
+            echo toStringErreurs($tabErreurs);
+        } else {
+            ?>
+            <p class="info">L'actualisation de la ligne de frais hors forfait a bien été enregistrée</p>        
+            <?php
+        }
+    }
+    if ($etape == "reporterLigneFraisHF") {
+        ?>
+        <p class="info">La ligne de frais hors forfait a bien été reportée</p>        
+        <?php
+    }
+    if ($etape == "actualiserNbJustificatifs") {
+        if (nbErreurs($tabErreurs) > 0) {
+            echo toStringErreurs($tabErreurs);
+        } else {
+            ?>
+            <p class="info">L'actualisation du nombre de justificatifs a bien été enregistré</p>        
+            <?php
+        }
+    }
+    if ($etape == "validerFiche") {
+        $lgVisiteur = obtenirDetailUtilisateur($idConnexion, $visiteurChoisi);
+        ?>
+        <p class="info">La fiche de frais du visiteur <?php echo $lgVisiteur['prenom'] . " " . $lgVisiteur['nom']; ?> pour <?php echo obtenirLibelleMois(intval(substr($moisChoisi, 4, 2))) . " " . intval(substr($moisChoisi, 0, 4)); ?> a bien été enregistrée</p>        
+        <?php
+        // On réinitialise le mois choisi pour forcer la disparition du bas de page, la réactualisation des mois et le choix d'un nouveau mois
+        $moisChoisi = "";
+    }
+    ?>
+    <form id="formChoixVisiteur" method="post" action="">
+        <p>
+            <input type="hidden" name="etape" value="choixVisiteur" />
+            <label class="titre">Choisir le visiteur :</label>
+            <select name="lstVisiteur" id="idLstVisiteur" class="zone" onchange="changerVisiteur(this.options[this.selectedIndex].value);">
+                <?php
+                // Si aucun visiteur n'a encore été choisi, on place en premier une invitation au choix
+                if ($visiteurChoisi == "") {
+                    ?>
+                    <option value="-1">=== Choisir un visiteur médical ===</option>
+                    <?php
+                }
+                // On propose tous les utilisateurs qui sont des visteurs médicaux
+                $req = obtenirReqListeVisiteurs();
+                $idJeuVisiteurs = mysql_query($req, $idConnexion);
+                while ($lgVisiteur = mysql_fetch_array($idJeuVisiteurs)) {
+                    ?>
+                    <option value="<?php echo $lgVisiteur['id']; ?>"<?php if ($visiteurChoisi == $lgVisiteur['id']) { ?> selected="selected"<?php } ?>><?php echo $lgVisiteur['nom'] . " " . $lgVisiteur['prenom']; ?></option>
+                    <?php
+                }
+                mysql_free_result($idJeuVisiteurs);
+                ?>
+            </select>
+        </p>
+    </form>        
+</div>    
