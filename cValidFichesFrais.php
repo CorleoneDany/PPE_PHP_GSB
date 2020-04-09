@@ -161,3 +161,47 @@
         </p>
     </form>        
 </div>    
+
+<?php
+// Si aucun visiteur n'a encore été choisi on n'affiche pas le form de choix de mois
+    if ($visiteurChoisi != "") {
+?>
+        <form id="formChoixMois" method="post" action="">
+            <p>
+                <input type="hidden" name="etape" value="choixMois" />
+                <input type="hidden" name="lstVisiteur" value="<?php echo $visiteurChoisi; ?>" />
+                <?php
+                // On propose tous les mois pour lesquels le visiteur dispose d'une fiche de frais cloturée
+                $req = obtenirReqMoisFicheFrais($visiteurChoisi, 'CL');
+                $idJeuMois = mysql_query($req, $idConnexion);
+                $lgMois = mysql_fetch_assoc($idJeuMois);
+                // 4-a Aucune fiche de frais n'existe le système affiche "Pas de fiche de frais pour ce visiteur ce mois". Retour au 2
+                if (empty($lgMois)) {
+                    ajouterErreur($tabErreurs, "Pas de fiche de frais à valider pour ce visiteur, veuillez choisir un autre visiteur");
+                    echo toStringErreurs($tabErreurs);
+                } else {
+                    ?>
+                    <label class = "titre">Mois :</label>
+                    <select name="lstMois" id="idDateValid" class="zone" onchange="this.form.submit();">
+                        <?php
+                        // Si aucun mois n'a encore été choisi, on place en premier une invitation au choix
+                        if ($moisChoisi == "") {
+                            ?>
+                            <option value="-1">=== Choisir un mois ===</option>
+                            <?php
+                        }
+                        while (is_array($lgMois)) {
+                            $mois = $lgMois["mois"];
+                            $noMois = intval(substr($mois, 4, 2));
+                            $annee = intval(substr($mois, 0, 4));
+                            ?>    
+                            <option value="<?php echo $mois; ?>"<?php if ($moisChoisi == $mois) { ?> selected="selected"<?php } ?>><?php echo obtenirLibelleMois($noMois) . ' ' . $annee; ?></option>
+                            <?php
+                            $lgMois = mysql_fetch_assoc($idJeuMois);
+                        }
+                        mysql_free_result($idJeuMois);
+                    }
+                    ?>            
+                </select>
+            </p>        
+        </form>
