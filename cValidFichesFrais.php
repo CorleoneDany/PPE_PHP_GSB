@@ -205,3 +205,56 @@
                 </select>
             </p>        
         </form>
+        <?php
+    }
+// On n'affiche le form de Gestion de Frais que s'il y a un mois qui a été sélectionné
+    if ($visiteurChoisi != "" && $moisChoisi != "") {
+        // Traitement des frais si un visiteur et un mois ont été choisis
+        $req = obtenirReqEltsForfaitFicheFrais($moisChoisi, $visiteurChoisi);
+        $idJeuEltsForfait = mysql_query($req, $idConnexion);
+        $lgEltsForfait = mysql_fetch_assoc($idJeuEltsForfait);
+        while (is_array($lgEltsForfait)) {
+            // On place la bonne valeur en fonction de l'identifiant de forfait
+            switch ($lgEltsForfait['idFraisForfait']) {
+                case "ETP":
+                    $etp = $lgEltsForfait['quantite'];
+                    break;
+                case "KM":
+                    $km = $lgEltsForfait['quantite'];
+                    break;
+                case "NUI":
+                    $nui = $lgEltsForfait['quantite'];
+                    break;
+                case "REP":
+                    $rep = $lgEltsForfait['quantite'];
+                    break;
+            }
+            $lgEltsForfait = mysql_fetch_assoc($idJeuEltsForfait);
+        }
+        mysql_free_result($idJeuEltsForfait);
+        ?>
+        <form id="formFraisForfait" method="post" action="">
+            <p>
+                <input type="hidden" name="etape" value="actualiserFraisForfait" />
+                <input type="hidden" name="lstVisiteur" value="<?php echo $visiteurChoisi; ?>" />
+                <input type="hidden" name="lstMois" value="<?php echo $moisChoisi; ?>" />
+            </p>
+            <div style="clear:left;"><h2>Frais au forfait</h2></div>
+            <table style="color:white;" border="1">
+                <tr><th>Repas midi</th><th>Nuitée </th><th>Etape</th><th>Km </th><th>Actions</th></tr>
+                <tr align="center">
+                    <td style="width:80px;"><input type="text" size="3" id="idREP" name="txtEltsForfait[REP]" value="<?php echo $rep; ?>" style="text-align:right;" onchange="afficheMsgInfosForfaitAActualisees();" /></td>
+                    <td style="width:80px;"><input type="text" size="3" id="idNUI" name="txtEltsForfait[NUI]" value="<?php echo $nui; ?>" style="text-align:right;" onchange="afficheMsgInfosForfaitAActualisees();" /></td> 
+                    <td style="width:80px;"><input type="text" size="3" id="idETP" name="txtEltsForfait[ETP]" value="<?php echo $etp; ?>" style="text-align:right;" onchange="afficheMsgInfosForfaitAActualisees();" /></td>
+                    <td style="width:80px;"><input type="text" size="3" id="idKM" name="txtEltsForfait[KM]" value="<?php echo $km; ?>" style="text-align:right;" onchange="afficheMsgInfosForfaitAActualisees();" /></td>
+                    <td>
+                        <div id="actionsFraisForfait" class="actions">
+                            <a class="actions" id="lkActualiserLigneFraisForfait" onclick="actualiserLigneFraisForfait(<?php echo $rep; ?>,<?php echo $nui; ?>,<?php echo $etp; ?>,<?php echo $km; ?>);" title="Actualiser la ligne de frais forfaitisé">&nbsp;<img src="images/actualiserIcon.png" class="icon" alt="icone Actualiser" />&nbsp;Actualiser&nbsp;</a>
+                            <a class="actions" id="lkReinitialiserLigneFraisForfait" onclick="reinitialiserLigneFraisForfait();" title="Réinitialiser la ligne de frais forfaitisé">&nbsp;<img src="images/reinitialiserIcon.png" class="icon" alt="icone Réinitialiser" />&nbsp;Réinitialiser&nbsp;</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="msgFraisForfait" class="infosNonActualisees">Attention, les modifications doivent être actualisées pour être réellement prises en compte...</div>
+        <p class="titre">&nbsp;</p>
