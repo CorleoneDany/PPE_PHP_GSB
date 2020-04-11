@@ -362,4 +362,38 @@ function obtenirReqListeVisiteurs() {
     $requete = "select id, nom, prenom from utilisateur where idType='V' order by nom";
     return $requete;
 }
+
+/**
+ * Modifie les quantités des éléments non forfaitisés d'une fiche de frais. 
+ * Met à jour les éléments non forfaitisés contenus  
+ * dans $desEltsHorsForfaits
+ * @param resource $idCnx identifiant de connexion
+ * @param array $desEltsHorsForfait tableau des éléments hors forfait
+ * avec pour clés les identifiants des frais hors forfait
+ * @return void  
+ */
+function modifierEltsHorsForfait($idCnx, $desEltsHorsForfait) {
+    foreach ($desEltsHorsForfait as $cle => $val) {
+        switch ($cle) {
+            case 'id':
+                $idFraisHorsForfait = $val;
+                break;
+            case 'libelle':
+                $libelleFraisHorsForfait = $val;
+                break;
+            case 'date':
+                $dateFraisHorsForfait = $val;
+                break;
+            case 'montant':
+                $montantFraisHorsForfait = $val;
+                break;
+        }
+    }
+    $requete = "update LigneFraisHorsForfait"
+            . " set libelle = '" . filtrerChainePourBD($libelleFraisHorsForfait) . "',"
+            . " date = '" . convertirDateFrancaisVersAnglais($dateFraisHorsForfait) . "',"
+            . " montant = " . $montantFraisHorsForfait
+            . " where id = " . $idFraisHorsForfait;
+    mysql_query($requete, $idCnx);
+}
 ?>
