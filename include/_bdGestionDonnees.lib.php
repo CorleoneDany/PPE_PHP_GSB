@@ -425,4 +425,28 @@ function modifierNbJustificatifsFicheFrais($idCnx, $unMois, $unIdVisiteur, $nbJu
 function reporterLigneHorsForfait($idCnx, $unIdLigneHF) {
     mysql_query('CALL reporterLigneFraisHF(' . $unIdLigneHF . ');', $idCnx);
 }
+
+/**
+ * Cloture les fiches de frais antérieur au mois $unMois
+ *
+ * Cloture les fiches de frais antérieur au mois $unMois
+ * et au besoin, créer une nouvelle de fiche de frais pour le mois courant
+ * @param resource $idCnx identifiant de connexion
+  * @param string $unMois mois sous la forme aaaamm
+  * @return void 
+ */
+function cloturerFichesFrais($idCnx, $unMois) {
+    $req = "SELECT idVisiteur, mois FROM ficheFrais WHERE idEtat = 'CR' AND CAST(mois AS unsigned) < $unMois ;";
+    $idJeuFichesFrais = mysql_query($req, $idCnx);
+    while ($lgFicheFrais = mysql_fetch_array($idJeuFichesFrais)) {
+        modifierEtatFicheFrais($idCnx, $lgFicheFrais['mois'], $lgFicheFrais['idVisiteur'], 'CL');
+        // Vérification de l'existence de la fiche de frais pour le mois courant
+        $existeFicheFrais = existeFicheFrais($idCnx, $unMois, $lgFicheFrais['idVisiteur']);
+        // si elle n'existe pas, on la crée avec les éléments de frais forfaitisés à 0
+        if (!$existeFicheFrais) {
+            ajouterFicheFrais($idCnx, $unMois, $lgFicheFrais['idVisiteur']);
+        }
+    }
+}
+
 ?>
