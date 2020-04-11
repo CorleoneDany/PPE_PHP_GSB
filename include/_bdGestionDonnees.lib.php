@@ -414,4 +414,15 @@ function modifierNbJustificatifsFicheFrais($idCnx, $unMois, $unIdVisiteur, $nbJu
     mysql_query($requete, $idCnx);
 }
 
+/**
+ * Reporte d'un mois une ligne de frais hors forfait
+ * 
+ * 
+ * @param resource $idCnx identifiant de connexion
+ * @param int $unIdLigneHF identifiant de ligne hors forfait
+ * @return void
+ */
+function reporterLigneHorsForfait($idCnx, $unIdLigneHF) {
+    mysql_query('CALL reporterLigneFraisHF(' . $unIdLigneHF . ');', $idCnx);
+}
 ?>
