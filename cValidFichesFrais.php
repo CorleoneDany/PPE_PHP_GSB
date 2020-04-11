@@ -10,9 +10,9 @@
     require($repInclude . "_init.inc.php");
 
     // page inaccessible si utilisateur non connecté
-    if (!estUtilisateurConnecte()) {
-        header("Location: cSeConnecter.php");
-    }
+    // if (!estVisiteurConnecte()) {
+    //     header("Location: cSeConnecter.php");
+    // }
     require($repInclude . "_entete.inc.html");
     require($repInclude . "_sommaire.inc.php");
 
@@ -33,12 +33,12 @@
     
     // structure de décision sur les différentes étapes du cas d'utilisation
     if ($etape == "choixVisiteur") {
-        // Selection d'un visiteur par l'utilisateur
+        // Selection d'un visiteur par le visiteur
     } elseif ($etape == "choixMois") {
-        // Selection d'un mois par l'utilisateur 
+        // Selection d'un mois par le visiteur 
     } elseif ($etape == "actualiserFraisForfait") {
-        // Actualisation des informations des frais forfaitisés par l'utilisateur
-        // Validation des éléments forfaitisés par l'utilisateur         
+        // Actualisation des informations des frais forfaitisés par le visiteur
+        // Validation des éléments forfaitisés par le visiteur         
         // vérification des quantités des éléments forfaitisés
         $ok = verifierEntiersPositifs($tabQteEltsForfait);
         if (!$ok) {
@@ -49,7 +49,7 @@
         }
     } elseif ($etape == "actualiserFraisHorsForfait") {
         // Actualisation des infromations des frais hors forfait
-        // Validation des éléments non forfaitisés par l'utilisateur      
+        // Validation des éléments non forfaitisés par le visiteur      
         // Une suppression est donc considérée comme une actualisation puisque c'est 
         // le libellé qui est mis à jour   
     foreach ($tabEltsHorsForfait as $cle => $val) {
@@ -72,10 +72,10 @@
         modifierEltsHorsForfait($idConnexion, $tabEltsHorsForfait);
     }
     } elseif ($etape == "reporterLigneFraisHF") {
-        // L'utilisateur demande le report d'une ligne hors forfait dont les justificatifs ne sont pas arrivés à temps
+        // le visiteur demande le report d'une ligne hors forfait dont les justificatifs ne sont pas arrivés à temps
         reporterLigneHorsForfait($idConnexion, $tabEltsHorsForfait['id']);
     } elseif ($etape == "actualiserNbJustificatifs") {
-        // Actualisation du nombre de justificatifs par l'utilisateur
+        // Actualisation du nombre de justificatifs par le visiteur
         $ok = estEntierPositif($nbJustificatifs);
         if (!$ok) {
             ajouterErreur($tabErreurs, "Le nombre de justificatifs doit être renseigné et numérique positif.");
@@ -84,7 +84,7 @@
             modifierNbJustificatifsFicheFrais($idConnexion, $moisChoisi, $visiteurChoisi, $nbJustificatifs);
         }
     } elseif ($etape == "validerFiche") {
-        // Validation de la fiche de frais par l'utilisateur
+        // Validation de la fiche de frais par le visiteur
         modifierEtatFicheFrais($idConnexion, $moisChoisi, $visiteurChoisi, 'VA');
     }    
 ?>   
@@ -258,3 +258,4 @@
         </form>
         <div id="msgFraisForfait" class="infosNonActualisees">Attention, les modifications doivent être actualisées pour être réellement prises en compte...</div>
         <p class="titre">&nbsp;</p>
+    <?php } ?>

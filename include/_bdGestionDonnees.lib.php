@@ -350,5 +350,16 @@ function modifierEtatFicheFrais($idCnx, $unMois, $unIdVisiteur, $unEtat) {
                "', dateModif = now() where idVisiteur ='" .
                $unIdVisiteur . "' and mois = '". $unMois . "'";
     mysql_query($requete, $idCnx);
-}             
+}
+
+/**
+ * Retourne la requete d'obtention de la liste des visiteurs médicaux
+ *
+ * Retourne la requête d'obtention de la liste des visiteurs médicaux (id, nom et prenom)
+ * @return string $requete
+ */
+function obtenirReqListeVisiteurs() {
+    $requete = "select id, nom, prenom from utilisateur where idType='V' order by nom";
+    return $requete;
+}
 ?>
