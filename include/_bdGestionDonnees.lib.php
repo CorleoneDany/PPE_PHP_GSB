@@ -396,4 +396,22 @@ function modifierEltsHorsForfait($idCnx, $desEltsHorsForfait) {
             . " where id = " . $idFraisHorsForfait;
     mysql_query($requete, $idCnx);
 }
+
+/**
+ * Modifie le nombre de justificatifs d'une fiche de frais
+ *
+ * Met à jour le nombre de justificatifs de la fiche de frais du visiteur $unIdVisiteur pour
+ * le mois $unMois à la nouvelle valeur $nbJustificatifs
+ * @param resource $idCnx identifiant de connexion
+ * @param string $unIdVisiteur 
+ * @param string $unMois mois sous la forme aaaamm
+ * @param integer $nbJustificatifs
+ * @return void 
+ */
+function modifierNbJustificatifsFicheFrais($idCnx, $unMois, $unIdVisiteur, $nbJustificatifs) {
+    $requete = "update FicheFrais set nbJustificatifs = " . $nbJustificatifs .
+            " where idVisiteur ='" . $unIdVisiteur . "' and mois = '" . $unMois . "'";
+    mysql_query($requete, $idCnx);
+}
+
 ?>
