@@ -41,3 +41,15 @@ if ($etape == "mettreEnPaiementFicheFrais") {
         <?php
     }
     ?>
+ <h1>Suivi des paiement des fiches de frais</h1>
+    <?php
+        $req = "SELECT visiteur.id, nom, prenom, ficheFrais.mois, SUM(lignefraisforfait.quantite * fraisForfait.montant) AS montantForfait,";
+        $req .= " (ficheFrais.montantValide - SUM(lignefraisforfait.quantite * fraisForfait.montant)) AS montantHorsForfait, ficheFrais.montantValide AS totalFicheFrais";
+        $req .= " FROM visiteur INNER JOIN ficheFrais ON visiteur.id=ficheFrais.idVisiteur";
+        $req .= "                  INNER JOIN lignefraisforfait ON (ficheFrais.idVisiteur = lignefraisforfait.idVisiteur  AND ficheFrais.mois = lignefraisforfait.mois)";
+        $req .= "                  INNER JOIN fraisForfait ON lignefraisforfait.idFraisForfait = fraisForfait.id";
+        $req .= " WHERE ficheFrais.idEtat = 'VA'";
+        $req .= " GROUP BY nom, prenom, ficheFrais.mois";
+        $idJeuFicheAPayer = mysql_query($req, $idConnexion);
+    ?>
+        
