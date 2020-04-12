@@ -27,3 +27,17 @@ if ($etape == "mettreEnPaiementFicheFrais") {
     modifierEtatFicheFrais($idConnexion, $idMois, $idVisiteur, 'MP');
 }
 ?>
+
+<!-- Division principale -->
+<div id="contenu">
+    <?php
+    $lgVisiteur = obtenirDetailUtilisateur($idConnexion, $idVisiteur);
+    $noMois = intval(substr($idMois, 4, 2));
+    $annee = intval(substr($idMois, 0, 4));
+    // Gestion des messages d'informations
+    if ($etape == "mettreEnPaiementFicheFrais") {
+        ?>
+        <p class="info">La fiche de frais de <?php echo $lgVisiteur['nom'] . ' ' . $lgVisiteur['prenom']; ?> de <?php echo obtenirLibelleMois($noMois) . ' ' . $annee; ?> a bien été mise en paiement</p>        
+        <?php
+    }
+    ?>
