@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Script de contrôle et d'affichage du cas d'utilisation "Valider fiche de frais"
  * @package default
@@ -8,6 +7,8 @@
 
 $repInclude = './include/';
 require($repInclude . "_init.inc.php");
+
+$_SESSION["idUser"] = 'a131';
 
 // page inaccessible si utilisateur non connecté
 if (!estVisiteurConnecte()) {
