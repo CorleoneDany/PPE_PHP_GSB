@@ -17,7 +17,7 @@
 function connecterServeurBD() {
     $hote = "localhost";
     $login = "userGsb";
-    $mdp = "userGsb";
+    $mdp = "Admin111";
     return mysql_connect($hote, $login, $mdp);
 }
 
@@ -350,5 +350,103 @@ function modifierEtatFicheFrais($idCnx, $unMois, $unIdVisiteur, $unEtat) {
                "', dateModif = now() where idVisiteur ='" .
                $unIdVisiteur . "' and mois = '". $unMois . "'";
     mysql_query($requete, $idCnx);
-}             
+}
+
+/**
+ * Retourne la requete d'obtention de la liste des visiteurs médicaux
+ *
+ * Retourne la requête d'obtention de la liste des visiteurs médicaux (id, nom et prenom)
+ * @return string $requete
+ */
+function obtenirReqListeVisiteurs() {
+    $requete = "select id, nom, prenom from utilisateur where idType='V' order by nom";
+    return $requete;
+}
+
+/**
+ * Modifie les quantités des éléments non forfaitisés d'une fiche de frais. 
+ * Met à jour les éléments non forfaitisés contenus  
+ * dans $desEltsHorsForfaits
+ * @param resource $idCnx identifiant de connexion
+ * @param array $desEltsHorsForfait tableau des éléments hors forfait
+ * avec pour clés les identifiants des frais hors forfait
+ * @return void  
+ */
+function modifierEltsHorsForfait($idCnx, $desEltsHorsForfait) {
+    foreach ($desEltsHorsForfait as $cle => $val) {
+        switch ($cle) {
+            case 'id':
+                $idFraisHorsForfait = $val;
+                break;
+            case 'libelle':
+                $libelleFraisHorsForfait = $val;
+                break;
+            case 'date':
+                $dateFraisHorsForfait = $val;
+                break;
+            case 'montant':
+                $montantFraisHorsForfait = $val;
+                break;
+        }
+    }
+    $requete = "update LigneFraisHorsForfait"
+            . " set libelle = '" . filtrerChainePourBD($libelleFraisHorsForfait) . "',"
+            . " date = '" . convertirDateFrancaisVersAnglais($dateFraisHorsForfait) . "',"
+            . " montant = " . $montantFraisHorsForfait
+            . " where id = " . $idFraisHorsForfait;
+    mysql_query($requete, $idCnx);
+}
+
+/**
+ * Modifie le nombre de justificatifs d'une fiche de frais
+ *
+ * Met à jour le nombre de justificatifs de la fiche de frais du visiteur $unIdVisiteur pour
+ * le mois $unMois à la nouvelle valeur $nbJustificatifs
+ * @param resource $idCnx identifiant de connexion
+ * @param string $unIdVisiteur 
+ * @param string $unMois mois sous la forme aaaamm
+ * @param integer $nbJustificatifs
+ * @return void 
+ */
+function modifierNbJustificatifsFicheFrais($idCnx, $unMois, $unIdVisiteur, $nbJustificatifs) {
+    $requete = "update FicheFrais set nbJustificatifs = " . $nbJustificatifs .
+            " where idVisiteur ='" . $unIdVisiteur . "' and mois = '" . $unMois . "'";
+    mysql_query($requete, $idCnx);
+}
+
+/**
+ * Reporte d'un mois une ligne de frais hors forfait
+ * 
+ * 
+ * @param resource $idCnx identifiant de connexion
+ * @param int $unIdLigneHF identifiant de ligne hors forfait
+ * @return void
+ */
+function reporterLigneHorsForfait($idCnx, $unIdLigneHF) {
+    mysql_query('CALL reporterLigneFraisHF(' . $unIdLigneHF . ');', $idCnx);
+}
+
+/**
+ * Cloture les fiches de frais antérieur au mois $unMois
+ *
+ * Cloture les fiches de frais antérieur au mois $unMois
+ * et au besoin, créer une nouvelle de fiche de frais pour le mois courant
+ * @param resource $idCnx identifiant de connexion
+  * @param string $unMois mois sous la forme aaaamm
+  * @return void 
+ */
+function cloturerFichesFrais($idCnx, $unMois) {
+    $req = "SELECT idVisiteur, mois FROM ficheFrais WHERE idEtat = 'CR' AND CAST(mois AS unsigned) < $unMois ;";
+    $idJeuFichesFrais = mysql_query($req, $idCnx);
+    while ($lgFicheFrais = mysql_fetch_array($idJeuFichesFrais)) {
+        modifierEtatFicheFrais($idCnx, $lgFicheFrais['mois'], $lgFicheFrais['idVisiteur'], 'CL');
+        // Vérification de l'existence de la fiche de frais pour le mois courant
+        $existeFicheFrais = existeFicheFrais($idCnx, $unMois, $lgFicheFrais['idVisiteur']);
+        // si elle n'existe pas, on la crée avec les éléments de frais forfaitisés à 0
+        if (!$existeFicheFrais) {
+            ajouterFicheFrais($idCnx, $unMois, $lgFicheFrais['idVisiteur']);
+        }
+    }
+}
+
 ?>
