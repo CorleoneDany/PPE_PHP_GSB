@@ -49,8 +49,8 @@
             <?php
                 // on propose tous les mois pour lesquels le visiteur a une fiche de frais
                 $req = obtenirReqMoisFicheFrais(obtenirIdUserConnecte());
-                $idJeuMois = mysql_query($req, $idConnexion);
-                $lgMois = mysql_fetch_assoc($idJeuMois);
+                $idJeuMois = mysqli_query($idConnexion, $req);
+                $lgMois = mysqli_fetch_assoc($idJeuMois);
                 while ( is_array($lgMois) ) {
                     $mois = $lgMois["mois"];
                     $noMois = intval(substr($mois, 4, 2));
@@ -58,9 +58,9 @@
             ?>    
             <option value="<?php echo $mois; ?>"<?php if ($moisSaisi == $mois) { ?> selected="selected"<?php } ?>><?php echo obtenirLibelleMois($noMois) . " " . $annee; ?></option>
             <?php
-                    $lgMois = mysql_fetch_assoc($idJeuMois);        
+                    $lgMois = mysqli_fetch_assoc($idJeuMois);        
                 }
-                mysql_free_result($idJeuMois);
+                mysqli_free_result($idJeuMois);
             ?>
         </select>
       </p>
@@ -95,9 +95,9 @@
             // demande de la requete pour obtenir la liste des elements 
             // forfaitises du visiteur connecte pour le mois demande
             $req = obtenirReqEltsForfaitFicheFrais($moisSaisi, obtenirIdUserConnecte());
-            $idJeuEltsFraisForfait = mysql_query($req, $idConnexion);
-            echo mysql_error($idConnexion);
-            $lgEltForfait = mysql_fetch_assoc($idJeuEltsFraisForfait);
+            $idJeuEltsFraisForfait = mysqli_query($idConnexion, $req);
+            echo mysqli_error($idConnexion);
+            $lgEltForfait = mysqli_fetch_assoc($idJeuEltsFraisForfait);
             // parcours des frais forfaitises du visiteur connecte
             // le stockage intermediaire dans un tableau est necessaire
             // car chacune des lignes du jeu d'enregistrements doit etre doit etre
@@ -105,9 +105,9 @@
             $tabEltsFraisForfait = array();
             while ( is_array($lgEltForfait) ) {
                 $tabEltsFraisForfait[$lgEltForfait["libelle"]] = $lgEltForfait["quantite"];
-                $lgEltForfait = mysql_fetch_assoc($idJeuEltsFraisForfait);
+                $lgEltForfait = mysqli_fetch_assoc($idJeuEltsFraisForfait);
             }
-            mysql_free_result($idJeuEltsFraisForfait);
+            mysqli_free_result($idJeuEltsFraisForfait);
             ?>
   	<table class="listeLegere">
   	   <caption>Quantites des elements forfaitises</caption>
@@ -146,8 +146,8 @@
             // demande de la requete pour obtenir la liste des elements hors
             // forfait du visiteur connecte pour le mois demande
             $req = obtenirReqEltsHorsForfaitFicheFrais($moisSaisi, obtenirIdUserConnecte());
-            $idJeuEltsHorsForfait = mysql_query($req, $idConnexion);
-            $lgEltHorsForfait = mysql_fetch_assoc($idJeuEltsHorsForfait);
+            $idJeuEltsHorsForfait = mysqli_query($idConnexion, $req);
+            $lgEltHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
             
             // parcours des elements hors forfait 
             while ( is_array($lgEltHorsForfait) ) {
@@ -158,9 +158,9 @@
                    <td><?php echo $lgEltHorsForfait["montant"] ; ?></td>
                 </tr>
             <?php
-                $lgEltHorsForfait = mysql_fetch_assoc($idJeuEltsHorsForfait);
+                $lgEltHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
             }
-            mysql_free_result($idJeuEltsHorsForfait);
+            mysqli_free_result($idJeuEltsHorsForfait);
   ?>
     </table>
   </div>
