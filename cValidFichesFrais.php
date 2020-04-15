@@ -149,13 +149,13 @@ if ($etape == "choixVisiteur") {
                 }
                 // On propose tous les utilisateurs qui sont des visteurs médicaux
                 $req = obtenirReqListeVisiteurs();
-                $idJeuVisiteurs = mysql_query($req, $idConnexion);
-                while ($lgVisiteur = mysql_fetch_array($idJeuVisiteurs)) {
+                $idJeuVisiteurs = mysqli_query($idConnexion, $req);
+                while ($lgVisiteur = mysqli_fetch_array($idJeuVisiteurs)) {
                 ?>
                     <option value="<?php echo $lgVisiteur['id']; ?>" <?php if ($visiteurChoisi == $lgVisiteur['id']) { ?> selected="selected" <?php } ?>><?php echo $lgVisiteur['nom'] . " " . $lgVisiteur['prenom']; ?></option>
                 <?php
                 }
-                mysql_free_result($idJeuVisiteurs);
+                mysqli_free_result($idJeuVisiteurs);
                 ?>
             </select>
         </p>
@@ -173,8 +173,8 @@ if ($visiteurChoisi != "") {
             <?php
             // On propose tous les mois pour lesquels le visiteur dispose d'une fiche de frais cloturée
             $req = obtenirReqMoisFicheFrais($visiteurChoisi, 'CL');
-            $idJeuMois = mysql_query($req, $idConnexion);
-            $lgMois = mysql_fetch_assoc($idJeuMois);
+            $idJeuMois = mysqli_query($idConnexion, $req);
+            $lgMois = mysqli_fetch_assoc($idJeuMois);
             // 4-a Aucune fiche de frais n'existe le système affiche "Pas de fiche de frais pour ce visiteur ce mois". Retour au 2
             if (empty($lgMois)) {
                 ajouterErreur($tabErreurs, "Pas de fiche de frais à valider pour ce visiteur, veuillez choisir un autre visiteur");
@@ -197,9 +197,9 @@ if ($visiteurChoisi != "") {
                     ?>
                         <option value="<?php echo $mois; ?>" <?php if ($moisChoisi == $mois) { ?> selected="selected" <?php } ?>><?php echo obtenirLibelleMois($noMois) . ' ' . $annee; ?></option>
                 <?php
-                        $lgMois = mysql_fetch_assoc($idJeuMois);
+                        $lgMois = mysqli_fetch_assoc($idJeuMois);
                     }
-                    mysql_free_result($idJeuMois);
+                    mysqli_free_result($idJeuMois);
                 }
                 ?>
                 </select>
@@ -211,8 +211,8 @@ if ($visiteurChoisi != "") {
 if ($visiteurChoisi != "" && $moisChoisi != "") {
     // Traitement des frais si un visiteur et un mois ont été choisis
     $req = obtenirReqEltsForfaitFicheFrais($moisChoisi, $visiteurChoisi);
-    $idJeuEltsForfait = mysql_query($req, $idConnexion);
-    $lgEltsForfait = mysql_fetch_assoc($idJeuEltsForfait);
+    $idJeuEltsForfait = mysqli_query($idConnexion,$req);
+    $lgEltsForfait = mysqli_fetch_assoc($idJeuEltsForfait);
     while (is_array($lgEltsForfait)) {
         // On place la bonne valeur en fonction de l'identifiant de forfait
         switch ($lgEltsForfait['idFraisForfait']) {
@@ -229,9 +229,9 @@ if ($visiteurChoisi != "" && $moisChoisi != "") {
                 $rep = $lgEltsForfait['quantite'];
                 break;
         }
-        $lgEltsForfait = mysql_fetch_assoc($idJeuEltsForfait);
+        $lgEltsForfait = mysqli_fetch_assoc($idJeuEltsForfait);
     }
-    mysql_free_result($idJeuEltsForfait);
+    mysqli_free_result($idJeuEltsForfait);
 ?>
     <form id="formFraisForfait" method="post" action="">
         <p>
@@ -272,8 +272,8 @@ if ($visiteurChoisi != "" && $moisChoisi != "") {
     <?php
     // On récupère les lignes hors forfaits
     $req = obtenirReqEltsHorsForfaitFicheFrais($moisChoisi, $visiteurChoisi);
-    $idJeuEltsHorsForfait = mysql_query($req, $idConnexion);
-    $lgEltsHorsForfait = mysql_fetch_assoc($idJeuEltsHorsForfait);
+    $idJeuEltsHorsForfait = mysqli_query($idConnexion, $req);
+    $lgEltsHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
     while (is_array($lgEltsHorsForfait)) {
     ?>
         <form id="formFraisHorsForfait<?php echo $lgEltsHorsForfait['id']; ?>" method="post" action="">
@@ -331,7 +331,7 @@ if ($visiteurChoisi != "" && $moisChoisi != "") {
         </form>
         <div id="msgFraisHorsForfait<?php echo $lgEltsHorsForfait['id']; ?>" class="infosNonActualisees">Attention, les modifications doivent être actualisées pour être réellement prises en compte...</div>
     <?php
-        $lgEltsHorsForfait = mysql_fetch_assoc($idJeuEltsHorsForfait);
+        $lgEltsHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
     }
     ?>
     <form id="formNbJustificatifs" method="post" action="">

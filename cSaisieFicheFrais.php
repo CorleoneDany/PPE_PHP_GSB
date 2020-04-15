@@ -83,9 +83,9 @@
             // demande de la requete pour obtenir la liste des elements 
             // forfaitises du visiteur connecte pour le mois demande
             $req = obtenirReqEltsForfaitFicheFrais($mois, obtenirIdUserConnecte());
-            $idJeuEltsFraisForfait = mysql_query($req, $idConnexion);
-            echo mysql_error($idConnexion);
-            $lgEltForfait = mysql_fetch_assoc($idJeuEltsFraisForfait);
+            $idJeuEltsFraisForfait = mysqli_query($idConnexion, $req);
+            echo mysqli_error($idConnexion);
+            $lgEltForfait = mysqli_fetch_assoc($idJeuEltsFraisForfait);
             while ( is_array($lgEltForfait) ) {
                 $idFraisForfait = $lgEltForfait["idFraisForfait"];
                 $libelle = $lgEltForfait["libelle"];
@@ -100,9 +100,9 @@
                     value="<?php echo $quantite; ?>" />
             </p>
             <?php        
-                $lgEltForfait = mysql_fetch_assoc($idJeuEltsFraisForfait);   
+                $lgEltForfait = mysqli_fetch_assoc($idJeuEltsFraisForfait);   
             }
-            mysql_free_result($idJeuEltsFraisForfait);
+            mysqli_free_result($idJeuEltsFraisForfait);
             ?>
           </fieldset>
       </div>
@@ -128,8 +128,8 @@
           // demande de la requete pour obtenir la liste des elements hors
           // forfait du visiteur connecte pour le mois demande
           $req = obtenirReqEltsHorsForfaitFicheFrais($mois, obtenirIdUserConnecte());
-          $idJeuEltsHorsForfait = mysql_query($req, $idConnexion);
-          $lgEltHorsForfait = mysql_fetch_assoc($idJeuEltsHorsForfait);
+          $idJeuEltsHorsForfait = mysqli_query($idConnexion, $req);
+          $lgEltHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
           
           // parcours des frais hors forfait du visiteur connecte
           while ( is_array($lgEltHorsForfait) ) {
@@ -143,9 +143,9 @@
                        title="Supprimer la ligne de frais hors forfait">Supprimer</a></td>
               </tr>
           <?php
-              $lgEltHorsForfait = mysql_fetch_assoc($idJeuEltsHorsForfait);
+              $lgEltHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
           }
-          mysql_free_result($idJeuEltsHorsForfait);
+          mysqli_free_result($idJeuEltsHorsForfait);
 ?>
     </table>
       <form action="" method="post">
