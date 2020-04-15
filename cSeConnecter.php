@@ -13,7 +13,10 @@
   if ($etape=='validerConnexion') { // un client demande a s'authentifier
       // acquisition des donnees envoyees, ici login et mot de passe
       $login = lireDonneePost("txtLogin");
-      $mdp = lireDonneePost("txtMdp");   
+      $mdp = lireDonneePost("txtMdp"); 
+      var_dump($idConnexion);
+      var_dump($login);
+      var_dump($mdp);
       $lgUser = verifierInfosConnexion($idConnexion, $login, $mdp) ;
       // si l'id utilisateur a ete trouve, donc informations fournies sous forme de tableau
       if ( is_array($lgUser) ) { 

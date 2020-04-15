@@ -29,7 +29,7 @@ function connecterServeurBD() {
  * @return boolean succes ou echec de selection BD 
  */
 function activerBD($idCnx) {
-    $bd = "gsb_valide";
+    $bd = "gsb_frais";
     $query = "SET CHARACTER SET utf8";
     // Modification du jeu de caracteres de la connexion
     $res = mysqli_query($idCnx, $query); 
@@ -55,6 +55,9 @@ function deconnecterServeurBD($idCnx) {
  * @param string $str chaene e echapper
  * @return string chaene echappee 
  */    
+
+/* Cette fonction est considéré comme obsolète depuis php 5.4
+ 
 function filtrerChainePourBD($str) {
     if ( ! get_magic_quotes_gpc() ) { 
         // si la directive de configuration magic_quotes_gpc est activee dans php.ini,
@@ -63,6 +66,12 @@ function filtrerChainePourBD($str) {
         $str = mysqli_real_escape_string($str);
     }
     return $str;
+}
+ */
+
+function filtrerChainePourBD($str){
+		$str = addslashes($str);
+		return $str;
 }
 
 /** 
@@ -323,13 +332,20 @@ function modifierEltsForfait($idCnx, $unMois, $unIdVisiteur, $desEltsForfait) {
 function verifierInfosConnexion($idCnx, $unLogin, $unMdp) {
     $unLogin = filtrerChainePourBD($unLogin);
     $unMdp = filtrerChainePourBD($unMdp);
-    // le mot de passe est crypte dans la base avec la fonction de hachage md5
-    $req = "select id, nom, prenom, login, mdp from Visiteur where login='".$unLogin."' and mdp='" . $unMdp . "'";
-    $idJeuRes = mysqli_query($idCnx,$req);
+	// Affichage variable de connection en cas de debugage
+	//echo $unLogin;
+	//echo $unMdp;
+    // le mot de passe est crypté dans la base avec la fonction de hachage md5
+    $req = "select id, nom, prenom, login, mdp from visiteur where login= ? and mdp= ?";
+	$prep = $idCnx->prepare($req);
+	$prep->bind_param("ss",$unLogin,$unMdp);
+	$idJeuRes = $prep->execute();
+	$prep = $prep->get_result();
+    //$idJeuRes = mysqli_query($idCnx,$req);
     $ligne = false;
-    if ( $idJeuRes ) {
-        $ligne = mysqli_fetch_assoc($idJeuRes);
-        mysqli_free_result($idJeuRes);
+    if ($idJeuRes) {
+		$ligne = $prep->fetch_assoc();
+        //mysqli_stmt_free_result($idJeuRes);
     }
     return $ligne;
 }
