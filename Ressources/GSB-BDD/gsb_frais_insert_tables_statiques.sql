@@ -24,10 +24,21 @@ INSERT INTO `Etat` (`id`, `libelle`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Contenu de la table `Type_user
+--
+
+INSERT INTO 'Type_user' ('id_type','TypeUser') VALUES
+('V','Visiteur médical'),
+('C','Comptable');
+
+
+-- --------------------------------------------------------
+
+--
 -- Contenu de la table `Visiteur`
 --
 
-INSERT INTO `visiteur` (`id`, `nom`, `prenom`, `login`, `mdp`, `adresse`, `cp`, `ville`, `dateEmbauche`) VALUES
+INSERT INTO `Utilisateur` (`id`, `nom`, `prenom`, `login`, `mdp`, `adresse`, `cp`, `ville`, `dateEmbauche`) VALUES
 ('a131', 'Villechalane', 'Louis', 'lvillachane', 'jux7g', '8 rue des Charmes', '46000', 'Cahors', '2005-12-21'),
 ('a17', 'Andre', 'David', 'dandre', 'oppg5', '1 rue Petit', '46200', 'Lalbenque', '1998-11-23'),
 ('a55', 'Bedos', 'Christian', 'cbedos', 'gmhxd', '1 rue Peranud', '46250', 'Montcuq', '1995-01-12'),
