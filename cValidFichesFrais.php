@@ -8,8 +8,6 @@
 $repInclude = './include/';
 require($repInclude . "_init.inc.php");
 
-$_SESSION["idUser"] = 'a131';
-
 // page inaccessible si utilisateur non connecté
 if (!estUtilisateurConnecte()) {
     header("Location: cSeConnecter.php");
@@ -22,8 +20,8 @@ $mois = sprintf("%04d%02d", date("Y"), date("m"));
 // Cloture des fiches de frais antérieur au mois courant et au besoin, création des fiches pour le mois courant
 cloturerFichesFrais($idConnexion, $mois);
 
-// Récupération des données entrées, id utilisateur, mois et l'étape du traitement
-$utilisateurChoisi = lireDonnee("lstUtilisateur", "");
+// Récupération des données entrées, id visiteur, mois et l'étape du traitement
+$visiteurChoisi = lireDonnee("lstVisiteur", "");
 $moisChoisi = lireDonnee("lstMois", "");
 $etape = lireDonnee("etape", "");
 // acquisition des quantités des éléments forfaitisés 
@@ -33,24 +31,24 @@ $tabEltsHorsForfait = lireDonneePost("txtEltsHorsForfait", "");
 $nbJustificatifs = lireDonneePost("nbJustificatifs", "");
 
 // structure de décision sur les différentes étapes du cas d'utilisation
-if ($etape == "choixUtilisateur") {
-    // Selection d'un utilisateur par l'utilisateur
+if ($etape == "choixVisiteur") {
+    // Selection d'un visiteur par le visiteur
 } elseif ($etape == "choixMois") {
-    // Selection d'un mois par l'utilisateur 
+    // Selection d'un mois par le visiteur 
 } elseif ($etape == "actualiserFraisForfait") {
-    // Actualisation des informations des frais forfaitisés par l'utilisateur
-    // Validation des éléments forfaitisés par l'utilisateur         
+    // Actualisation des informations des frais forfaitisés par le visiteur
+    // Validation des éléments forfaitisés par le visiteur         
     // vérification des quantités des éléments forfaitisés
     $ok = verifierEntiersPositifs($tabQteEltsForfait);
     if (!$ok) {
         ajouterErreur($tabErreurs, "Chaque quantité doit être renseignée et numérique positive.");
     } else {
         // mise à jour des quantités des éléments forfaitisés
-        modifierEltsForfait($idConnexion, $moisChoisi, $utilisateurChoisi, $tabQteEltsForfait);
+        modifierEltsForfait($idConnexion, $moisChoisi, $visiteurChoisi, $tabQteEltsForfait);
     }
 } elseif ($etape == "actualiserFraisHorsForfait") {
     // Actualisation des infromations des frais hors forfait
-    // Validation des éléments non forfaitisés par l'utilisateur      
+    // Validation des éléments non forfaitisés par le visiteur      
     // Une suppression est donc considérée comme une actualisation puisque c'est 
     // le libellé qui est mis à jour   
     foreach ($tabEltsHorsForfait as $cle => $val) {
@@ -73,26 +71,26 @@ if ($etape == "choixUtilisateur") {
         modifierEltsHorsForfait($idConnexion, $tabEltsHorsForfait);
     }
 } elseif ($etape == "reporterLigneFraisHF") {
-    // L'utilisateur demande le report d'une ligne hors forfait dont les justificatifs ne sont pas arrivés à temps
+    // le visiteur demande le report d'une ligne hors forfait dont les justificatifs ne sont pas arrivés à temps
     reporterLigneHorsForfait($idConnexion, $tabEltsHorsForfait['id']);
 } elseif ($etape == "actualiserNbJustificatifs") {
-    // Actualisation du nombre de justificatifs par l'utilisateur
+    // Actualisation du nombre de justificatifs par le visiteur
     $ok = estEntierPositif($nbJustificatifs);
     if (!$ok) {
         ajouterErreur($tabErreurs, "Le nombre de justificatifs doit être renseigné et numérique positif.");
     } else {
         // mise à jour du nombre de justificatifs
-        modifierNbJustificatifsFicheFrais($idConnexion, $moisChoisi, $utilisateurChoisi, $nbJustificatifs);
+        modifierNbJustificatifsFicheFrais($idConnexion, $moisChoisi, $visiteurChoisi, $nbJustificatifs);
     }
 } elseif ($etape == "validerFiche") {
-    // Validation de la fiche de frais par l'utilisateur
-    modifierEtatFicheFrais($idConnexion, $moisChoisi, $utilisateurChoisi, 'VA');
+    // Validation de la fiche de frais par le visiteur
+    modifierEtatFicheFrais($idConnexion, $moisChoisi, $visiteurChoisi, 'VA');
 }
 ?>
 <!-- Affichage utilisateur validation fiche de frais -->
 
 <div id="contenu">
-    <h1>Validation des frais par l'utilisateur </h1>
+    <h1>Validation des frais par visiteur </h1>
     <?php
     // Gestion des messages d'informations
     if ($etape == "actualiserFraisForfait") {
@@ -128,35 +126,35 @@ if ($etape == "choixUtilisateur") {
         }
     }
     if ($etape == "validerFiche") {
-        $lgUtilisateur = obtenirDetailUtilisateur($idConnexion, $utilisateurChoisi);
+        $lgVisiteur = obtenirDetailVisiteur($idConnexion, $visiteurChoisi);
         ?>
-        <p class="info">La fiche de frais du visiteur <?php echo $lgUtilisateur['prenom'] . " " . $lgUtilisateur['nom']; ?> pour <?php echo obtenirLibelleMois(intval(substr($moisChoisi, 4, 2))) . " " . intval(substr($moisChoisi, 0, 4)); ?> a bien été enregistrée</p>
+        <p class="info">La fiche de frais du visiteur <?php echo $lgVisiteur['prenom'] . " " . $lgVisiteur['nom']; ?> pour <?php echo obtenirLibelleMois(intval(substr($moisChoisi, 4, 2))) . " " . intval(substr($moisChoisi, 0, 4)); ?> a bien été enregistrée</p>
     <?php
         // On réinitialise le mois choisi pour forcer la disparition du bas de page, la réactualisation des mois et le choix d'un nouveau mois
         $moisChoisi = "";
     }
     ?>
-    <form id="formChoixUtilisateur" method="post" action="">
+    <form id="formChoixVisiteur" method="post" action="">
         <p>
-            <input type="hidden" name="etape" value="choixUtilisateur" />
-            <label class="titre">Choisir l'utilisateur :</label>
-            <select name="lstUtilisateur" id="idLstUtilisateur" class="zone" onchange="changerVisiteur(this.options[this.selectedIndex].value);">
+            <input type="hidden" name="etape" value="choixVisiteur" />
+            <label class="titre">Choisir le visiteur :</label>
+            <select name="lstVisiteur" id="idLstVisiteur" class="zone" onchange="changerVisiteur(this.options[this.selectedIndex].value);">
                 <?php
-                // Si aucun utilisateur n'a encore été choisi, on place en premier une invitation au choix
-                if ($utilisateurChoisi == "") {
+                // Si aucun visiteur n'a encore été choisi, on place en premier une invitation au choix
+                if ($visiteurChoisi == "") {
                 ?>
                     <option value="-1">=== Choisir un visiteur médical ===</option>
                 <?php
                 }
                 // On propose tous les utilisateurs qui sont des visteurs médicaux
                 $req = obtenirReqListeVisiteurs();
-                $idJeuUtilisateur = mysqli_query($idConnexion, $req);
-                while ($lgUtilisateur = mysqli_fetch_array($idJeuUtilisateur)) {
+                $idJeuVisiteurs = mysqli_query($idConnexion, $req);
+                while ($lgVisiteur = mysqli_fetch_array($idJeuVisiteurs)) {
                 ?>
-                    <option value="<?php echo $lgUtilisateur['id']; ?>" <?php if ($utilisateurChoisi == $lgUtilisateur['id']) { ?> selected="selected" <?php } ?>><?php echo $lgUtilisateur['nom'] . " " . $lgUtilisateur['prenom']; ?></option>
+                    <option value="<?php echo $lgVisiteur['id']; ?>" <?php if ($visiteurChoisi == $lgVisiteur['id']) { ?> selected="selected" <?php } ?>><?php echo $lgVisiteur['nom'] . " " . $lgVisiteur['prenom']; ?></option>
                 <?php
                 }
-                mysqli_free_result($idJeuUtilisateur);
+                mysqli_free_result($idJeuVisiteurs);
                 ?>
             </select>
         </p>
@@ -164,21 +162,21 @@ if ($etape == "choixUtilisateur") {
 </div>
 
 <?php
-// Si aucun utilisateur n'a encore été choisi on n'affiche pas le form de choix de mois
-if ($utilisateurChoisi != "") {
+// Si aucun visiteur n'a encore été choisi on n'affiche pas le form de choix de mois
+if ($visiteurChoisi != "") {
 ?>
     <form id="formChoixMois" method="post" action="">
         <p>
             <input type="hidden" name="etape" value="choixMois" />
-            <input type="hidden" name="lstUtilisateur" value="<?php echo $utilisateurChoisi; ?>" />
+            <input type="hidden" name="lstVisiteur" value="<?php echo $visiteurChoisi; ?>" />
             <?php
-            // On propose tous les mois pour lesquels l'utilisateur dispose d'une fiche de frais cloturée
-            $req = obtenirReqMoisFicheFrais($utilisateurChoisi, 'CL');
+            // On propose tous les mois pour lesquels le visiteur dispose d'une fiche de frais cloturée
+            $req = obtenirReqMoisFicheFrais($visiteurChoisi, 'CL');
             $idJeuMois = mysqli_query($idConnexion, $req);
             $lgMois = mysqli_fetch_assoc($idJeuMois);
-            // 4-a Aucune fiche de frais n'existe le système affiche "Pas de fiche de frais pour cet utilisateur ce mois". Retour au 2
+            // 4-a Aucune fiche de frais n'existe le système affiche "Pas de fiche de frais pour ce visiteur ce mois". Retour au 2
             if (empty($lgMois)) {
-                ajouterErreur($tabErreurs, "Pas de fiche de frais à valider pour cet utilisateur, veuillez choisir un autre utilisateur");
+                ajouterErreur($tabErreurs, "Pas de fiche de frais à valider pour ce visiteur, veuillez choisir un autre visiteur");
                 echo toStringErreurs($tabErreurs);
             } else {
             ?>
@@ -209,9 +207,9 @@ if ($utilisateurChoisi != "") {
 <?php
 }
 // On n'affiche le form de Gestion de Frais que s'il y a un mois qui a été sélectionné
-if ($utilisateurChoisi != "" && $moisChoisi != "") {
-    // Traitement des frais si un utilisateur et un mois ont été choisis
-    $req = obtenirReqEltsForfaitFicheFrais($moisChoisi, $utilisateurChoisi);
+if ($visiteurChoisi != "" && $moisChoisi != "") {
+    // Traitement des frais si un visiteur et un mois ont été choisis
+    $req = obtenirReqEltsForfaitFicheFrais($moisChoisi, $visiteurChoisi);
     $idJeuEltsForfait = mysqli_query($idConnexion,$req);
     $lgEltsForfait = mysqli_fetch_assoc($idJeuEltsForfait);
     while (is_array($lgEltsForfait)) {
@@ -237,7 +235,7 @@ if ($utilisateurChoisi != "" && $moisChoisi != "") {
     <form id="formFraisForfait" method="post" action="">
         <p>
             <input type="hidden" name="etape" value="actualiserFraisForfait" />
-            <input type="hidden" name="lstUtilisateur" value="<?php echo $utilisateurChoisi; ?>" />
+            <input type="hidden" name="lstVisiteur" value="<?php echo $visiteurChoisi; ?>" />
             <input type="hidden" name="lstMois" value="<?php echo $moisChoisi; ?>" />
         </p>
         <div style="clear:left;">
@@ -272,7 +270,7 @@ if ($utilisateurChoisi != "" && $moisChoisi != "") {
     </div>
     <?php
     // On récupère les lignes hors forfaits
-    $req = obtenirReqEltsHorsForfaitFicheFrais($moisChoisi, $utilisateurChoisi);
+    $req = obtenirReqEltsHorsForfaitFicheFrais($moisChoisi, $visiteurChoisi);
     $idJeuEltsHorsForfait = mysqli_query($idConnexion, $req);
     $lgEltsHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
     while (is_array($lgEltsHorsForfait)) {
@@ -280,7 +278,7 @@ if ($utilisateurChoisi != "" && $moisChoisi != "") {
         <form id="formFraisHorsForfait<?php echo $lgEltsHorsForfait['id']; ?>" method="post" action="">
             <p>
                 <input type="hidden" id="idEtape<?php echo $lgEltsHorsForfait['id']; ?>" name="etape" value="actualiserFraisHorsForfait" />
-                <input type="hidden" name="lstUtilisateur" value="<?php echo $utilisateurChoisi; ?>" />
+                <input type="hidden" name="lstVisiteur" value="<?php echo $visiteurChoisi; ?>" />
                 <input type="hidden" name="lstMois" value="<?php echo $moisChoisi; ?>" />
                 <input type="hidden" name="txtEltsHorsForfait[id]" value="<?php echo $lgEltsHorsForfait['id']; ?>" />
             </p>
@@ -338,12 +336,12 @@ if ($utilisateurChoisi != "" && $moisChoisi != "") {
     <form id="formNbJustificatifs" method="post" action="">
         <p>
             <input type="hidden" name="etape" value="actualiserNbJustificatifs" />
-            <input type="hidden" name="lstUtilisateur" value="<?php echo $utilisateurChoisi; ?>" />
+            <input type="hidden" name="lstVisiteur" value="<?php echo $visiteurChoisi; ?>" />
             <input type="hidden" name="lstMois" value="<?php echo $moisChoisi; ?>" />
         </p>
         <div class="titre">Nombre de justificatifs :
             <?php
-            $laFicheFrais = obtenirDetailFicheFrais($idConnexion, $moisChoisi, $utilisateurChoisi);
+            $laFicheFrais = obtenirDetailFicheFrais($idConnexion, $moisChoisi, $visiteurChoisi);
             ?>
             <input type="text" class="zone" size="4" id="idNbJustificatifs" name="nbJustificatifs" value="<?php echo $laFicheFrais['nbJustificatifs']; ?>" style="text-align:center;" onchange="afficheMsgNbJustificatifs();" />
             <div id="actionsNbJustificatifs" class="actions">
@@ -357,7 +355,7 @@ if ($utilisateurChoisi != "" && $moisChoisi != "") {
     <form id="formValidFiche" method="post" action="">
         <p>
             <input type="hidden" name="etape" value="validerFiche" />
-            <input type="hidden" name="lstUtilisateur" value="<?php echo $utilisateurChoisi; ?>" />
+            <input type="hidden" name="lstVisiteur" value="<?php echo $visiteurChoisi; ?>" />
             <input type="hidden" name="lstMois" value="<?php echo $moisChoisi; ?>" />
             <p>
                 <input class="zone" type="button" onclick="changerVisiteur();" value="Changer de visiteur" />
