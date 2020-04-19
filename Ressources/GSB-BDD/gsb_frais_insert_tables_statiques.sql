@@ -24,7 +24,7 @@ INSERT INTO `Etat` (`id`, `libelle`) VALUES
 -- --------------------------------------------------------
 
 --
--- Contenu de la table `Type_user
+-- Contenu de la table `Type_user`
 --
 
 INSERT INTO `type_user` (`id_type`,`TypeUser`) VALUES
@@ -35,7 +35,7 @@ INSERT INTO `type_user` (`id_type`,`TypeUser`) VALUES
 -- --------------------------------------------------------
 
 --
--- Contenu de la table `Visiteur`
+-- Contenu de la table `Utilisateur`
 --
 
 INSERT INTO `utilisateur` (`id`, `nom`, `prenom`, `login`, `mdp`, `adresse`, `cp`, `ville`, `dateEmbauche`,idType) VALUES
