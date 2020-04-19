@@ -8,12 +8,7 @@ include("include/fct.inc.php");
 $serveur='mysql:host=localhost';
 $bdd='dbname=gsb_frais';   		
 $user='userGsb' ;    		
-<<<<<<< HEAD
 $mdp='Admin111' ;
-
-=======
-$mdp='Admin111' ;	
->>>>>>> 75d176b9d2d9595138f12813f7788f4702c803ce
 
 /* fin parametres*/
 
