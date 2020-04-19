@@ -23,7 +23,7 @@ function getLesIdFraisForfait($pdo)
 }
 function getDernierMois($pdo, $idUtilisateur)
 {
-		$req = "select max(mois) as dernierMois from fichefrais where idVisiteur = '$idVisiteur'";
+		$req = "select max(mois) as dernierMois from fichefrais where idUtilisateur = '$idUtilisateur'";
 		$res = $pdo->query($req);
 		$laLigne = $res->fetch();
 		return $laLigne['dernierMois'];
