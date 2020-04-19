@@ -15,10 +15,10 @@ function initSession() {
 }
 
 /** 
- * Fournit l'id du visiteur connecte.                     
+ * Fournit l'id de l'utilisateur connecte.                     
  *
- * Retourne l'id du visiteur connecte, une chaîne vide si pas de visiteur connecte.
- * @return string id du visiteur connecte
+ * Retourne l'id de l'utilisateur connecte, une chaîne vide si pas d'utilisateur connecte.
+ * @return string id de l'utilisateur connecte
  */
 function obtenirIdUserConnecte() {
     $ident="";
@@ -29,11 +29,11 @@ function obtenirIdUserConnecte() {
 }
 
 /**
- * Conserve en variables session les informations du visiteur connecte
+ * Conserve en variables session les informations de l'utilisateur connecte
  * 
- * Conserve en variables session l'id $id et le login $login du visiteur connecte
- * @param string id du visiteur
- * @param string login du visiteur
+ * Conserve en variables session l'id $id et le login $login de l'utilisateur connecte
+ * @param string id de l'utilisateur
+ * @param string login de l'utilisateur
  * @return void    
  */
 function affecterInfosConnecte($id, $login) {
@@ -42,23 +42,23 @@ function affecterInfosConnecte($id, $login) {
 }
 
 /** 
- * Deconnecte le visiteur qui s'est identifie sur le site.                     
+ * Deconnecte l'utilisateur qui s'est identifie sur le site.                     
  *
  * @return void
  */
-function deconnecterVisiteur() {
+function deconnecterUtilisateur() {
     unset($_SESSION["idUser"]);
     unset($_SESSION["loginUser"]);
 }
 
 /** 
- * Verifie si un visiteur s'est connecte sur le site.                     
+ * Verifie si un utilisateur s'est connecte sur le site.                     
  *
- * Retourne true si un visiteur s'est identifie sur le site, false sinon. 
+ * Retourne true si un utilisateur s'est identifie sur le site, false sinon. 
  * @return boolean echec ou succes
  */
-function estVisiteurConnecte() {
-    // actuellement il n'y a que les visiteurs qui se connectent
+function estUtilisateurConnecte() {
+    // actuellement il n'y a que les utilisateurs qui se connectent
     return isset($_SESSION["loginUser"]);
 }
 ?>

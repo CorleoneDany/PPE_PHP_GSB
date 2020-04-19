@@ -20,6 +20,7 @@ try {
     echo 'echec lors de la connexion : ' . $e->getMessage();
 }
 
+var_dump($pdo);
 set_time_limit(0);
 creationFichesFrais($pdo);
 creationFraisForfait($pdo);

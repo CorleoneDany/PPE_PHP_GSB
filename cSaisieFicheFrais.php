@@ -7,8 +7,8 @@
   $repInclude = './include/';
   require($repInclude . "_init.inc.php");
 
-  // page inaccessible si visiteur non connecte
-  if (!estVisiteurConnecte()) {
+  // page inaccessible si utilisateur non connecte
+  if (!estUtilisateurConnecte()) {
       header("Location: cSeConnecter.php");  
   }
   require($repInclude . "_entete.inc.html");
@@ -81,7 +81,7 @@
             </legend>
       <?php          
             // demande de la requete pour obtenir la liste des elements 
-            // forfaitises du visiteur connecte pour le mois demande
+            // forfaitises de l'utilisateur connecte pour le mois demande
             $req = obtenirReqEltsForfaitFicheFrais($mois, obtenirIdUserConnecte());
             $idJeuEltsFraisForfait = mysqli_query($idConnexion, $req);
             echo mysqli_error($idConnexion);
@@ -126,12 +126,12 @@
              </tr>
 <?php          
           // demande de la requete pour obtenir la liste des elements hors
-          // forfait du visiteur connecte pour le mois demande
+          // forfait de l'utilisateur connecte pour le mois demande
           $req = obtenirReqEltsHorsForfaitFicheFrais($mois, obtenirIdUserConnecte());
           $idJeuEltsHorsForfait = mysqli_query($idConnexion, $req);
           $lgEltHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
           
-          // parcours des frais hors forfait du visiteur connecte
+          // parcours des frais hors forfait de l'utilisateur connecte
           while ( is_array($lgEltHorsForfait) ) {
           ?>
               <tr>
