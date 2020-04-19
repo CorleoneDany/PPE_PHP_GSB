@@ -24,7 +24,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Structure de la table `FraisForfait`
 --
 
-CREATE TABLE IF NOT EXISTS `FraisForfait` (
+CREATE TABLE IF NOT EXISTS `FraisForfait`(
   `id` char(3) NOT NULL,
   `libelle` char(20) DEFAULT NULL,
   `montant` decimal(5,2) DEFAULT NULL,
@@ -47,6 +47,19 @@ CREATE TABLE IF NOT EXISTS `Etat` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `Type_user`
+--
+
+CREATE TABLE IF NOT EXISTS `type_user` (
+	`id_type` char(2) NOT NULL,
+	`TypeUser` char(20) NOT NULL,
+	PRIMARY KEY (`id_type`)
+
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `Utilisateur`
 --
 
@@ -60,21 +73,10 @@ CREATE TABLE IF NOT EXISTS `Utilisateur` (
   `cp` char(5) DEFAULT NULL,
   `ville` char(30) DEFAULT NULL,
   `dateEmbauche` date DEFAULT NULL,
-  PRIMARY KEY (`id`)
-  FOREIGN KEY ('idType') REFERENCES Type_user('id_type')
+  `idType` char(2) NOT NULL, 
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`idType`) REFERENCES type_user(`id_type`)
 ) ENGINE=InnoDB;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `Type_user`
---
-
-CREATE TABLE IF NOT EXISTS 'Type_user' (
-    'id_type' char(2) NOT NULL,
-    'TypeUser' char(20) NOT NULL,
-    PRIMARY KEY ('id_type')
-)ENGINE=InnoDB;
 
 -- --------------------------------------------------------
 
@@ -83,15 +85,15 @@ CREATE TABLE IF NOT EXISTS 'Type_user' (
 --
 
 CREATE TABLE IF NOT EXISTS `fichefrais` (
-  `idVisiteur` char(4) NOT NULL,
+  `idUtilisateur` char(4) NOT NULL,
   `mois` char(6) NOT NULL,
   `nbJustificatifs` int(11) DEFAULT NULL,
   `montantValide` decimal(10,2) DEFAULT NULL,
   `dateModif` date DEFAULT NULL,
   `idEtat` char(2) DEFAULT 'CR',
-  PRIMARY KEY (`idVisiteur`,`mois`),
+  PRIMARY KEY (`idUtilisateur`,`mois`),
   FOREIGN KEY (`idEtat`) REFERENCES Etat(`id`),
-  FOREIGN KEY (`idVisiteur`) REFERENCES Visiteur(`id`)
+  FOREIGN KEY (`idUtilisateur`) REFERENCES Utilisateur(`id`)
 ) ENGINE=InnoDB;
 
 
@@ -102,12 +104,12 @@ CREATE TABLE IF NOT EXISTS `fichefrais` (
 --
 
 CREATE TABLE IF NOT EXISTS `LigneFraisForfait` (
-  `idVisiteur` char(4) NOT NULL,
+  `idUtilisateur` char(4) NOT NULL,
   `mois` char(6) NOT NULL,
   `idFraisForfait` char(3) NOT NULL,
   `quantite` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idVisiteur`,`mois`,`idFraisForfait`),
-  FOREIGN KEY (`idVisiteur`, `mois`) REFERENCES FicheFrais(`idVisiteur`, `mois`),
+  PRIMARY KEY (`idUtilisateur`,`mois`,`idFraisForfait`),
+  FOREIGN KEY (`idUtilisateur`, `mois`) REFERENCES FicheFrais(`idUtilisateur`, `mois`),
   FOREIGN KEY (`idFraisForfait`) REFERENCES FraisForfait(`id`)
 ) ENGINE=InnoDB;
 
@@ -119,11 +121,11 @@ CREATE TABLE IF NOT EXISTS `LigneFraisForfait` (
 
 CREATE TABLE IF NOT EXISTS `LigneFraisHorsForfait` (
   `id` int(11) NOT NULL auto_increment,
-  `idVisiteur` char(4) NOT NULL,
+  `idUtilisateur` char(4) NOT NULL,
   `mois` char(6) NOT NULL,
   `libelle` varchar(100) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `montant` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (`idVisiteur`, `mois`) REFERENCES FicheFrais(`idVisiteur`, `mois`)
+  FOREIGN KEY (`idUtilisateur`, `mois`) REFERENCES FicheFrais(`idUtilisateur`, `mois`)
 ) ENGINE=InnoDB;

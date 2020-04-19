@@ -7,8 +7,8 @@
   $repInclude = './include/';
   require($repInclude . "_init.inc.php");
 
-  // page inaccessible si visiteur non connecte
-  if ( ! estVisiteurConnecte() ) {
+  // page inaccessible si utilisateur non connecte
+  if ( ! estUtilisateurConnecte() ) {
       header("Location: cSeConnecter.php");  
   }
   require($repInclude . "_entete.inc.html");
@@ -47,7 +47,7 @@
         <label for="lstMois">Mois : </label>
         <select id="lstMois" name="lstMois" title="Selectionnez le mois souhaite pour la fiche de frais">
             <?php
-                // on propose tous les mois pour lesquels le visiteur a une fiche de frais
+                // on propose tous les mois pour lesquels l'utilisateur a une fiche de frais
                 $req = obtenirReqMoisFicheFrais(obtenirIdUserConnecte());
                 $idJeuMois = mysqli_query($idConnexion, $req);
                 $lgMois = mysqli_fetch_assoc($idJeuMois);
@@ -93,12 +93,12 @@
     </p>
 <?php          
             // demande de la requete pour obtenir la liste des elements 
-            // forfaitises du visiteur connecte pour le mois demande
+            // forfaitises de l'utilisateur connecte pour le mois demande
             $req = obtenirReqEltsForfaitFicheFrais($moisSaisi, obtenirIdUserConnecte());
             $idJeuEltsFraisForfait = mysqli_query($idConnexion, $req);
             echo mysqli_error($idConnexion);
             $lgEltForfait = mysqli_fetch_assoc($idJeuEltsFraisForfait);
-            // parcours des frais forfaitises du visiteur connecte
+            // parcours des frais forfaitises du utilisateur connecte
             // le stockage intermediaire dans un tableau est necessaire
             // car chacune des lignes du jeu d'enregistrements doit etre doit etre
             // affichee au sein d'une colonne du tableau HTML
@@ -113,7 +113,7 @@
   	   <caption>Quantites des elements forfaitises</caption>
         <tr>
             <?php
-            // premier parcours du tableau des frais forfaitises du visiteur connecte
+            // premier parcours du tableau des frais forfaitises de l'utilisateur connecte
             // pour afficher la ligne des libelles des frais forfaitises
             foreach ( $tabEltsFraisForfait as $unLibelle => $uneQuantite ) {
             ?>
@@ -124,7 +124,7 @@
         </tr>
         <tr>
             <?php
-            // second parcours du tableau des frais forfaitises du visiteur connecte
+            // second parcours du tableau des frais forfaitises de l'utilisateur connecte
             // pour afficher la ligne des quantites des frais forfaitises
             foreach ( $tabEltsFraisForfait as $unLibelle => $uneQuantite ) {
             ?>
@@ -144,7 +144,7 @@
              </tr>
 <?php          
             // demande de la requete pour obtenir la liste des elements hors
-            // forfait du visiteur connecte pour le mois demande
+            // forfait de l'utilisateur connecte pour le mois demande
             $req = obtenirReqEltsHorsForfaitFicheFrais($moisSaisi, obtenirIdUserConnecte());
             $idJeuEltsHorsForfait = mysqli_query($idConnexion, $req);
             $lgEltHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);

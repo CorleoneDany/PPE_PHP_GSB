@@ -1,13 +1,13 @@
 <?php  
 /** 
- * Script de contrôle et d'affichage du cas d'utilisation "Se déconnecter"
+ * Script de contrï¿½le et d'affichage du cas d'utilisation "Se dï¿½connecter"
  * @package default
  * @todo  RAS
  */
   $repInclude = './include/';
   require($repInclude . "_init.inc.php");
   
-  deconnecterVisiteur() ;  
+  deconnecterUtilisateur() ;  
   header("Location:cSeConnecter.php");
   
 ?>
