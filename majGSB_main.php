@@ -8,7 +8,7 @@ include("include/fct.inc.php");
 $serveur='mysql:host=localhost';
 $bdd='dbname=gsb_frais';   		
 $user='userGsb' ;    		
-$mdp='Admin111' ;	
+$mdp='Admin111' ;
 
 /* fin parametres*/
 
@@ -20,7 +20,6 @@ try {
     echo 'echec lors de la connexion : ' . $e->getMessage();
 }
 
-var_dump($pdo);
 set_time_limit(0);
 creationFichesFrais($pdo);
 creationFraisForfait($pdo);
