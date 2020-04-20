@@ -179,7 +179,7 @@ function ajouterFicheFrais($idCnx, $unMois, $unIdUtilisateur) {
             // insertion d'une ligne frais forfait dans la base
             $requete = "insert into LigneFraisForfait (idUtilisateur, mois, idFraisForfait, quantite)
                         values (:unIdUtilisateur, :unMois, :idFraisForfait, 0)";
-            $idCnx->prepare($requete);
+            $insert = $idCnx->prepare($requete);
             $params = [
                 ':unIdUtilisateur' => $unIdUtilisateur,
                 ':unMois'          => $unMois,
@@ -202,7 +202,7 @@ function ajouterFicheFrais($idCnx, $unMois, $unIdUtilisateur) {
  * @return string texte de la requete select
  */                                                 
 function obtenirReqMoisFicheFrais() {
-    $req = "select fichefrais.mois as mois from  fichefrais, etat where fichefrais.idEtat = etat.id and idUtilisateur = ? and fichefrais.idEtat = ? order by fichefrais.mois desc ";
+    $req = "select fichefrais.mois as mois from fichefrais, etat where fichefrais.idEtat = etat.id and fichefrais.idUtilisateur = ? and fichefrais.idEtat = ? order by fichefrais.mois desc ";
     return $req ;
 }  
                   
