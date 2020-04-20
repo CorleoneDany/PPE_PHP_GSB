@@ -325,19 +325,16 @@ function modifierEltsForfait($idCnx, $unMois, $unIdUtilisateur, $desEltsForfait)
  * @return array tableau associatif ou booleen false 
  */
 function verifierInfosConnexion($idCnx, $unLogin, $unMdp) {
-    $unLogin = $unLogin;
-    $unMdp = $unMdp;
-	// Affichage variable de connection en cas de debugage
-	//echo $unLogin;
-	//echo $unMdp;
-    // le mot de passe est crypté dans la base avec la fonction de hachage md5
-    $req = "select id, nom, prenom, login, mdp from Utilisateur where login= ? and mdp= ?";
-	$prep = $idCnx->prepare($req);
-	$idJeuRes = $prep->execute([$unLogin, $unMdp]);
-    $ligne = false;
-    if ($idJeuRes) {
-		$ligne = $prep->fetch(PDO::FETCH_ASSOC);
-        $prep->closeCursor();
+    $req = 'SELECT * FROM `utilisateur` WHERE `login` = ?';
+    $utilisateur = $idCnx->prepare($req);
+    $utilisateur->execute([$unLogin]);
+    $mdpBdd = false;
+    if ($utilisateur) {
+        $ligne = $utilisateur->fetch(PDO::FETCH_ASSOC);
+        if(!password_verify($unMdp, $ligne['mdp'])) {
+            $ligne = false;
+        }
+        $utilisateur->closeCursor();
     }
     return $ligne;
 }
