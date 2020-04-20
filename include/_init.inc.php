@@ -22,11 +22,5 @@
   // etablissement d'une connexion avec le serveur de donnees 
   // puis selection de la BD qui contient les donnees des utilisateurs et de leurs frais
   $idConnexion=connecterServeurBD();
-  if (!$idConnexion) {
-      ajouterErreur($tabErreurs, "Echec de la connexion au serveur MySql");
-  }
-  elseif (!activerBD($idConnexion)) {
-      ajouterErreur($tabErreurs, "La base de donnees gsb_frais est inexistante ou non accessible");
-  }
   
 ?>

@@ -3,12 +3,12 @@
  * Regroupe les fonctions d'acces aux donnees.
  * @package default
  * @author Arthur Martin
- * @todo Fonctions retournant plusieurs lignes sont e reecrire.
+ * @todo Fonctions retournant plusieurs lignes sont à reecrire.
  */
 
 /** 
  * Se connecte au serveur de donnees MySql.                      
- * Se connecte au serveur de donnees MySql e partir de valeurs
+ * Se connecte au serveur de donnees MySql à partir de valeurs
  * predefinies de connexion (hete, compte utilisateur et mot de passe). 
  * Retourne l'identifiant de connexion si succes obtenu, le booleen false 
  * si probleme de connexion.
@@ -18,23 +18,15 @@ function connecterServeurBD() {
     $hote = "localhost";
     $login = "userGsb";
     $mdp = "Admin111";
-    return mysqli_connect($hote, $login, $mdp);
-}
-
-/**
- * Selectionne (rend active) la base de donnees.
- * Selectionne (rend active) la BD predefinie gsb_frais sur la connexion
- * identifiee par $idCnx. Retourne true si succes, false sinon.
- * @param resource $idCnx identifiant de connexion
- * @return boolean succes ou echec de selection BD 
- */
-function activerBD($idCnx) {
     $bd = "gsb_frais";
-    $query = "SET CHARACTER SET utf8";
-    // Modification du jeu de caracteres de la connexion
-    $res = mysqli_query($idCnx, $query); 
-    $ok = mysqli_select_db($idCnx,$bd);
-    return $ok;
+
+    try {
+        $connexion = new PDO("mysql:host=$hote;dbname=$bd;charset=utf8", $login, $mdp);
+    } catch(PDOException $e) {
+        $connexion = false;
+        echo $e->getMessage();
+    }
+    return $connexion;
 }
 
 /** 
@@ -45,34 +37,17 @@ function activerBD($idCnx) {
  * @return void  
  */
 function deconnecterServeurBD($idCnx) {
-    mysqli_close($idCnx);
+    $idCnx = null;
 }
 
 /**
  * Echappe les caracteres speciaux d'une chaene.
  * Envoie la chaene $str echappee, ced avec les caracteres consideres speciaux
  * par MySql (tq la quote simple) precedes d'un \, ce qui annule leur effet special
- * @param string $str chaene e echapper
+ * @param string $str chaene à echapper
  * @return string chaene echappee 
  */    
-
-/* Cette fonction est considéré comme obsolète depuis php 5.4
  
-function filtrerChainePourBD($str) {
-    if ( ! get_magic_quotes_gpc() ) { 
-        // si la directive de configuration magic_quotes_gpc est activee dans php.ini,
-        // toute chaene reeue par get, post ou cookie est deje echappee 
-        // par consequent, il ne faut pas echapper la chaene une seconde fois                              
-        $str = mysqli_real_escape_string($str);
-    }
-    return $str;
-}
- */
-
-function filtrerChainePourBD($str){
-		$str = addslashes($str);
-		return $str;
-}
 
 /** 
  * Fournit les informations sur un utilisateur demande. 
@@ -83,13 +58,13 @@ function filtrerChainePourBD($str){
  * @return array  tableau associatif de l'utilisateur
  */
 function obtenirDetailUtilisateur($idCnx, $unId) {
-    $id = filtrerChainePourBD($unId);
-    $requete = "select utilisateur.id, nom, prenom, TypeUser from utilisateur inner join type_user on utilisateur.idType=type_user.id_type where utilisateur.id='" . $unId . "'";
-    $idJeuRes = mysqli_query($idCnx, $requete);  
+    $requete = "select utilisateur.id, nom, prenom, TypeUser from utilisateur inner join type_user on utilisateur.idType = type_user.id_type where utilisateur.id = ?";
+    $idJeuRes = $idCnx->prepare($requete);  
+    $idJeuRes->execute([$unId]);
     $ligne = false;     
-    if ( $idJeuRes ) {
-        $ligne = mysqli_fetch_assoc($idJeuRes);
-        mysqli_free_result($idJeuRes);
+    if ($idJeuRes) {
+        $ligne = $idJeuRes->fetch(PDO::FETCH_ASSOC);
+        $idJeuRes->closeCursor();
     }
     return $ligne ;
 }
@@ -105,16 +80,17 @@ function obtenirDetailUtilisateur($idCnx, $unId) {
  * @return array tableau associatif de la fiche de frais
  */
 function obtenirDetailFicheFrais($idCnx, $unMois, $unIdUtilisateur) {
-    $unMois = filtrerChainePourBD($unMois);
+    $unMois = $unMois;
     $ligne = false;
     $requete="select IFNULL(nbJustificatifs,0) as nbJustificatifs, Etat.id as idEtat, libelle as libelleEtat, dateModif, montantValide 
     from FicheFrais inner join Etat on idEtat = Etat.id 
-    where idUtilisateur='" . $unIdUtilisateur . "' and mois='" . $unMois . "'";
-    $idJeuRes = mysqli_query($idCnx,$requete);  
+    where idUtilisateur = ? and mois = ?";
+    $idJeuRes = $idCnx->prepare($requete);
+    $idJeuRes->execute([$unIdUtilisateur, $unMois]);  
     if ( $idJeuRes ) {
-        $ligne = mysqli_fetch_assoc($idJeuRes);
+        $ligne = $idJeuRes->fetch(PDO::FETCH_ASSOC);
     }        
-    mysqli_free_result($idJeuRes);
+    $idJeuRes->closeCursor();
     
     return $ligne ;
 }
@@ -129,14 +105,14 @@ function obtenirDetailFicheFrais($idCnx, $unMois, $unIdUtilisateur) {
  * @return booleen existence ou non de la fiche de frais
  */
 function existeFicheFrais($idCnx, $unMois, $unIdUtilisateur) {
-    $unMois = filtrerChainePourBD($unMois);
     $requete = "select idUtilisateur from FicheFrais where idUtilisateur='" . $unIdUtilisateur . 
-              "' and mois='" . $unMois . "'";
-    $idJeuRes = mysqli_query($idCnx, $requete);  
+              "' and mois = ?";
+    $idJeuRes = $idCnx->prepare($requete);  
+    $idJeuRes->execute([$unMois]);
     $ligne = false ;
     if ( $idJeuRes ) {
-        $ligne = mysqli_fetch_assoc($idJeuRes);
-        mysqli_free_result($idJeuRes);
+        $ligne = $idJeuRes->fetch(PDO::FETCH_ASSOC);
+        $idJeuRes->closeCursor();
     }        
     
     // si $ligne est un tableau, la fiche de frais existe, sinon elle n'exsite pas
@@ -151,14 +127,14 @@ function existeFicheFrais($idCnx, $unMois, $unIdUtilisateur) {
  * @return string dernier mois sous la forme AAAAMM
  */
 function obtenirDernierMoisSaisi($idCnx, $unIdUtilisateur) {
-	$requete = "select max(mois) as dernierMois from FicheFrais where idUtilisateur='" .
-            $unIdUtilisateur . "'";
-	$idJeuRes = mysqli_query($idCnx,$requete);
+	$requete = "select max(mois) as dernierMois from FicheFrais where idUtilisateur=?";
+    $idJeuRes = $idCnx->prepare($requete);
+    $idJeuRes->execute([$unIdUtilisateur]);
     $dernierMois = false ;
     if ( $idJeuRes ) {
-        $ligne = mysqli_fetch_assoc($idJeuRes);
+        $ligne = $idJeuRes->fetch(PDO::FETCH_ASSOC);
         $dernierMois = $ligne["dernierMois"];
-        mysqli_free_result($idJeuRes);
+        $idJeuRes->closeCursor();
     }        
 	return $dernierMois;
 }
@@ -167,14 +143,14 @@ function obtenirDernierMoisSaisi($idCnx, $unIdUtilisateur) {
  * Ajoute une nouvelle fiche de frais et les elements forfaitises associes, 
  * Ajoute la fiche de frais du mois de $unMois (MMAAAA) de l'utilisateur 
  * $idUtilisateur, avec les elements forfaitises associes dont la quantite initiale
- * est affectee e 0. Clet eventuellement la fiche de frais precedente de l'utilisateur. 
+ * est affectee à 0. Clet eventuellement la fiche de frais precedente de l'utilisateur. 
  * @param resource $idCnx identifiant de connexion
  * @param string $unMois mois demande (MMAAAA)
  * @param string $unIdUtilisateur id utilisateur  
  * @return void
  */
 function ajouterFicheFrais($idCnx, $unMois, $unIdUtilisateur) {
-    $unMois = filtrerChainePourBD($unMois);
+    $unMois = $unMois;
     // modification de la derniere fiche de frais de l'utilisateur
     $dernierMois = obtenirDernierMoisSaisi($idCnx, $unIdUtilisateur);
 	$laDerniereFiche = obtenirDetailFicheFrais($idCnx, $dernierMois, $unIdUtilisateur);
@@ -182,27 +158,38 @@ function ajouterFicheFrais($idCnx, $unMois, $unIdUtilisateur) {
 		modifierEtatFicheFrais($idCnx, $dernierMois, $unIdUtilisateur, 'CL');
 	}
     
-    // ajout de la fiche de frais e l'etat Cree
-    $requete = "insert into FicheFrais (idUtilisateur, mois, nbJustificatifs, montantValide, idEtat, dateModif) values ('" 
-              . $unIdUtilisateur
-              . "','" . $unMois . "',0,NULL, 'CR', '" . date("Y-m-d") . "')";
-    mysqli_query($idCnx, $requete);
+    // ajout de la fiche de frais à l'etat Cree
+    $requete = "insert into FicheFrais (idUtilisateur, mois, nbJustificatifs, montantValide, idEtat, dateModif) values (:unIdUtilisateur, :unMois,0,NULL, 'CR', " . date("Y-m-d") . ")";
+    $insert = $idCnx->prepare($requete);
+    $params = [
+        ':unIdUtilisateur' => $unIdUtilisateur,
+        ':unMois'          => $unMois
+    ];
+    $insert->execute($params);
+    
     
     // ajout des elements forfaitises
     $requete = "select id from FraisForfait";
-    $idJeuRes = mysqli_query($idCnx, $requete);
+    $idJeuRes = $idCnx->prepare($requete);
+    $idJeuRes->execute([]);
     if ( $idJeuRes ) {
-        $ligne = mysqli_fetch_assoc($idJeuRes);
+        $ligne = $idJeuRes->fetch(PDO::FETCH_ASSOC);
         while ( is_array($ligne) ) {
             $idFraisForfait = $ligne["id"];
             // insertion d'une ligne frais forfait dans la base
             $requete = "insert into LigneFraisForfait (idUtilisateur, mois, idFraisForfait, quantite)
-                        values ('" . $unIdUtilisateur . "','" . $unMois . "','" . $idFraisForfait . "',0)";
-            mysqli_query($idCnx, $requete);
+                        values (:unIdUtilisateur, :unMois, :idFraisForfait, 0)";
+            $idCnx->prepare($requete);
+            $params = [
+                ':unIdUtilisateur' => $unIdUtilisateur,
+                ':unMois'          => $unMois,
+                ':idFraisForfait'  => $idFraisForfait
+            ];
+            $insert->execute($params);
             // passage au frais forfait suivant
-            $ligne = mysqli_fetch_assoc ($idJeuRes);
+            $ligne = $idJeuRes->fetch(PDO::FETCH_ASSOC);
         }
-        mysqli_free_result($idJeuRes);       
+        $idJeuRes->closeCursor();       
     }        
 }
 
@@ -233,7 +220,7 @@ function obtenirReqMoisFicheFrais($unIdUtilisateur) {
  * @return string texte de la requete select
  */                                                 
 function obtenirReqEltsForfaitFicheFrais($unMois, $unIdUtilisateur) {
-    $unMois = filtrerChainePourBD($unMois);
+    $unMois = $unMois;
     $requete = "select idFraisForfait, libelle, quantite from LigneFraisForfait
               inner join FraisForfait on FraisForfait.id = LigneFraisForfait.idFraisForfait
               where idUtilisateur='" . $unIdUtilisateur . "' and mois='" . $unMois . "'";
@@ -252,7 +239,7 @@ function obtenirReqEltsForfaitFicheFrais($unMois, $unIdUtilisateur) {
  * @return string texte de la requete select
  */                                                 
 function obtenirReqEltsHorsForfaitFicheFrais($unMois, $unIdUtilisateur) {
-    $unMois = filtrerChainePourBD($unMois);
+    $unMois = $unMois;
     $requete = "select id, date, libelle, montant from LigneFraisHorsForfait
               where idUtilisateur='" . $unIdUtilisateur
               . "' and mois='" . $unMois . "'";
@@ -267,14 +254,15 @@ function obtenirReqEltsHorsForfaitFicheFrais($unMois, $unIdUtilisateur) {
  * @return void
  */
 function supprimerLigneHF($idCnx, $unIdLigneHF) {
-    $requete = "delete from LigneFraisHorsForfait where id = " . $unIdLigneHF;
-    mysqli_query($idCnx, $requete);
+    $requete = "delete from LigneFraisHorsForfait where id = ?";
+    $delete = $idCnx->prepare($requete);
+    $delete->execute([$unIdLigneHF]);
 }
 
 /**
  * Ajoute une nouvelle ligne hors forfait.
  * Insere dans la BD la ligne hors forfait de libelle $unLibelleHF du montant 
- * $unMontantHF ayant eu lieu e la date $uneDateHF pour la fiche de frais du mois
+ * $unMontantHF ayant eu lieu à la date $uneDateHF pour la fiche de frais du mois
  * $unMois de l'utilisateur d'id $unIdUtilisateur
  * @param resource $idCnx identifiant de connexion
  * @param string $unMois mois demande (AAMMMM)
@@ -285,17 +273,24 @@ function supprimerLigneHF($idCnx, $unIdLigneHF) {
  * @return void
  */
 function ajouterLigneHF($idCnx, $unMois, $unIdUtilisateur, $uneDateHF, $unLibelleHF, $unMontantHF) {
-    $unLibelleHF = filtrerChainePourBD($unLibelleHF);
-    $uneDateHF = filtrerChainePourBD(convertirDateFrancaisVersAnglais($uneDateHF));
-    $unMois = filtrerChainePourBD($unMois);
+    $uneDateHF = convertirDateFrancaisVersAnglais($uneDateHF);
+    $unMois = $unMois;
     $requete = "insert into LigneFraisHorsForfait(idUtilisateur, mois, date, libelle, montant) 
-                values ('" . $unIdUtilisateur . "','" . $unMois . "','" . $uneDateHF . "','" . $unLibelleHF . "'," . $unMontantHF .")";
-    mysqli_query($idCnx, $requete);
+                values (:unIdUtilisateur, :unMois, :uneDateHF, :unLibelleHF, :unMontantHF)";
+    $insert = $idCnx->prepare($requete);
+    $params = [
+        ':unIdUtilisateur' => $unIdUtilisateur,
+        ':unMois'          => $unMois,
+        ':uneDateHF'       => $uneDateHF,
+        ':unLibelleHF'     => $unLibelleHF,
+        ':unMontantHF'     => $unMontantHF
+    ];
+    $insert->execute($params);
 }
 
 /**
  * Modifie les quantites des elements forfaitises d'une fiche de frais. 
- * Met e jour les elements forfaitises contenus  
+ * Met à jour les elements forfaitises contenus  
  * dans $desEltsForfaits pour l'utilisateur $unIdUtilisateur et
  * le mois $unMois dans la table LigneFraisForfait, apres avoir filtre 
  * (annule l'effet de certains caracteres consideres comme speciaux par 
@@ -308,13 +303,18 @@ function ajouterLigneHF($idCnx, $unMois, $unIdUtilisateur, $uneDateHF, $unLibell
  * @return void  
  */
 function modifierEltsForfait($idCnx, $unMois, $unIdUtilisateur, $desEltsForfait) {
-    $unMois=filtrerChainePourBD($unMois);
-    $unIdUtilisateur=filtrerChainePourBD($unIdUtilisateur);
+    $unMois=$unMois;
+    $unIdUtilisateur=$unIdUtilisateur;
     foreach ($desEltsForfait as $idFraisForfait => $quantite) {
-        $requete = "update LigneFraisForfait set quantite = " . $quantite 
-                    . " where idUtilisateur = '" . $unIdUtilisateur . "' and mois = '"
-                    . $unMois . "' and idFraisForfait='" . $idFraisForfait . "'";
-      mysqli_query($idCnx, $requete);
+        $requete = "update LigneFraisForfait set quantite = :quantite where idUtilisateur = :unIdUtilisateur and mois = :unMois and idFraisForfait= :idFraisForfait";
+        $update = $idCnx->prepare($requete);
+        $params = [
+            ':quantite'        => $quantite,
+            ':unIdUtilisateur' => $unIdUtilisateur,
+            ':unMois'          => $unMois,
+            ':idFraisForfait'  => $idFraisForfait
+        ];
+        $update->execute($params);
     }
 }
 
@@ -330,22 +330,19 @@ function modifierEltsForfait($idCnx, $unMois, $unIdUtilisateur, $desEltsForfait)
  * @return array tableau associatif ou booleen false 
  */
 function verifierInfosConnexion($idCnx, $unLogin, $unMdp) {
-    $unLogin = filtrerChainePourBD($unLogin);
-    $unMdp = filtrerChainePourBD($unMdp);
+    $unLogin = $unLogin;
+    $unMdp = $unMdp;
 	// Affichage variable de connection en cas de debugage
 	//echo $unLogin;
 	//echo $unMdp;
     // le mot de passe est crypté dans la base avec la fonction de hachage md5
     $req = "select id, nom, prenom, login, mdp from Utilisateur where login= ? and mdp= ?";
 	$prep = $idCnx->prepare($req);
-	$prep->bind_param("ss",$unLogin,$unMdp);
-	$idJeuRes = $prep->execute();
-	$prep = $prep->get_result();
-    //$idJeuRes = mysqli_query($idCnx,$req);
+	$idJeuRes = $prep->execute([$unLogin, $unMdp]);
     $ligne = false;
     if ($idJeuRes) {
-		$ligne = $prep->fetch_assoc();
-        //mysqli_stmt_free_result($idJeuRes);
+		$ligne = $prep->fetch(PDO::FETCH_ASSOC);
+        $idJeuRes->closeCursor();
     }
     return $ligne;
 }
@@ -353,8 +350,8 @@ function verifierInfosConnexion($idCnx, $unLogin, $unMdp) {
 /**
  * Modifie l'etat et la date de modification d'une fiche de frais
  
- * Met e jour l'etat de la fiche de frais de l'utilisateur $unIdUtilisateur pour
- * le mois $unMois e la nouvelle valeur $unEtat et passe la date de modif e 
+ * Met à jour l'etat de la fiche de frais de l'utilisateur $unIdUtilisateur pour
+ * le mois $unMois à la nouvelle valeur $unEtat et passe la date de modif à 
  * la date d'aujourd'hui
  * @param resource $idCnx identifiant de connexion
  * @param string $unIdUtilisateur 
@@ -362,10 +359,14 @@ function verifierInfosConnexion($idCnx, $unLogin, $unMdp) {
  * @return void 
  */
 function modifierEtatFicheFrais($idCnx, $unMois, $unIdUtilisateur, $unEtat) {
-    $requete = "update FicheFrais set idEtat = '" . $unEtat . 
-               "', dateModif = now() where idUtilisateur ='" .
-               $unIdUtilisateur . "' and mois = '". $unMois . "'";
-    mysqli_query($idCnx, $requete);
+    $requete = "update FicheFrais set idEtat =:unEtat, dateModif = now() where idUtilisateur :unIdUtilisateur and mois = :unMois";
+    $update = $idCnx->prepare($requete);
+    $params = [
+        ':unEtat'          => $unEtat,
+        ':unIdUtilisateur' => $unIdUtilisateur,
+        ':unMois'          => $unMois
+    ];
+    $update->execute($params);
 }
 
 /**
@@ -405,12 +406,15 @@ function modifierEltsHorsForfait($idCnx, $desEltsHorsForfait) {
                 break;
         }
     }
-    $requete = "update LigneFraisHorsForfait"
-            . " set libelle = '" . filtrerChainePourBD($libelleFraisHorsForfait) . "',"
-            . " date = '" . convertirDateFrancaisVersAnglais($dateFraisHorsForfait) . "',"
-            . " montant = " . $montantFraisHorsForfait
-            . " where id = " . $idFraisHorsForfait;
-    mysqli_query($idCnx, $requete);
+    $requete = "update LigneFraisHorsForfait set libelle = :libelleFraisHorsForfait, date = :dateFraisHorsForfait, montant = :montantFraisHorsForfait where id = :idFraisHorsForfait";
+    $update = $idCnx->prepare($requete);
+    $params = [
+        ':libelleFraisHorsForfait' => $libelleFraisHorsForfait,
+        ':dateFraisHorsForfait'    => convertirDateFrancaisVersAnglais($dateFraisHorsForfait),
+        ':montantFraisHorsForfait' => $montantFraisHorsForfait,
+        ':idFraisHorsForfait'      => $idFraisHorsForfait
+    ];
+    $update->execute($params);
 }
 
 /**
@@ -425,9 +429,14 @@ function modifierEltsHorsForfait($idCnx, $desEltsHorsForfait) {
  * @return void 
  */
 function modifierNbJustificatifsFicheFrais($idCnx, $unMois, $unIdUtilisateur, $nbJustificatifs) {
-    $requete = "update FicheFrais set nbJustificatifs = " . $nbJustificatifs .
-            " where idUtilisateur ='" . $unIdUtilisateur . "' and mois = '" . $unMois . "'";
-    mysqli_query($idCnx, $requete);
+    $requete = "update FicheFrais set nbJustificatifs = :nbJustificatifs where idUtilisateur = :unIdUtilisateur and mois = :unMois";
+    $update = $idCnx->prepare($requete);
+    $params = [
+        ':nbJustificatifs' => $nbJustificatifs,
+        ':unIdUtilisateur' => $unIdUtilisateur,
+        ':unMois'          => $unMois,
+    ];
+    $update->execute($params);
 }
 
 /**
@@ -439,7 +448,8 @@ function modifierNbJustificatifsFicheFrais($idCnx, $unMois, $unIdUtilisateur, $n
  * @return void
  */
 function reporterLigneHorsForfait($idCnx, $unIdLigneHF) {
-    mysqli_query($idCnx,'CALL reporterLigneFraisHF(' . $unIdLigneHF . ');');
+    $query = $idCnx->prepare("CALL reporterLigneFraisHF(?);");
+    $query->execute([$unIdLigneHF]);
 }
 
 /**
@@ -452,9 +462,10 @@ function reporterLigneHorsForfait($idCnx, $unIdLigneHF) {
   * @return void 
  */
 function cloturerFichesFrais($idCnx, $unMois) {
-    $req = "SELECT idUtilisateur, mois FROM ficheFrais WHERE idEtat = 'CR' AND CAST(mois AS unsigned) < $unMois ;";
-    $idJeuFichesFrais = mysqli_query($idCnx, $req);
-    while ($lgFicheFrais = mysqli_fetch_array($idJeuFichesFrais)) {
+    $req = "SELECT idUtilisateur, mois FROM ficheFrais WHERE idEtat = 'CR' AND CAST(mois AS unsigned) < ? ";
+    $idJeuFichesFrais = $idCnx->prepare($req);
+    $idJeuFichesFrais->execute([$unMois]);
+    while ($lgFicheFrais = $idJeuFichesFrais->fetch(PDO::FETCH_ASSOC)) {
         modifierEtatFicheFrais($idCnx, $lgFicheFrais['mois'], $lgFicheFrais['idUtilisateur'], 'CL');
         // Vérification de l'existence de la fiche de frais pour le mois courant
         $existeFicheFrais = existeFicheFrais($idCnx, $unMois, $lgFicheFrais['idUtilisateur']);
