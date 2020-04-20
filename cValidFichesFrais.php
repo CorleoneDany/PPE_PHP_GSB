@@ -168,9 +168,9 @@ if ($etape == "choixVisiteur") {
                 <input type="hidden" name="lstVisiteur" value="<?php echo $visiteurChoisi; ?>" />
                 <?php
                 // On propose tous les mois pour lesquels le visiteur dispose d'une fiche de frais cloturée
-                $req = obtenirReqMoisFicheFrais($visiteurChoisi, 'CL');
+                $req = obtenirReqMoisFicheFrais();
                 $idJeuMois = $idConnexion->prepare($req);
-                $idJeuMois->execute([]);
+                $idJeuMois->execute([$visiteurChoisi, 'CL']);
                 $lgMois = $idJeuMois->fetch(PDO::FETCH_ASSOC);
                 // 4-a Aucune fiche de frais n'existe le système affiche "Pas de fiche de frais pour ce visiteur ce mois". Retour au 2
                 if (empty($lgMois)) {

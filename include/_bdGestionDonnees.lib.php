@@ -199,11 +199,10 @@ function ajouterFicheFrais($idCnx, $unMois, $unIdUtilisateur) {
  * 
  * La requete de selection fournie permettra d'obtenir les mois (AAAAMM) pour 
  * lesquels l'utilisateur $unIdUtilisateur a une fiche de frais. 
- * @param string $unIdUtilisateur id utilisateur  
  * @return string texte de la requete select
  */                                                 
 function obtenirReqMoisFicheFrais() {
-    $req = "select fichefrais.mois as mois from  fichefrais where fichefrais.idUtilisateur = ? order by fichefrais.mois desc ";
+    $req = "select fichefrais.mois as mois from  fichefrais, etat where fichefrais.idEtat = etat.id and idUtilisateur = ? and fichefrais.idEtat = ? order by fichefrais.mois desc ";
     return $req ;
 }  
                   
