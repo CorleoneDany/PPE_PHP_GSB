@@ -146,13 +146,14 @@ if ($etape == "choixVisiteur") {
                 }
                 // On propose tous les utilisateurs qui sont des visteurs médicaux
                 $req = obtenirReqListeVisiteurs();
-                $idJeuVisiteurs = mysqli_query($idConnexion, $req);
-                while ($lgVisiteur = mysqli_fetch_array($idJeuVisiteurs)) {
+                $idJeuVisiteurs = $idConnexion->prepare($req);
+                $idJeuVisiteurs->execute([]);
+                while ($lgVisiteur = $idJeuVisiteurs->fetch(PDO::FETCH_ASSOC)) {
                     ?>
                     <option value="<?php echo $lgVisiteur['id']; ?>"<?php if ($visiteurChoisi == $lgVisiteur['id']) { ?> selected="selected"<?php } ?>><?php echo $lgVisiteur['nom'] . " " . $lgVisiteur['prenom']; ?></option>
                     <?php
                 }
-                mysqli_free_result($idJeuVisiteurs);
+                $idJeuVisiteurs->closeCursor();
                 ?>
             </select>
         </p>
@@ -168,8 +169,9 @@ if ($etape == "choixVisiteur") {
                 <?php
                 // On propose tous les mois pour lesquels le visiteur dispose d'une fiche de frais cloturée
                 $req = obtenirReqMoisFicheFrais($visiteurChoisi, 'CL');
-                $idJeuMois = mysqli_query($idConnexion, $req);
-                $lgMois = mysqli_fetch_assoc($idJeuMois);
+                $idJeuMois = $idConnexion->prepare($req);
+                $idJeuMois->execute([]);
+                $lgMois = $idJeuMois->fetch(PDO::FETCH_ASSOC);
                 // 4-a Aucune fiche de frais n'existe le système affiche "Pas de fiche de frais pour ce visiteur ce mois". Retour au 2
                 if (empty($lgMois)) {
                     ajouterErreur($tabErreurs, "Pas de fiche de frais à valider pour ce visiteur, veuillez choisir un autre visiteur");
@@ -192,9 +194,9 @@ if ($etape == "choixVisiteur") {
                             ?>    
                             <option value="<?php echo $mois; ?>"<?php if ($moisChoisi == $mois) { ?> selected="selected"<?php } ?>><?php echo obtenirLibelleMois($noMois) . ' ' . $annee; ?></option>
                             <?php
-                            $lgMois = mysqli_fetch_assoc($idJeuMois);
+                            $lgMois = $idJeuMois->fetch(PDO::FETCH_ASSOC);
                         }
-                        mysqli_free_result($idJeuMois);
+                        $idJeuMois->closeCursor();
                     }
                     ?>            
                 </select>
@@ -205,9 +207,10 @@ if ($etape == "choixVisiteur") {
 // On n'affiche le form de Gestion de Frais que s'il y a un mois qui a été sélectionné
     if ($visiteurChoisi != "" && $moisChoisi != "") {
         // Traitement des frais si un visiteur et un mois ont été choisis
-        $req = obtenirReqEltsForfaitFicheFrais($moisChoisi, $visiteurChoisi);
-        $idJeuEltsForfait = mysqli_query($idConnexion, $req);
-        $lgEltsForfait = mysqli_fetch_assoc($idJeuEltsForfait);
+        $req = obtenirReqEltsForfaitFicheFrais();
+        $idJeuEltsForfait = $idConnexion->prepare($req);
+        $idJeuEltsForfait->execute([$visiteurChoisi, $moisChoisi]);
+        $lgEltsForfait = $idJeuEltsForfait->fetch(PDO::FETCH_ASSOC);
         while (is_array($lgEltsForfait)) {
             // On place la bonne valeur en fonction de l'identifiant de forfait
             switch ($lgEltsForfait['idFraisForfait']) {
@@ -224,9 +227,9 @@ if ($etape == "choixVisiteur") {
                     $rep = $lgEltsForfait['quantite'];
                     break;
             }
-            $lgEltsForfait = mysqli_fetch_assoc($idJeuEltsForfait);
+            $lgEltsForfait = $idJeuEltsForfait->fetch(PDO::FETCH_ASSOC);
         }
-        mysqli_free_result($idJeuEltsForfait);
+        $idJeuEltsForfait->closeCursor();
         ?>
         <form id="formFraisForfait" method="post" action="">
             <p>
@@ -256,9 +259,10 @@ if ($etape == "choixVisiteur") {
         <div style="clear:left;"><h2>Hors forfait</h2></div>
         <?php
         // On récupère les lignes hors forfaits
-        $req = obtenirReqEltsHorsForfaitFicheFrais($moisChoisi, $visiteurChoisi);
-        $idJeuEltsHorsForfait = mysqli_query($idConnexion, $req);
-        $lgEltsHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
+        $req = obtenirReqEltsHorsForfaitFicheFrais();
+        $idJeuEltsHorsForfait = $idConnexion->prepare($req);
+        $idJeuEltsHorsForfait->execute([$visiteurChoisi, $moisChoisi]);
+        $lgEltsHorsForfait = $idJeuEltsHorsForfait->fetch(PDO::FETCH_ASSOC);
         while (is_array($lgEltsHorsForfait)) {
             ?>
             <form id="formFraisHorsForfait<?php echo $lgEltsHorsForfait['id']; ?>" method="post" action="">
@@ -311,7 +315,7 @@ if ($etape == "choixVisiteur") {
             </form>
             <div id="msgFraisHorsForfait<?php echo $lgEltsHorsForfait['id']; ?>" class="infosNonActualisees">Attention, les modifications doivent être actualisées pour être réellement prises en compte...</div>
             <?php
-            $lgEltsHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
+            $lgEltsHorsForfait = $idJeuEltsHorsForfait->fetch(PDO::FETCH_ASSOC);
         }
         ?>
         <form id="formNbJustificatifs" method="post" action="">

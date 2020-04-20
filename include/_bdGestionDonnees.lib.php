@@ -219,11 +219,10 @@ function obtenirReqMoisFicheFrais($unIdUtilisateur) {
  * @param string $unIdUtilisateur id utilisateur  
  * @return string texte de la requete select
  */                                                 
-function obtenirReqEltsForfaitFicheFrais($unMois, $unIdUtilisateur) {
-    $unMois = $unMois;
+function obtenirReqEltsForfaitFicheFrais() {
     $requete = "select idFraisForfait, libelle, quantite from LigneFraisForfait
               inner join FraisForfait on FraisForfait.id = LigneFraisForfait.idFraisForfait
-              where idUtilisateur='" . $unIdUtilisateur . "' and mois='" . $unMois . "'";
+              where idUtilisateur= ? and mois= ?";
     return $requete;
 }
 
@@ -238,11 +237,8 @@ function obtenirReqEltsForfaitFicheFrais($unMois, $unIdUtilisateur) {
  * @param string $unIdUtilisateur id utilisateur  
  * @return string texte de la requete select
  */                                                 
-function obtenirReqEltsHorsForfaitFicheFrais($unMois, $unIdUtilisateur) {
-    $unMois = $unMois;
-    $requete = "select id, date, libelle, montant from LigneFraisHorsForfait
-              where idUtilisateur='" . $unIdUtilisateur
-              . "' and mois='" . $unMois . "'";
+function obtenirReqEltsHorsForfaitFicheFrais() {
+    $requete = "select id, date, libelle, montant from LigneFraisHorsForfait where idUtilisateur= ?and mois= ?";
     return $requete;
 }
 
