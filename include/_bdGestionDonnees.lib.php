@@ -202,9 +202,8 @@ function ajouterFicheFrais($idCnx, $unMois, $unIdUtilisateur) {
  * @param string $unIdUtilisateur id utilisateur  
  * @return string texte de la requete select
  */                                                 
-function obtenirReqMoisFicheFrais($unIdUtilisateur) {
-    $req = "select fichefrais.mois as mois from  fichefrais where fichefrais.idUtilisateur ='"
-            . $unIdUtilisateur . "' order by fichefrais.mois desc ";
+function obtenirReqMoisFicheFrais() {
+    $req = "select fichefrais.mois as mois from  fichefrais where fichefrais.idUtilisateur = ? order by fichefrais.mois desc ";
     return $req ;
 }  
                   
@@ -338,7 +337,7 @@ function verifierInfosConnexion($idCnx, $unLogin, $unMdp) {
     $ligne = false;
     if ($idJeuRes) {
 		$ligne = $prep->fetch(PDO::FETCH_ASSOC);
-        $idJeuRes->closeCursor();
+        $prep->closeCursor();
     }
     return $ligne;
 }

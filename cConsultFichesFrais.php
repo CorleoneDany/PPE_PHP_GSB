@@ -48,9 +48,10 @@
         <select id="lstMois" name="lstMois" title="Selectionnez le mois souhaite pour la fiche de frais">
             <?php
                 // on propose tous les mois pour lesquels l'utilisateur a une fiche de frais
-                $req = obtenirReqMoisFicheFrais(obtenirIdUserConnecte());
-                $idJeuMois = mysqli_query($idConnexion, $req);
-                $lgMois = mysqli_fetch_assoc($idJeuMois);
+                $req = obtenirReqMoisFicheFrais();
+                $idJeuMois = $idConnexion->prepare($req);
+                $idJeuMois->execute([obtenirIdUserConnecte()]);
+                $lgMois = $idJeuMois->fetch(PDO::FETCH_ASSOC);
                 while ( is_array($lgMois) ) {
                     $mois = $lgMois["mois"];
                     $noMois = intval(substr($mois, 4, 2));
@@ -58,9 +59,9 @@
             ?>    
             <option value="<?php echo $mois; ?>"<?php if ($moisSaisi == $mois) { ?> selected="selected"<?php } ?>><?php echo obtenirLibelleMois($noMois) . " " . $annee; ?></option>
             <?php
-                    $lgMois = mysqli_fetch_assoc($idJeuMois);        
+                    $lgMois = $idJeuMois->fetch(PDO::FETCH_ASSOC);        
                 }
-                mysqli_free_result($idJeuMois);
+                $idJeuMois->closeCursor();
             ?>
         </select>
       </p>
@@ -94,10 +95,10 @@
 <?php          
             // demande de la requete pour obtenir la liste des elements 
             // forfaitises de l'utilisateur connecte pour le mois demande
-            $req = obtenirReqEltsForfaitFicheFrais($moisSaisi, obtenirIdUserConnecte());
-            $idJeuEltsFraisForfait = mysqli_query($idConnexion, $req);
-            echo mysqli_error($idConnexion);
-            $lgEltForfait = mysqli_fetch_assoc($idJeuEltsFraisForfait);
+            $req = obtenirReqEltsForfaitFicheFrais();
+            $idJeuEltsFraisForfait = $idConnexion->prepare($req);
+            $idJeuEltsFraisForfait->execute([obtenirIdUserConnecte(), $moisSaisi]);
+            $lgEltForfait = $idJeuEltsFraisForfait->fetch(PDO::FETCH_ASSOC);
             // parcours des frais forfaitises du utilisateur connecte
             // le stockage intermediaire dans un tableau est necessaire
             // car chacune des lignes du jeu d'enregistrements doit etre doit etre
@@ -105,9 +106,9 @@
             $tabEltsFraisForfait = array();
             while ( is_array($lgEltForfait) ) {
                 $tabEltsFraisForfait[$lgEltForfait["libelle"]] = $lgEltForfait["quantite"];
-                $lgEltForfait = mysqli_fetch_assoc($idJeuEltsFraisForfait);
+                $lgEltForfait = $idJeuEltsFraisForfait->fetch(PDO::FETCH_ASSOC);
             }
-            mysqli_free_result($idJeuEltsFraisForfait);
+            $idJeuEltsFraisForfait->closeCursor();
             ?>
   	<table class="listeLegere">
   	   <caption>Quantites des elements forfaitises</caption>
@@ -145,9 +146,10 @@
 <?php          
             // demande de la requete pour obtenir la liste des elements hors
             // forfait de l'utilisateur connecte pour le mois demande
-            $req = obtenirReqEltsHorsForfaitFicheFrais($moisSaisi, obtenirIdUserConnecte());
-            $idJeuEltsHorsForfait = mysqli_query($idConnexion, $req);
-            $lgEltHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
+            $req = obtenirReqEltsHorsForfaitFicheFrais();
+            $idJeuEltsHorsForfait = $idConnexion->prepare($req);
+            $idJeuEltsHorsForfait->execute([obtenirIdUserConnecte(), $moisSaisi]);
+            $lgEltHorsForfait = $idJeuEltsHorsForfait->fetch(PDO::FETCH_ASSOC);
             
             // parcours des elements hors forfait 
             while ( is_array($lgEltHorsForfait) ) {
@@ -158,9 +160,9 @@
                    <td><?php echo $lgEltHorsForfait["montant"] ; ?></td>
                 </tr>
             <?php
-                $lgEltHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
+                $lgEltHorsForfait = $idJeuEltsHorsForfait->fetch(PDO::FETCH_ASSOC);
             }
-            mysqli_free_result($idJeuEltsHorsForfait);
+            $idJeuEltsHorsForfait->closeCursor();
   ?>
     </table>
   </div>

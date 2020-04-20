@@ -82,10 +82,10 @@
       <?php          
             // demande de la requete pour obtenir la liste des elements 
             // forfaitises de l'utilisateur connecte pour le mois demande
-            $req = obtenirReqEltsForfaitFicheFrais($mois, obtenirIdUserConnecte());
-            $idJeuEltsFraisForfait = mysqli_query($idConnexion, $req);
-            echo mysqli_error($idConnexion);
-            $lgEltForfait = mysqli_fetch_assoc($idJeuEltsFraisForfait);
+            $req = obtenirReqEltsForfaitFicheFrais();
+            $idJeuEltsFraisForfait = $idConnexion->prepare($req);
+            $idJeuEltsFraisForfait->execute([obtenirIdUserConnecte(), $mois]);
+            $lgEltForfait = $idJeuEltsFraisForfait->fetch(PDO::FETCH_ASSOC);
             while ( is_array($lgEltForfait) ) {
                 $idFraisForfait = $lgEltForfait["idFraisForfait"];
                 $libelle = $lgEltForfait["libelle"];
@@ -100,9 +100,9 @@
                     value="<?php echo $quantite; ?>" />
             </p>
             <?php        
-                $lgEltForfait = mysqli_fetch_assoc($idJeuEltsFraisForfait);   
+                $lgEltForfait = $idJeuEltsFraisForfait->fetch(PDO::FETCH_ASSOC);   
             }
-            mysqli_free_result($idJeuEltsFraisForfait);
+            $idJeuEltsFraisForfait->closeCursor();
             ?>
           </fieldset>
       </div>
@@ -127,9 +127,10 @@
 <?php          
           // demande de la requete pour obtenir la liste des elements hors
           // forfait de l'utilisateur connecte pour le mois demande
-          $req = obtenirReqEltsHorsForfaitFicheFrais($mois, obtenirIdUserConnecte());
-          $idJeuEltsHorsForfait = mysqli_query($idConnexion, $req);
-          $lgEltHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
+          $req = obtenirReqEltsHorsForfaitFicheFrais();
+          $idJeuEltsHorsForfait = $idConnexion->prepare($req);
+          $idJeuEltsHorsForfait->execute([obtenirIdUserConnecte(), $mois]);
+          $lgEltHorsForfait = $idJeuEltsHorsForfait->fetch(PDO::FETCH_ASSOC);
           
           // parcours des frais hors forfait de l'utilisateur connecte
           while ( is_array($lgEltHorsForfait) ) {
@@ -143,9 +144,9 @@
                        title="Supprimer la ligne de frais hors forfait">Supprimer</a></td>
               </tr>
           <?php
-              $lgEltHorsForfait = mysqli_fetch_assoc($idJeuEltsHorsForfait);
+              $lgEltHorsForfait = $idJeuEltsHorsForfait->fetch(PDO::FETCH_ASSOC);
           }
-          mysqli_free_result($idJeuEltsHorsForfait);
+          $idJeuEltsHorsForfait->closeCursor();
 ?>
     </table>
       <form action="" method="post">

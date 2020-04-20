@@ -50,7 +50,8 @@ if ($etape == "mettreEnPaiementFicheFrais") {
     $req .= "                  INNER JOIN fraisForfait ON lignefraisforfait.idFraisForfait = fraisForfait.id";
     $req .= " WHERE ficheFrais.idEtat = 'VA'";
     $req .= " GROUP BY nom, prenom, ficheFrais.mois";
-    $idJeuFicheAPayer = mysqli_query($idConnexion, $req);
+    $idJeuFicheAPayer = $idConnexion->prepare($req);
+    $idJeuFicheAPayer->execute([]);
     ?>
     <form id="formChoixFichesAPayer" method="post" action="">
         <p>
@@ -74,7 +75,7 @@ if ($etape == "mettreEnPaiementFicheFrais") {
                 <th>Total</th>
             </tr>
             <?php
-            while ($lgFicheAPayer = mysqli_fetch_array($idJeuFicheAPayer)) {
+            while ($lgFicheAPayer = $idJeuFicheAPayer->fetch(PDO::FETCH_ASSOC)) {
                 $mois = $lgFicheAPayer['mois'];
                 $noMois = intval(substr($mois, 4, 2));
                 $annee = intval(substr($mois, 0, 4));
