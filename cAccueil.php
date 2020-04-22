@@ -6,13 +6,13 @@
  */
   $repInclude = './include/';
   require($repInclude . "_init.inc.php");
-
+  
   // page inaccessible si utilisateur non connecte
   if ( ! estUtilisateurConnecte() ) 
   {
         header("Location: cSeConnecter.php");  
   }
-  require($repInclude . "_entete.inc.html");
+  require($repInclude . "_entete.inc.php");
   require($repInclude . "_sommaire.inc.php");
 ?>
   <!-- Division principale -->

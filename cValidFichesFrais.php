@@ -11,7 +11,7 @@ require($repInclude . "_init.inc.php");
 if (!estUtilisateurConnecte()) {
     header("Location: cSeConnecter.php");
 }
-require($repInclude . "_entete.inc.html");
+require($repInclude . "_entete.inc.php");
 require($repInclude . "_sommaire.inc.php");
 
 // affectation du mois précédent pour la validation des fiches de frais

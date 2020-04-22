@@ -27,7 +27,7 @@
         header("Location:cAccueil.php");
   }
 
-  require($repInclude . "_entete.inc.html");
+  require($repInclude . "_entete.inc.php");
   require($repInclude . "_sommaire.inc.php");
   
 ?>

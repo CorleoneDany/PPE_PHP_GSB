@@ -11,7 +11,7 @@
   if (!estUtilisateurConnecte()) {
       header("Location: cSeConnecter.php");  
   }
-  require($repInclude . "_entete.inc.html");
+  require($repInclude . "_entete.inc.php");
   require($repInclude . "_sommaire.inc.php");
   // affectation du mois courant pour la saisie des fiches de frais
   $mois = sprintf("%04d%02d", date("Y"), date("m"));

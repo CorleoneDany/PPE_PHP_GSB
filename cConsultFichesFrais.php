@@ -11,7 +11,7 @@
   if ( ! estUtilisateurConnecte() ) {
       header("Location: cSeConnecter.php");  
   }
-  require($repInclude . "_entete.inc.html");
+  require($repInclude . "_entete.inc.php");
   require($repInclude . "_sommaire.inc.php");
   
   // acquisition des donnees entrees, ici le numero de mois et l'etape du traitement
