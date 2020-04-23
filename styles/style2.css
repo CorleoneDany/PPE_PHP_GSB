@@ -1,3 +1,4 @@
+body { overflow-x: hidden; }
 h1, h2 { margin-bottom: 3rem; color: #16222a; }
 #page { display: flex; flex-direction: column; min-height: 100vh; }
 #header { padding: 1rem 0; background-color: #16222a; }
@@ -25,11 +26,13 @@ h1, h2 { margin-bottom: 3rem; color: #16222a; }
 button, button:focus { border: 0; outline: none; }
 .btn-container { text-align: right; }
 .btn-container > button:nth-child(1) { margin-right: .5rem; }
-.btn-container button.btn { width: 100px; border-radius: 2px; }
+.btn-container button.btn { min-width: 100px; border-radius: 2px; }
 .btn.btn-submit, .btn.btn-reset { color: white }
 .btn.btn-submit { background-color: #143c6c; border-color: #143c6c; }
+.btn.btn-submit:hover { background-color: #0e294a ;}
 .btn.btn-submit:focus { outline-color: #143c6c; }
 .btn.btn-reset { background-color: #16222a; border-color: #16222a; }
+.btn.btn-reset:hover { background-color: #0f171d ;}
 .btn.btn-reset:focus { outline-color: #16222a; }
 #content { display: flex; flex-direction: column; justify-content: center; }
 #footer { padding: 1rem; }
@@ -39,44 +42,17 @@ button, button:focus { border: 0; outline: none; }
 #contenu { padding: 65px 0; }
 
 @media (max-width: 768px) {
-    /* Reversing the behavior of the sidebar: 
-       it'll be rotated vertically and off canvas by default, 
-       collapsing in on toggle button click with removal of 
-       the vertical rotation.   */
-    #sidebar {
-        margin-left: -250px;
-        transform: rotateY(100deg);
-    }
-    #sidebar.active {
-        margin-left: 0;
-        transform: none;
-    }
-
-    /* Reversing the behavior of the bars: 
-       Removing the rotation from the first,
-       last bars and reappear the second bar on default state, 
-       and giving them a vertical margin */
+    #sidebar { margin-left: -250px; transform: rotateY(100deg); }
+    #sidebar.active { margin-left: 0; transform: none; }
     #sidebarCollapse span:first-of-type,
     #sidebarCollapse span:nth-of-type(2),
-    #sidebarCollapse span:last-of-type {
-        transform: none;
-        opacity: 1;
-        margin: 5px auto;
-    }
+    #sidebarCollapse span:last-of-type { transform: none; opacity: 1; margin: 5px auto; }
 
     /* Removing the vertical margin and make the first and last bars rotate again when the sidebar is open, hiding the second bar */
-    #sidebarCollapse.active span {
-        margin: 0 auto;
-    }
-    #sidebarCollapse.active span:first-of-type {
-        transform: rotate(45deg) translate(2px, 2px);
-    }
-    #sidebarCollapse.active span:nth-of-type(2) {
-        opacity: 0;
-    }
-    #sidebarCollapse.active span:last-of-type {
-        transform: rotate(-45deg) translate(1px, -1px);
-    }
+    #sidebarCollapse.active span { margin: 0 auto; }
+    #sidebarCollapse.active span:first-of-type { transform: rotate(45deg) translate(2px, 2px); }
+    #sidebarCollapse.active span:nth-of-type(2) { opacity: 0; }
+    #sidebarCollapse.active span:last-of-type { transform: rotate(-45deg) translate(1px, -1px); }
 }
 
 @media only screen and (max-width: 575px) {
@@ -84,12 +60,7 @@ button, button:focus { border: 0; outline: none; }
     #sidebar, button#sidebarCollapse { z-index: 1; }
 }
 
-@media only screen and (max-width: 430px) {
-    body { overflow-x: hidden; }
-    h2 { font-size: 1.6rem; }
-}
-
 @media only screen and (max-width: 450px) {
     #header-content h1 { font-size: 1rem }
+    h2 { font-size: 1.6rem; }
 }
-
