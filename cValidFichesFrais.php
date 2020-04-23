@@ -88,7 +88,7 @@ if ($etape == "choixVisiteur") {
 
 <!-- Division principale -->
 <div id="contenu">
-    <h1>Validation des frais par visiteur </h1>
+    <h2>Validation des frais par visiteur </h2>
     <?php
     // Gestion des messages d'informations
     if ($etape == "actualiserFraisForfait") {

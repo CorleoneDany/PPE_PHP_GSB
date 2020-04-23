@@ -8,7 +8,7 @@ h1, h2 { margin-bottom: 3rem; color: #16222a; }
 #logo img { width: 75px; }
 .form-group p { margin-bottom: 0; }
 #sidebarCollapse { width: 40px; height: 40px; background-color: #304a5c; border: 0; }
-#sidebarCollapse span { width: 80%; height: 2px; margin: 0 auto; display: block; background: #fff; transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375); }
+#sidebarCollapse span { width: 28px; height: 2px; margin: 0 auto; display: block; background: #fff; transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375); }
 #sidebarCollapse span:first-of-type { /* rotate first one */ transform: rotate(45deg) translate(2px, 2px); }
 #sidebarCollapse span:nth-of-type(2) { /* second one is not visible */ opacity: 0; }
 #sidebarCollapse span:last-of-type { /* rotate third one */ transform: rotate(-45deg) translate(1px, -1px); }
@@ -36,7 +36,7 @@ button, button:focus { border: 0; outline: none; }
 #footer > p { text-align: center; margin-bottom: 0; font-family: monospace;}
 #erreur { margin-top: 1rem; padding: 15px; border-radius: 5px; font-size: 0.9rem; background-color: #ff83834f; border: solid 1px #a728287a; color: #dc3545; }
 #erreur p { margin: 0; text-align: center; }
-
+#contenu { padding: 65px 0; }
 
 @media (max-width: 768px) {
     /* Reversing the behavior of the sidebar: 
@@ -77,6 +77,16 @@ button, button:focus { border: 0; outline: none; }
     #sidebarCollapse.active span:last-of-type {
         transform: rotate(-45deg) translate(1px, -1px);
     }
+}
+
+@media only screen and (max-width: 575px) {
+    #content { margin-left: -40px; }
+    #sidebar, button#sidebarCollapse { z-index: 1; }
+}
+
+@media only screen and (max-width: 430px) {
+    body { overflow-x: hidden; }
+    h2 { font-size: 1.6rem; }
 }
 
 @media only screen and (max-width: 450px) {

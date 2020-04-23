@@ -41,7 +41,7 @@ if ($etape == "mettreEnPaiementFicheFrais") {
     <?php
     }
     ?>
-    <h1>Suivi des paiement des fiches de frais</h1>
+    <h2>Suivi des paiement des fiches de frais</h2>
     <?php
     $req = "SELECT visiteur.id, nom, prenom, ficheFrais.mois, SUM(lignefraisforfait.quantite * fraisForfait.montant) AS montantForfait,";
     $req .= " (ficheFrais.montantValide - SUM(lignefraisforfait.quantite * fraisForfait.montant)) AS montantHorsForfait, ficheFrais.montantValide AS totalFicheFrais";
