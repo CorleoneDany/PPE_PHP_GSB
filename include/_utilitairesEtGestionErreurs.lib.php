@@ -212,12 +212,8 @@ function nbErreurs($tabErr) {
  * @return string source html
  */ 
 function toStringErreurs($tabErr) {
-    $str = '<div class="erreur">';
-    $str .= '<ul>';
-    foreach($tabErr as $erreur){
-        $str .= '<li>' . $erreur . '</li>';
-	}
-    $str .= '</ul>';
+    $str = '<div id="erreur" class="col-lg-10 col-md-9">';
+    $str .= '<p>' . $tabErr[0] . '</p>';
     $str .= '</div>';
     return $str;
 } 
