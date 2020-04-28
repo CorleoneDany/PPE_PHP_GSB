@@ -40,7 +40,7 @@ button, button:focus { border: 0; outline: none; }
 #erreur { margin-top: 1rem; padding: 15px; border-radius: 5px; font-size: 0.9rem; background-color: #ff83834f; border: solid 1px #a728287a; color: #dc3545; }
 #erreur p { margin: 0; text-align: center; }
 #contenu { padding: 65px 0; }
-
+table { background-color: #ffffffe6; }
 @media (max-width: 768px) {
     #sidebar { margin-left: -250px; transform: rotateY(100deg); }
     #sidebar.active { margin-left: 0; transform: none; }
