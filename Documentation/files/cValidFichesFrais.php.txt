@@ -257,8 +257,8 @@ if ($visiteurChoisi != "" && $moisChoisi != "") {
                 <td style="width:80px;"><input type="text" size="3" id="idKM" name="txtEltsForfait[KM]" value="<?php echo $km; ?>" style="text-align:right;" onchange="afficheMsgInfosForfaitAActualisees();" /></td>
                 <td>
                     <div id="actionsFraisForfait" class="actions">
-                        <a class="actions" id="lkActualiserLigneFraisForfait" onclick="actualiserLigneFraisForfait(<?php echo $rep; ?>,<?php echo $nui; ?>,<?php echo $etp; ?>,<?php echo $km; ?>);" title="Actualiser la ligne de frais forfaitisé">&nbsp;<img src="images/actualiserIcon.png" class="icon" alt="icone Actualiser" />&nbsp;Actualiser&nbsp;</a>
-                        <a class="actions" id="lkReinitialiserLigneFraisForfait" onclick="reinitialiserLigneFraisForfait();" title="Réinitialiser la ligne de frais forfaitisé">&nbsp;<img src="images/reinitialiserIcon.png" class="icon" alt="icone Réinitialiser" />&nbsp;Réinitialiser&nbsp;</a>
+                        <a class="actions" id="lkActualiserLigneFraisForfait" onclick="actualiserLigneFraisForfait(<?php echo $rep; ?>,<?php echo $nui; ?>,<?php echo $etp; ?>,<?php echo $km; ?>);" title="Actualiser la ligne de frais forfaitisé">&nbsp;<img src="images/actualiserIcon.svg" class="icon" alt="icone Actualiser" />&nbsp;Actualiser&nbsp;</a>
+                        <a class="actions" id="lkReinitialiserLigneFraisForfait" onclick="reinitialiserLigneFraisForfait();" title="Réinitialiser la ligne de frais forfaitisé">&nbsp;<img src="images/reinitialiserIcon.svg" class="icon" alt="icone Réinitialiser" />&nbsp;Réinitialiser&nbsp;</a>
                     </div>
                 </td>
             </tr>
@@ -309,14 +309,14 @@ if ($visiteurChoisi != "" && $moisChoisi != "") {
                     <td style="width:90px;"><input type="text" size="10" id="idMontant<?php echo $lgEltsHorsForfait['id']; ?>" name="txtEltsHorsForfait[montant]" value="<?php echo $lgEltsHorsForfait['montant']; ?>" style="text-align:right;" onchange="afficheMsgInfosHorsForfaitAActualisees(<?php echo $lgEltsHorsForfait['id']; ?>);" /></td>
                     <td>
                         <div id="actionsFraisHorsForfait<?php echo $lgEltsHorsForfait['id']; ?>" class="actions">
-                            <a class="actions" id="lkActualiserLigneFraisHF<?php echo $lgEltsHorsForfait['id']; ?>" onclick="actualiserLigneFraisHF(<?php echo $lgEltsHorsForfait['id']; ?>,'<?php echo convertirDateAnglaisVersFrancais($lgEltsHorsForfait['date']); ?>','<?php echo $lgEltsHorsForfait['libelle']); ?>',<?php echo $lgEltsHorsForfait['montant']; ?>;" title="Actualiser la ligne de frais hors forfait">&nbsp;<img src="images/actualiserIcon.png" class="icon" alt="icone Actualiser" />&nbsp;Actualiser&nbsp;</a>
-                            <a class="actions" id="lkReinitialiserLigneFraisHF<?php echo $lgEltsHorsForfait['id']; ?>" onclick="reinitialiserLigneFraisHorsForfait(<?php echo $lgEltsHorsForfait['id']; ?>);" title="Réinitialiser la ligne de frais hors forfait">&nbsp;<img src="images/reinitialiserIcon.png" class="icon" alt="icone Réinitialiser" />&nbsp;Réinitialiser&nbsp;</a>
+                            <a class="actions" id="lkActualiserLigneFraisHF<?php echo $lgEltsHorsForfait['id']; ?>" onclick="actualiserLigneFraisHF(<?php echo $lgEltsHorsForfait['id']; ?>,'<?php echo convertirDateAnglaisVersFrancais($lgEltsHorsForfait['date']); ?>','<?php echo $lgEltsHorsForfait['libelle']); ?>',<?php echo $lgEltsHorsForfait['montant']; ?>;" title="Actualiser la ligne de frais hors forfait">&nbsp;<img src="images/actualiserIcon.svg" class="icon" alt="icone Actualiser" />&nbsp;Actualiser&nbsp;</a>
+                            <a class="actions" id="lkReinitialiserLigneFraisHF<?php echo $lgEltsHorsForfait['id']; ?>" onclick="reinitialiserLigneFraisHorsForfait(<?php echo $lgEltsHorsForfait['id']; ?>);" title="Réinitialiser la ligne de frais hors forfait">&nbsp;<img src="images/reinitialiserIcon.svg" class="icon" alt="icone Réinitialiser" />&nbsp;Réinitialiser&nbsp;</a>
                             <?php
                             // L'option "Supprimer" n'est proposée que si les frais n'ont pas déjà été refusés
                             if (strpos($lgEltsHorsForfait['libelle'], 'REFUSÉ : ') === false) {
                             ?>
-                                <a class="actionsCritiques" onclick="reporterLigneFraisHF(<?php echo $lgEltsHorsForfait['id']; ?>);" title="Reporter la ligne de frais hors forfait">&nbsp;<img src="images/reporterIcon.png" class="icon" alt="icone Reporter" />&nbsp;Reporter&nbsp;</a>
-                                <a class="actionsCritiques" onclick="refuseLigneFraisHF(<?php echo $lgEltsHorsForfait['id']; ?>);" title="Supprimer la ligne de frais hors forfait">&nbsp;<img src="images/refuserIcon.png" class="icon" alt="icone Supprimer" />&nbsp;Supprimer&nbsp;</a>
+                                <a class="actionsCritiques" onclick="reporterLigneFraisHF(<?php echo $lgEltsHorsForfait['id']; ?>);" title="Reporter la ligne de frais hors forfait">&nbsp;<img src="images/reporterIcon.svg" class="icon" alt="icone Reporter" />&nbsp;Reporter&nbsp;</a>
+                                <a class="actionsCritiques" onclick="refuseLigneFraisHF(<?php echo $lgEltsHorsForfait['id']; ?>);" title="Supprimer la ligne de frais hors forfait">&nbsp;<img src="images/refuserIcon.svg" class="icon" alt="icone Supprimer" />&nbsp;Supprimer&nbsp;</a>
                             <?php
                             } else {
                             ?>
@@ -346,8 +346,8 @@ if ($visiteurChoisi != "" && $moisChoisi != "") {
             ?>
             <input type="text" class="zone" size="4" id="idNbJustificatifs" name="nbJustificatifs" value="<?php echo $laFicheFrais['nbJustificatifs']; ?>" style="text-align:center;" onchange="afficheMsgNbJustificatifs();" />
             <div id="actionsNbJustificatifs" class="actions">
-                <a class="actions" id="lkActualiserNbJustificatifs" onclick="actualiserNbJustificatifs(<?php echo $laFicheFrais['nbJustificatifs']; ?>);" title="Actualiser le nombre de justificatifs">&nbsp;<img src="images/actualiserIcon.png" class="icon" alt="icone Actualiser" />&nbsp;Actualiser&nbsp;</a>
-                <a class="actions" id="lkReinitialiserNbJustificatifs" onclick="reinitialiserNbJustificatifs();" title="Réinitialiser le nombre de justificatifs">&nbsp;<img src="images/reinitialiserIcon.png" class="icon" alt="icone Réinitialiser" />&nbsp;Réinitialiser&nbsp;</a>
+                <a class="actions" id="lkActualiserNbJustificatifs" onclick="actualiserNbJustificatifs(<?php echo $laFicheFrais['nbJustificatifs']; ?>);" title="Actualiser le nombre de justificatifs">&nbsp;<img src="images/actualiserIcon.svg" class="icon" alt="icone Actualiser" />&nbsp;Actualiser&nbsp;</a>
+                <a class="actions" id="lkReinitialiserNbJustificatifs" onclick="reinitialiserNbJustificatifs();" title="Réinitialiser le nombre de justificatifs">&nbsp;<img src="images/reinitialiserIcon.svg" class="icon" alt="icone Réinitialiser" />&nbsp;Réinitialiser&nbsp;</a>
             </div>
         </div>
     </form>

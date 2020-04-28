@@ -87,7 +87,7 @@ if ($etape == "mettreEnPaiementFicheFrais") {
                     <td style="width:80px;white-space:nowrap;color:black;text-align:right;"><?php echo $lgFicheAPayer['totalFicheFrais']; ?></td>
                     <td style="width:80px;white-space:nowrap;color:black;">
                         <div id="actionsFicheFrais" class="actions">
-                            <a class="actionsCritiques" onclick="mettreEnPaiementFicheFrais('<?php echo $lgFicheAPayer['id']; ?>',<?php echo $lgFicheAPayer['mois']; ?>);" title="Mettre en paiement la fiche de frais">&nbsp;<img src="images/mettreEnPaiementIcon.png" class="icon" alt="icone Mettre en paiment" />&nbsp;Mettre en paiement&nbsp;</a>
+                            <a class="actionsCritiques" onclick="mettreEnPaiementFicheFrais('<?php echo $lgFicheAPayer['id']; ?>',<?php echo $lgFicheAPayer['mois']; ?>);" title="Mettre en paiement la fiche de frais">&nbsp;<img src="images/mettreEnPaiementIcon.svg" class="icon" alt="icone Mettre en paiment" />&nbsp;Mettre en paiement&nbsp;</a>
                         </div>
                     </td>
                 </tr>

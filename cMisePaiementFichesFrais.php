@@ -62,41 +62,46 @@ if ($etape == "mettreEnPaiementFicheFrais") {
         <div style="clear:left;">
             <h2>Fiches de frais validées</h2>
         </div>
-        <table style="color:white;" border="1">
-            <tr>
-                <th rowspan="2" style="vertical-align:middle;">Visiteur&nbsp;médical</th>
-                <th rowspan="2" style="vertical-align:middle;">Mois</th>
-                <th colspan="3">Fiches de frais</th>
-                <th rowspan="2" style="vertical-align:middle;">Actions</th>
-            </tr>
-            <tr>
-                <th>Forfait</th>
-                <th>Hors forfait</th>
-                <th>Total</th>
-            </tr>
-            <?php
-            while ($lgFicheAPayer = $idJeuFicheAPayer->fetch(PDO::FETCH_ASSOC)) {
-                $mois = $lgFicheAPayer['mois'];
-                $noMois = intval(substr($mois, 4, 2));
-                $annee = intval(substr($mois, 0, 4));
-            ?>
-                <tr align="center">
-                    <td style="width:80px;white-space:nowrap;color:black;"><?php echo $lgFicheAPayer['nom'] . ' ' . $lgFicheAPayer['prenom']; ?></td>
-                    <td style="width:80px;white-space:nowrap;color:black;"><?php echo obtenirLibelleMois($noMois) . ' ' . $annee; ?></td>
-                    <td style="width:80px;white-space:nowrap;color:black;text-align:right;"><?php echo $lgFicheAPayer['montantForfait']; ?></td>
-                    <td style="width:80px;white-space:nowrap;color:black;text-align:right;"><?php echo $lgFicheAPayer['montantHorsForfait']; ?></td>
-                    <td style="width:80px;white-space:nowrap;color:black;text-align:right;"><?php echo $lgFicheAPayer['totalFicheFrais']; ?></td>
-                    <td style="width:80px;white-space:nowrap;color:black;">
-                        <div id="actionsFicheFrais" class="actions">
-                            <a class="actionsCritiques" onclick="mettreEnPaiementFicheFrais('<?php echo $lgFicheAPayer['id']; ?>',<?php echo $lgFicheAPayer['mois']; ?>);" title="Mettre en paiement la fiche de frais">&nbsp;<img src="images/mettreEnPaiementIcon.png" class="icon" alt="icone Mettre en paiment" />&nbsp;Mettre en paiement&nbsp;</a>
-                        </div>
-                    </td>
-                </tr>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th rowspan="2" style="vertical-align:middle;">Visiteur&nbsp;médical</th>
+                        <th rowspan="2" style="vertical-align:middle;">Mois</th>
+                        <th colspan="3">Fiches de frais</th>
+                        <th rowspan="2" style="vertical-align:middle;">Actions</th>
+                    </tr>
+                    <tr>
+                        <th>Forfait</th>
+                        <th>Hors forfait</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
 
-            <?php
-            }
-            ?>
-        </table>
+                <?php
+                while ($lgFicheAPayer = $idJeuFicheAPayer->fetch(PDO::FETCH_ASSOC)) {
+                    $mois = $lgFicheAPayer['mois'];
+                    $noMois = intval(substr($mois, 4, 2));
+                    $annee = intval(substr($mois, 0, 4));
+                ?>
+                    <tr>
+                        <td><?php echo $lgFicheAPayer['nom'] . ' ' . $lgFicheAPayer['prenom']; ?></td>
+                        <td><?php echo obtenirLibelleMois($noMois) . ' ' . $annee; ?></td>
+                        <td><?php echo $lgFicheAPayer['montantForfait']; ?></td>
+                        <td><?php echo $lgFicheAPayer['montantHorsForfait']; ?></td>
+                        <td><?php echo $lgFicheAPayer['totalFicheFrais']; ?></td>
+                        <td class="td-link">
+                            <div id="actionsFicheFrais" class="actions">
+                                <a class="actionsCritiques" onclick="mettreEnPaiementFicheFrais('<?php echo $lgFicheAPayer['id']; ?>',<?php echo $lgFicheAPayer['mois']; ?>);" title="Mettre en paiement la fiche de frais">&nbsp;<img src="images/mettreEnPaiementIcon.svg" class="icon" alt="icone Mettre en paiment" />&nbsp;Mettre en paiement&nbsp;</a>
+                            </div>
+                        </td>
+                    </tr>
+
+                <?php
+                }
+                ?>
+            </table>
+        </div>
     </form>
 </div>
 <script type="text/javascript">
