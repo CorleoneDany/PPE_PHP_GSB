@@ -16,6 +16,13 @@ require($repInclude . "_entete.inc.php");
 require($repInclude . "_sommaire.inc.php");
 // affectation du mois courant pour la saisie des fiches de frais
 $mois = sprintf("%04d%02d", date("Y"), date("m"));
+
+if(isset($_POST) && $_POST && isset($_POST['vehicule'])) {
+  $vehicule = $_POST['vehicule'];
+} else {
+  $vehicule = obtenirUtilisateur($idConnexion, obtenirIdUserConnecte())['type_vehicule'];
+}
+
 // verification de l'existence de la fiche de frais pour ce mois courant
 $existeFicheFrais = existeFicheFrais($idConnexion, $mois, obtenirIdUserConnecte());
 // si elle n'existe pas, on la cree avec les elets frais forfaitisés a 0
@@ -42,6 +49,7 @@ if ($etape == "validerSaisie") {
     ajouterErreur($tabErreurs, "Chaque quantite doit etre renseignee et numerique positive.");
   } else { // mise a jour des quantites des éléments forfaitisés
     modifierEltsForfait($idConnexion, $mois, obtenirIdUserConnecte(), $tabQteEltsForfait);
+    majVehicule($idConnexion, obtenirIdUserConnecte(), $vehicule);
   }
 } elseif ($etape == "validerSuppressionLigneHF") {
   supprimerLigneHF($idConnexion, $idLigneHF);
@@ -73,8 +81,7 @@ if ($etape == "validerSaisie") {
     <div class="corpsForm">
       <input type="hidden" name="etape" value="validerSaisie" />
       <fieldset>
-        <legend>Éléments forfaitisés
-        </legend>
+        <legend>Éléments forfaitisés</legend>
         <?php
         // demande de la requete pour obtenir la liste des éléments 
         // forfaitisés de l'utilisateur connecte pour le mois demande
@@ -82,6 +89,17 @@ if ($etape == "validerSaisie") {
         $idJeuEltsFraisForfait = $idConnexion->prepare($req);
         $idJeuEltsFraisForfait->execute([obtenirIdUserConnecte(), $mois]);
         $lgEltForfait = $idJeuEltsFraisForfait->fetch(PDO::FETCH_ASSOC);
+
+
+        //récupération de tous les types de véhicules et leur montant associé
+        $vehicules = obtenirAllTypesVehicules($idConnexion);
+
+        //récupération du type de véhicule
+        // $req = obtenirReqFraisKm();
+        // $vehicule = $idConnexion->prepare($req);
+        // $vehicule = $vehicule->execute();
+
+
         while (is_array($lgEltForfait)) {
           $idFraisForfait = $lgEltForfait["idFraisForfait"];
           $libelle = $lgEltForfait["libelle"];
@@ -101,6 +119,21 @@ if ($etape == "validerSaisie") {
         }
         $idJeuEltsFraisForfait->closeCursor();
         ?>
+
+        <div class="form-group row">
+          <p class="col-lg-2 col-md-3">
+            <label for="vehicule">Type de véhicule : </label>
+          </p>
+          <p class="col-lg-10 col-md-9">
+            <select id="vehicule" class="form-control" name="vehicule" value="<?php echo $quantite; ?>">
+            <option value="">-- Sélectionner un véhicule --</option>
+              <?php foreach ($vehicules as $vehi) {
+                echo '<option value="' . $vehi['id'] . '" ' . ($vehi['id'] == $vehicule ? 'selected' : '') . '>' . $vehi['libelle'] . '</option>';
+              } ?>
+            </select>
+          </p>
+        </div>
+
       </fieldset>
     </div>
     <div class="piedForm">
@@ -118,39 +151,39 @@ if ($etape == "validerSaisie") {
   $idJeuEltsHorsForfait = $idConnexion->prepare($req);
   $idJeuEltsHorsForfait->execute([obtenirIdUserConnecte(), $mois]);
   $lgEltHorsForfait = $idJeuEltsHorsForfait->fetch(PDO::FETCH_ASSOC);
-  
+
   // On affiche le tableau que s'il y a des données à l'intérieur.
-  if($lgEltHorsForfait) {
+  if ($lgEltHorsForfait) {
   ?>
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <caption>Descriptif des éléments hors forfait</caption>
-      <thead class="thead-dark">
-        <tr>
-          <th class="date">Date</th>
-          <th class="libelle">Libelle</th>
-          <th class="montant">Montant</th>
-          <th class="action">&nbsp;</th>
-        </tr>
-      </thead>
-      <?php
-      // parcours des frais hors forfait de l'utilisateur connecte
-      while (is_array($lgEltHorsForfait)) {
-      ?>
-        <tr>
-          <td><?php echo $lgEltHorsForfait["date"]; ?></td>
-          <td><?php echo filtrerChainePourNavig($lgEltHorsForfait["libelle"]); ?></td>
-          <td><?php echo $lgEltHorsForfait["montant"]; ?></td>
-          <td><a href="?etape=validerSuppressionLigneHF&amp;idLigneHF=<?php echo $lgEltHorsForfait["id"]; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cette ligne de frais hors forfait ?');" title="Supprimer la ligne de frais hors forfait">Supprimer</a></td>
-        </tr>
-      <?php
-        $lgEltHorsForfait = $idJeuEltsHorsForfait->fetch(PDO::FETCH_ASSOC);
-      }
-      $idJeuEltsHorsForfait->closeCursor();
-      ?>
-    </table>
-  </div>
-    <?php }?>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <caption>Descriptif des éléments hors forfait</caption>
+        <thead class="thead-dark">
+          <tr>
+            <th class="date">Date</th>
+            <th class="libelle">Libelle</th>
+            <th class="montant">Montant</th>
+            <th class="action">&nbsp;</th>
+          </tr>
+        </thead>
+        <?php
+        // parcours des frais hors forfait de l'utilisateur connecte
+        while (is_array($lgEltHorsForfait)) {
+        ?>
+          <tr>
+            <td><?php echo $lgEltHorsForfait["date"]; ?></td>
+            <td><?php echo filtrerChainePourNavig($lgEltHorsForfait["libelle"]); ?></td>
+            <td><?php echo $lgEltHorsForfait["montant"]; ?></td>
+            <td><a href="?etape=validerSuppressionLigneHF&amp;idLigneHF=<?php echo $lgEltHorsForfait["id"]; ?>" onclick="return confirm('Voulez-vous vraiment supprimer cette ligne de frais hors forfait ?');" title="Supprimer la ligne de frais hors forfait">Supprimer</a></td>
+          </tr>
+        <?php
+          $lgEltHorsForfait = $idJeuEltsHorsForfait->fetch(PDO::FETCH_ASSOC);
+        }
+        $idJeuEltsHorsForfait->closeCursor();
+        ?>
+      </table>
+    </div>
+  <?php } ?>
   <form action="" method="post">
     <div class="corpsForm">
       <input type="hidden" name="etape" value="validerAjoutLigneHF" />

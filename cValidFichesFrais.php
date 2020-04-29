@@ -227,9 +227,6 @@ if ($etape == "choixVisiteur") {
                 case "ETP":
                     $etp = $lgEltsForfait['quantite'];
                     break;
-                case "KM":
-                    $km = $lgEltsForfait['quantite'];
-                    break;
                 case "NUI":
                     $nui = $lgEltsForfait['quantite'];
                     break;
@@ -239,6 +236,7 @@ if ($etape == "choixVisiteur") {
             }
             $lgEltsForfait = $idJeuEltsForfait->fetch(PDO::FETCH_ASSOC);
         }
+        $km = obtenirFraisKmUtilisateur($idConnexion, $visiteurChoisi);
         $idJeuEltsForfait->closeCursor();
     ?>
         <form id="formFraisForfait" method="post" action="">

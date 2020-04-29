@@ -213,16 +213,56 @@ function obtenirReqMoisFicheFrais() {
  * La requete de selection fournie permettra d'obtenir l'id, le libelle et la
  * quantite des elements forfaitises de la fiche de frais de l'utilisateur
  * d'id $idUtilisateur pour le mois $mois    
- * @param string $unMois mois demande (MMAAAA)
- * @param string $unIdUtilisateur id utilisateur  
- * @return string texte de la requete select
+
  */                                                 
 function obtenirReqEltsForfaitFicheFrais() {
     $requete = "select idFraisForfait, libelle, quantite from LigneFraisForfait
-              inner join FraisForfait on FraisForfait.id = LigneFraisForfait.idFraisForfait
+              inner join FraisForfait on FraisForfait.id = LigneFraisForfait.idFraisForfait 
               where idUtilisateur= ? and mois= ?";
     return $requete;
 }
+
+
+/**
+ * Retourne la requête qui permet de récupérer tous les types de véhicules.
+ */                                                 
+function obtenirAllTypesVehicules($idConnexion) {
+    $req = "select * from `fraiskm`";
+    $listeVehicules = $idConnexion->query($req);
+    $vehicules = [];
+    while($row = $listeVehicules->fetch(PDO::FETCH_ASSOC)) {
+      $vehicules[] = $row;
+    }
+    return $vehicules;
+}
+
+/**
+ * Retourne forfait utilisateur
+ * @param PDO $idConnexion
+ * @param string $idUtilisateur
+ */
+function obtenirFraisKmUtilisateur($idConnexion, $idUtilisateur) {
+    $requete = "select montant from fraiskm fkm 
+                inner join utilisateur u on fkm.id = u.type_vehicule 
+                inner join lignefraisforfait lff on u.id = lff.idUtilisateur 
+                where u.id = ?
+                group by fkm.id";
+    $utilisateur = $idConnexion->prepare($requete);
+    $utilisateur->execute([$idUtilisateur]);
+
+    $km = $utilisateur->fetch(PDO::FETCH_COLUMN);
+    
+    return $km;
+}
+
+/**
+ * Retourne la requête qui permet de récupérer le montant d'un frais kilométrique.
+ */                                                 
+function obtenirReqFraisKm() {
+    $requete = "select `montant` from `fraiskm` where `id` = ?";
+    return $requete;
+}
+
 
 /**
  * Retourne le texte de la requete select concernant les elements hors forfait 
@@ -297,8 +337,6 @@ function ajouterLigneHF($idCnx, $unMois, $unIdUtilisateur, $uneDateHF, $unLibell
  * @return void  
  */
 function modifierEltsForfait($idCnx, $unMois, $unIdUtilisateur, $desEltsForfait) {
-    $unMois=$unMois;
-    $unIdUtilisateur=$unIdUtilisateur;
     foreach ($desEltsForfait as $idFraisForfait => $quantite) {
         $requete = "update LigneFraisForfait set quantite = :quantite where idUtilisateur = :unIdUtilisateur and mois = :unMois and idFraisForfait= :idFraisForfait";
         $update = $idCnx->prepare($requete);
@@ -311,6 +349,33 @@ function modifierEltsForfait($idCnx, $unMois, $unIdUtilisateur, $desEltsForfait)
         $update->execute($params);
     }
 }
+
+/**
+ * Met à jour le véhicule d'un utilisateur
+ * @param PDO $idConnexion
+ * @param string $idUtilisateur
+ * @param string $vehiculeSelectionne
+ */
+function majVehicule($idConnexion, $idUtilisateur, $vehiculeSelectionne) {
+    $requete = "update utilisateur set type_vehicule = ? where id = ?";
+    $update  = $idConnexion->prepare($requete);
+    $params  = [$vehiculeSelectionne, $idUtilisateur];
+    $update->execute($params);
+}
+
+/**
+ * Permet d'obtenir un utilisateur et ses données.
+ * @param PDO $idConnexion
+ * @param string $idUtilisateur
+ */
+function obtenirUtilisateur($idConnexion, $idUtilisateur) {
+    $requete = "select * from utilisateur where id = ?";
+    $utilisateur = $idConnexion->prepare($requete);
+    $utilisateur->execute([$idUtilisateur]);
+    $utilisateur = $utilisateur->fetch(PDO::FETCH_ASSOC);
+    return $utilisateur;
+}
+
 
 /**
  * Contrele les informations de connexionn d'un utilisateur.
